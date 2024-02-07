@@ -70,25 +70,14 @@ public class UserInterface {
 	}
 	
 	public static void profile(String[] profile) {
-		System.out.println("-----------------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------");
 		System.out.println("--Name              : "+profile[0]);
 		System.out.println("--Mobile Number     : "+profile[1]);
 		System.out.println("--Email             : "+profile[2]);
 		System.out.println("--Address           : "+profile[3]);
-		System.out.println("-----------------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------");
 	}
 	
-	public static void displayWatches(int id, String name, String brand, double price, String description, int number_of_stocks) {
-		System.out.println("**************************************************************");
-    	System.out.println(
-    			    "--ID                             : " + id
-    			+ "\n--Name                           : " + name
-    			+ "\n--Brand                          : " + brand
-    			+ "\n--Price                          : " + price
-    			+ "\n--Description                    : " + description
-    			+ "\n--Number of Stocks available     : " + number_of_stocks);
-    	System.out.println("**************************************************************");
-    }
 	public static void shoppingCart(String cart[]) {
 		double price = Double.parseDouble(cart[2]);
 		int quantity = Integer.parseInt(cart[3]);

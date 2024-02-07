@@ -16,20 +16,20 @@ public class MainModule{
 		Connection con = Connectivity.connectivity();
 		
 		while(true) {		
-			System.out.println("-----------------------------------------------------------");
+			System.out.println("-----------------------------------------------------------------");
 			System.out.print("For New User Type 0 or Type 1 for Login : ");
 			loginOrSignUp = sc.nextInt();sc.nextLine();
 			
 			if (loginOrSignUp == 1) {
                 // Login logic
                 Login login = UserModule.getLoginDetails(sc);
-                System.out.println("-----------------------------------------------------------");
+                System.out.println("-----------------------------------------------------------------");
                 performLogin(con, login, args);
             } 
             else if(loginOrSignUp == 0){
                 // Sign-up logic
                 SignUp signUp = UserModule.getSignUpDetails(sc);
-                System.out.println("-----------------------------------------------------------");
+                System.out.println("-----------------------------------------------------------------");
                 performSignUp(con, signUp);
 
                 loginOrSignUp = 1;

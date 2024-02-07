@@ -56,4 +56,16 @@ public class AdminInterface {
 		System.out.println("--Email             : "+profile[2]);
 		System.out.println("-----------------------------------------------------------------");
 	}
+
+	public static void displayWatches(int id, String name, String brand, double price, String description, int number_of_stocks) {
+		System.out.println("******************************************************************");
+    	System.out.println(
+    			    "--ID                             : " + id
+    			+ "\n--Name                           : " + name
+    			+ "\n--Brand                          : " + brand
+    			+ "\n--Price                          : " + price
+    			+ "\n--Description                    : " + description
+    			+ "\n--Number of Stocks available     : " + number_of_stocks);
+    }
+
 }

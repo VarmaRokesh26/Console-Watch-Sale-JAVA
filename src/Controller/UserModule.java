@@ -204,7 +204,7 @@ public class UserModule {
 			{
 				System.out.print("Enter Quantity You required : ");
 				quantity = sc.nextInt();
-				System.out.println(id+" "+quantity);
+				// System.out.println(id+" "+quantity);
 				if (itemCart == null) {
 			        itemCart = new HashMap<>();
 			    }
