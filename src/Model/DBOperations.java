@@ -158,19 +158,19 @@ public class DBOperations {
 			System.out.println("******************************************************************");
 		}
 	}
-	
+
 	// Inserting Logic for new Admin
 	public static void insertAdminDetails(Connection connection, String userName, String mobileNumber, String mailid,
-	String passCode) throws SQLException {
+			String passCode) throws SQLException {
 		String insertQuery = "INSERT INTO admindetails (adminname, mobilenumber, mailid, password) VALUES (?, ?, ?, ?)";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
-			
+
 			preparedStatement.setString(1, userName);
 			preparedStatement.setString(2, mobileNumber);
 			preparedStatement.setString(3, mailid);
 			preparedStatement.setString(4, passCode);
-			
+
 			int rowsAffected = preparedStatement.executeUpdate();
 			if (rowsAffected >= 1) {
 				System.out.println("Admin Added succesfully!!");
@@ -194,20 +194,20 @@ public class DBOperations {
 
 			rowsAffected = preparedStatement.executeUpdate();
 			if (rowsAffected >= 1)
-			System.out.println("\n<--Signed Up succesfully!!-->");
+				System.out.println("\n<--Signed Up succesfully!!-->");
 		}
 	}
-	
+
 	// Display Watches if it is available
 	public static String selectAllWatchesIfAvailable(Connection connection) throws SQLException {
 		String selectQuery = "SELECT * FROM watches WHERE number_of_stocks > 0";
 		String res = null;
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
-		ResultSet resultSet = preparedStatement.executeQuery()) {
-			
+				ResultSet resultSet = preparedStatement.executeQuery()) {
+
 			while (resultSet.next()) {
-				
+
 				int id = resultSet.getInt("id");
 				String name = resultSet.getString("name");
 				String brand = resultSet.getString("brand");
@@ -226,7 +226,7 @@ public class DBOperations {
 	// Check Watch Id If it exists in the DB for user request
 	public static boolean checkWatchId(Connection connection, int id) throws SQLException {
 		String checkIdQuery = "SELECT 1 FROM watches WHERE id = ?";
-		
+
 		try (PreparedStatement preparedStatement = connection.prepareStatement(checkIdQuery)) {
 			preparedStatement.setInt(1, id);
 
@@ -243,9 +243,9 @@ public class DBOperations {
 	public static String specificWatchDetail(Connection connection, int id, int k) throws SQLException {
 		String res = "";
 		String specificWatchDetail = "SELECT * FROM watches WHERE id = " + id;
-		
+
 		try (PreparedStatement preparedStatement = connection.prepareStatement(specificWatchDetail);
-		ResultSet resultSet = preparedStatement.executeQuery()) {
+				ResultSet resultSet = preparedStatement.executeQuery()) {
 			while (resultSet.next()) {
 				String name = resultSet.getString("name");
 				String brand = resultSet.getString("brand");
@@ -262,12 +262,12 @@ public class DBOperations {
 		}
 		return res;
 	}
-	
+
 	// History of the User of Placing Orders
 	public static void showHistory(Connection connection) {
 		System.out.println("Your Shop History");
 	}
-	
+
 	// Display Cart
 	public static void showMyCart(Connection connection, Map<Integer, Integer> itemCart) throws SQLException {
 		for (int id : itemCart.keySet()) {

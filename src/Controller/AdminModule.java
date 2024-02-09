@@ -377,7 +377,7 @@ public class AdminModule {
 					System.out.println(e.toString());
 				}
 				System.out.println("Logging out. GoodBye!");
-				System.out.println("-----------------------------------------------------------");
+				System.out.println("-----------------------------------------------------------------");
 				MainModule.main(args);
 				break;
 			}

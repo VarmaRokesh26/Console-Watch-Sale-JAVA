@@ -35,16 +35,6 @@ public class UserInterface {
 				+ "\n---------> ");
 	}
 	
-//	public static void placeOrderRemoveFromCart() {
-//		System.out.println(
-//				  "\n  _________________________________"
-//				+ "\n|| Enter                           ||"
-//				+ "\n|| O -> Place Order                ||"
-//				+ "\n|| B -> Back                       ||"
-//				+ "\n||_________________________________||"
-//				+"\n--------->");
-//	}
-	
 	public static void profileAction() {
 		System.out.print(
 				    "  _________________________________"
@@ -70,13 +60,28 @@ public class UserInterface {
 	}
 	
 	public static void profile(String[] profile) {
+		String s = "                      ";
 		System.out.println("-----------------------------------------------------------");
 		System.out.println("--Name              : "+profile[0]);
 		System.out.println("--Mobile Number     : "+profile[1]);
 		System.out.println("--Email             : "+profile[2]);
-		System.out.println("--Address           : "+profile[3]);
+		displayAddress(profile[3], s);
 		System.out.println("-----------------------------------------------------------");
 	}
+	
+	public static void displayAddress(String s, String dec) {
+        String address[] = s.split(",");
+        System.out.print("--Address           : ");
+        for (int i = 0; i < address.length; i++) {
+            if (i != address.length - 1 && i!=0) {
+                System.out.print(dec + "" + address[i].trim() + ",\n");
+            }
+            else if(i==0) 
+                System.out.print(address[i].trim()+",\n");
+            else
+                System.out.print(dec + "" + address[i].trim()+"\n");
+        }
+    }
 	
 	public static void shoppingCart(String cart[]) {
 		double price = Double.parseDouble(cart[2]);

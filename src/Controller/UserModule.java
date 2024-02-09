@@ -27,7 +27,7 @@ public class UserModule {
 	public static Login getLoginDetails(Scanner sc) {
      
 		while (true) {
-			System.out.println("-----------------------------------------------------------");
+			System.out.println("-----------------------------------------------------------------");
 			System.out.print("Enter your EmailID : ");
 			
 			email = sc.nextLine();
