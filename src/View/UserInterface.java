@@ -61,12 +61,12 @@ public class UserInterface {
 	
 	public static void profile(String[] profile) {
 		String s = "                      ";
-		System.out.println("-----------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------------");
 		System.out.println("--Name              : "+profile[0]);
 		System.out.println("--Mobile Number     : "+profile[1]);
 		System.out.println("--Email             : "+profile[2]);
 		displayAddress(profile[3], s);
-		System.out.println("-----------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------------");
 	}
 	
 	public static void displayAddress(String s, String dec) {
@@ -79,7 +79,7 @@ public class UserInterface {
             else if(i==0) 
                 System.out.print(address[i].trim()+",\n");
             else
-                System.out.print(dec + "" + address[i].trim()+"\n");
+                System.out.print(dec + "" + address[i].trim()+".\n");
         }
     }
 	

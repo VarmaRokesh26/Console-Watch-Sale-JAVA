@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -271,19 +272,47 @@ public class DBOperations {
 	// Display Cart
 	public static void showMyCart(Connection connection, Map<Integer, Integer> itemCart) throws SQLException {
 		for (int id : itemCart.keySet()) {
-			String res = specificWatchDetail(connection, id, 1) + ("_" + itemCart.get(id) + "");
-			String res1[] = res.split("_");
-			// insertInCart(connection, res);
-			UserInterface.shoppingCart(res1);
+			String wd = specificWatchDetail(connection, id, 1) + "_" + itemCart.get(id);
+			String wd1[] = wd.split("_");
+			System.out.println(Arrays.toString(wd1));
+			if(insertInCart(connection, wd)) {
+				UserInterface.shoppingCart(wd1);
+			}
 		}
-
 	}
 
-	public static void insertInCart(Connection connection, String cartDetails) {
-		String cartQuery = "INSERT INTO cart (userid, cartid, cartDetails, id) VALUES (?, ?, ?, ?)";
+	public static boolean insertInCart(Connection connection, String cartDetails) throws SQLException {
+		String cartQuery = "INSERT INTO cart (userid, cartDetails, id) VALUES (?, ?, ?)";
 		String watch[] = res.split("_");
 		int watchId = Integer.parseInt(watch[0]);
+		String userIdString = userIdForCart(connection);
 
+		try (PreparedStatement preparedStatement = connection.prepareStatement(cartQuery)) {
+			preparedStatement.setString(1, userIdString);
+			preparedStatement.setString(2, cartDetails);
+			preparedStatement.setInt(3, watchId);
+
+			rowsAffected = preparedStatement.executeUpdate();
+			if(rowsAffected>0) 
+				return true;
+		}
+		return false;
+	}
+
+	public static String userIdForCart(Connection connection) throws SQLException {
+		String mailIdForCart = profile.get(0);
+		String userIdForCartString = "";
+		String query = "SELECT userid FROM userdetails WHERE emaild = ?";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+			preparedStatement.setString(1, mailIdForCart);
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				while (resultSet.next()) {
+					userIdForCartString = resultSet.getString("userid");
+				}
+			}
+		}
+		return userIdForCartString;
 	}
 
 	// Place Order By the User
