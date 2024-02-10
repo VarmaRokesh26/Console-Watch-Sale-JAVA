@@ -10,6 +10,7 @@ public class UserModule {
 
 	private static int id;
 	private static int quantity;
+	private static String payment;
 	
 	private static String name;
 	private static String mobileNumber;
@@ -17,7 +18,6 @@ public class UserModule {
 	private static String address;
 	private static String password;
 	private static String confirmPassword;
-	private static Map<Integer, Integer> itemCart;
 	
 	public static char getWhatToDo(Scanner sc) {
 		return sc.next().charAt(0);
@@ -179,6 +179,8 @@ public class UserModule {
 					if(DBOperations.checkWatchId(connection, id)) {
 						try {
 							DBOperations.specificWatchDetail(connection, id, 0);
+							System.out.print("Enter Quantity You required : ");
+							quantity = sc.nextInt();
 							while(true) {					
 								UserInterface.orderOrCart();
 								operation = UserModule.getWhatToDo(sc);
@@ -198,12 +200,23 @@ public class UserModule {
 				}
 				break;
 			}
+
+			case 'N':
+			case 'n':
+			{
+				try {
+					System.out.print("Payment Method Cash On Deliviry Or Online Payment : ");
+					payment = sc.next();
+					DBOperations.placeOrder(connection);
+				} catch(Exception e) {
+					System.out.println(e.toString());
+				}
+				break;
+			}
 			
 			case 'A':
 			case 'a':
 			{
-				System.out.print("Enter Quantity You required : ");
-				quantity = sc.nextInt();
 				try {
 					String wd = DBOperations.specificWatchDetail(connection, id, 1);
 					

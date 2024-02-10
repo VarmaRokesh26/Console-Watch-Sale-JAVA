@@ -28,8 +28,8 @@ public class UserInterface {
 				+ "\n|| Enter                           ||"
 				+ "\n|| D -> Display Watches            ||"
 				+ "\n|| O -> Place Order                ||"
-				+ "\n|| H -> History of watches         ||"
-				+ "\n|| S -> View Cart                  ||"
+				+ "\n|| H -> History of Orders          ||"
+				+ "\n|| C -> View Cart                  ||"
 				+ "\n|| V -> View Profile               ||"
 				+ "\n||_________________________________||"
 				+ "\n---------> ");
@@ -52,7 +52,7 @@ public class UserInterface {
 		System.out.print(
 				    "  _________________________________"
 			    + "\n|| Enter                           ||"
-			    + "\n|| O -> Place Order                ||"
+			    + "\n|| N -> Buy Now                    ||"
 			    + "\n|| A -> Add to Cart                ||"
 			    + "\n|| B -> Back                       ||"
 			    + "\n||_________________________________||"

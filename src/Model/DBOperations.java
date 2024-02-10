@@ -5,12 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import View.AdminInterface;
-import View.UserInterface;
 
 public class DBOperations {
 	public static String res;
@@ -307,7 +304,7 @@ public class DBOperations {
 	}
 
 	// Place Order By the User
-	public static void placeOrder(Connection connection) {
+	public static void placeOrder(Connection connection) throws SQLException{
 		System.out.println("Place Order for your sake ");
 
 	}
