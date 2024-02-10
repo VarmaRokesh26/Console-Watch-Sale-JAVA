@@ -119,7 +119,177 @@ public class UserModule {
         return new SignUp(name, mobileNumber, email, address, confirmPassword);
     }
 	
-	public static Profile fetchDetails(Scanner sc) {
+	// Perform User task
+	public static void performUserTask(Connection connection, String[] args, Scanner sc, char operation) {
+		switch(operation) {
+			case 'D':
+			case 'd':
+			{
+				displayWatches(connection);
+				break;
+			}
+			
+			case 'O':
+			case 'o':
+			{
+				buyItem(connection, args, sc, operation);
+				break;
+			}
+
+			case 'N':
+			case 'n':
+			{
+				try {
+					System.out.print("Payment Method Cash On Deliviry Or Online Payment : ");
+					payment = sc.next();
+					DBOperations.placeOrder(connection);
+				} catch(Exception e) {
+					System.out.println(e.toString());
+				}
+				break;
+			}
+			
+			case 'A':
+			case 'a':
+			{
+				adddToCart(connection);
+				break;
+			}
+			
+			case 'H':
+			case 'h':
+			{
+				history(connection);
+				break;
+			}
+			case 'C':
+			case 'c':
+			{
+				viewCart(connection);
+				break;
+			}
+			
+			case 'V':
+			case 'v':
+			{
+				profileView(connection, args, sc, operation);
+				break;
+			}
+			
+			case 'E':
+			case 'e':
+			{
+				editProfile(connection, sc);
+				break;
+			}
+			
+			case 'P':
+			case 'p':
+			{
+				passwordChange(connection, sc);
+				break;
+			}
+			
+			case 'B':
+			case 'b':
+			{
+				UserInterface.userInterface(connection, args, sc, 1);
+			}
+			
+			case 'L':
+			case 'l':
+			{
+				logOut(connection, args);
+				break;
+			}
+		}
+	}
+
+	// Method for Display Watches
+	public static void displayWatches(Connection connection) {
+		try {					
+			DBOperations.selectAllWatchesIfAvailable(connection);
+		} catch(Exception e) {
+			System.out.println(e.toString());
+		}
+	}
+
+	// Method for buy item
+	public static void buyItem(Connection connection, String[] args, Scanner sc, char operation) {
+		System.out.print("Enter the item Id to Display Seperatly : ");
+				id = sc.nextInt();
+				try {
+					if(DBOperations.checkWatchId(connection, id)) {
+						try {
+							DBOperations.specificWatchDetail(connection, id, 0);
+							System.out.print("Enter Quantity You required : ");
+							quantity = sc.nextInt();
+							while(true) {					
+								UserInterface.orderOrCart();
+								operation = UserModule.getWhatToDo(sc);
+								performUserTask(connection, args, sc, operation);
+							}
+						} catch(Exception e) {
+							System.out.println(e.toString());
+						}
+					}
+					else {
+						System.out.println("No item in the list");
+					}
+				} catch(Exception e) {
+					System.out.println(e.toString());
+				}
+	}
+
+	// Method for add to cart
+	public static void adddToCart(Connection connection) {
+		try {
+			String wd = DBOperations.specificWatchDetail(connection, id, 1);
+			
+			String wd1[] = wd.split("_");
+			wd = wd1[0]+"_"+wd1[1]+"_"+(Double.parseDouble(wd1[2])*quantity)+"_"+quantity;
+			wd1 = wd.split("_");
+			System.out.println(Arrays.toString(wd1));
+			if(DBOperations.insertInCart(connection, id, wd)) {
+				UserInterface.shoppingCart(wd1);
+			}
+		} catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		System.out.println("Item added to the cart Succesfully");
+	} 
+	// Method for display user order history
+	public static void history(Connection connection) {
+		try {
+			DBOperations.showHistory(connection);
+		} catch(Exception e) {
+			System.out.println(e.toString());
+		}
+	}
+	// Method for Logout
+	public static void logOut(Connection connection, String[] args) {
+		try {
+			DBOperations.clearProfile(connection);
+		} catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		System.out.println("Logging out. GoodBye!");
+		System.out.println("-----------------------------------------------------------");
+		MainModule.main(args);
+	}
+
+	// Method for View Cart 
+	public static void viewCart(Connection connection) {
+		// try {
+		// 	DBOperations.showMyCart(connection, itemCart);
+		// } catch(Exception e) {
+		// 	System.out.println(e.toString());
+		// }
+		System.out.println("Displaying Cart");
+	}
+	// Method to Edit Profle
+	public static void editProfile(Connection connection, Scanner sc) {
+
 		while(true) {
 			System.out.print("Enter Your Name : ");
 			name = sc.next().trim() + sc.nextLine();
@@ -154,198 +324,66 @@ public class UserModule {
 			else
 				System.out.println("Address cannot be Empty");
 		}
-		return new Profile(name, mobileNumber, email, address);
-	}
-	
-	public static void performUserTask(Connection connection, String[] args, Scanner sc, char operation) {
-		switch(operation) {
-			case 'D':
-			case 'd':
-			{
-				try {					
-					DBOperations.selectAllWatchesIfAvailable(connection);
-				} catch(Exception e) {
-					System.out.println(e.toString());
-				}
-				break;
-			}
-			
-			case 'O':
-			case 'o':
-			{
-				System.out.print("Enter the item Id to Display Seperatly : ");
-				id = sc.nextInt();
-				try {
-					if(DBOperations.checkWatchId(connection, id)) {
-						try {
-							DBOperations.specificWatchDetail(connection, id, 0);
-							System.out.print("Enter Quantity You required : ");
-							quantity = sc.nextInt();
-							while(true) {					
-								UserInterface.orderOrCart();
-								operation = UserModule.getWhatToDo(sc);
-								performUserTask(connection, args, sc, operation);
-							}
-							
-						} catch(Exception e) {
-							System.out.println(e.toString());
-						}
-						break;
-					}
-					else {
-						System.out.println("No item in the list");
-					}
-				} catch(Exception e) {
-					System.out.println(e.toString());
-				}
-				break;
-			}
 
-			case 'N':
-			case 'n':
-			{
-				try {
-					System.out.print("Payment Method Cash On Deliviry Or Online Payment : ");
-					payment = sc.next();
-					DBOperations.placeOrder(connection);
-				} catch(Exception e) {
-					System.out.println(e.toString());
-				}
-				break;
+		Profile profile = new Profile(name, mobileNumber, email, address);
+		try {
+			DBOperations.updateProfile(connection, profile.getName(), profile.getMobileNumber(), profile.getEmailId(), profile.getAddress());
+		} catch(Exception e) {
+			System.out.println(e.toString());
+		}
+	}
+
+	public static void profileView(Connection connection, String[] args, Scanner sc, char operation) {
+		try {
+			String profile[] = DBOperations.displayProfile(connection).split("_");
+			UserInterface.profile(profile);
+			while(true) {
+				UserInterface.profileAction();
+				operation = getWhatToDo(sc);
+				performUserTask(connection, args, sc, operation);
 			}
-			
-			case 'A':
-			case 'a':
-			{
-				try {
-					String wd = DBOperations.specificWatchDetail(connection, id, 1);
-					
-					String wd1[] = wd.split("_");
-					wd = wd1[0]+"_"+wd1[1]+"_"+(Double.parseDouble(wd1[2])*quantity)+"_"+quantity;
-					wd1 = wd.split("_");
-					System.out.println(Arrays.toString(wd1));
-					if(DBOperations.insertInCart(connection, id, wd)) {
-						UserInterface.shoppingCart(wd1);
-					}
-				} catch(Exception e) {
-					System.out.println(e.toString());
-				}
-				System.out.println("Item added to the cart Succesfully");
-				break;
-			}
-			
-			case 'H':
-			case 'h':
-			{
-				try {
-					DBOperations.showHistory(connection);
-				} catch(Exception e) {
-					System.out.println(e.toString());
-				}
-				break;
-			}
-			case 'S':
-			case 's':
-			{
-				// try {
-				// 	DBOperations.showMyCart(connection, itemCart);
-				// } catch(Exception e) {
-				// 	System.out.println(e.toString());
-				// }
-				break;
-			}
-			
-			case 'V':
-			case 'v':
-			{
-				try {
-					String profile[] = DBOperations.displayProfile(connection).split("_");
-					UserInterface.profile(profile);
+		} catch(Exception e) {
+			System.out.println(e.toString());
+		}
+	}
+
+	public static void passwordChange(Connection connection, Scanner sc){
+		while(true) {
+			System.out.print("Enter your currrent password : ");
+			String currentPassword = sc.next().trim();
+			sc.nextLine();
+			try {
+				if(DBOperations.checkPassword(connection, currentPassword)) {
 					while(true) {
-						UserInterface.profileAction();
-						operation = UserModule.getWhatToDo(sc);
-						performUserTask(connection, args, sc, operation);
-					}
-				} catch(Exception e) {
-					System.out.println(e.toString());
-				}
-				break;
-			}
-			
-			case 'E':
-			case 'e':
-			{
-				Profile profile = UserModule.fetchDetails(sc);
-				try {
-					DBOperations.updateProfile(connection, profile.getName(), profile.getMobileNumber(), profile.getEmailId(), profile.getAddress());
-				} catch(Exception e) {
-					System.out.println(e.toString());
-				}
-				break;
-			}
-			
-			case 'P':
-			case 'p':
-			{
-				while(true) {
-					System.out.print("Enter your currrent password : ");
-					String currentPassword = sc.next().trim();
-					sc.nextLine();
-					try {
-						if(DBOperations.checkPassword(connection, currentPassword)) {
+						System.out.print("Enter new Password : ");
+						String newPassword = sc.next();
+						sc.nextLine();
+						if(!newPassword.equals(currentPassword) && Validation.validatePassword(newPassword)) {								
 							while(true) {
-								System.out.print("Enter new Password : ");
-								String newPassword = sc.next();
-								sc.nextLine();
-								if(!newPassword.equals(currentPassword) && Validation.validatePassword(newPassword)) {								
-									while(true) {
-										System.out.print("Re-enter new Password : ");
-										String reenterPassword = sc.nextLine();
-										if(newPassword.equals(reenterPassword)) {
-											try {
-												DBOperations.changePassword(connection,  newPassword);
-											} catch(Exception e) {
-												System.out.println(e.toString());
-											}
-											break;
-										} else {
-											System.out.println("New Password and Confirm Password whuld be same!");
-										}
+								System.out.print("Re-enter new Password : ");
+								String reenterPassword = sc.nextLine();
+								if(newPassword.equals(reenterPassword)) {
+									try {
+										DBOperations.changePassword(connection,  newPassword);
+									} catch(Exception e) {
+										System.out.println(e.toString());
 									}
 									break;
 								} else {
-									System.out.println("Current Password should not equal to New Password");
+									System.out.println("New Password and Confirm Password whuld be same!");
 								}
 							}
 							break;
 						} else {
-							System.out.println("Enter correct password");
+							System.out.println("Current Password should not equal to New Password");
 						}
-					} catch(Exception e) {
-						System.out.println(e.toString());
 					}
+					break;
+				} else {
+					System.out.println("Enter correct password");
 				}
-				break;
-			}
-			
-			case 'B':
-			case 'b':
-			{
-				UserInterface.userInterface(connection, args, sc, 1);
-			}
-			
-			case 'L':
-			case 'l':
-			{
-				try {
-					DBOperations.clearProfile(connection);
-				} catch(Exception e) {
-					System.out.println(e.toString());
-				}
-				System.out.println("Logging out. GoodBye!");
-				System.out.println("-----------------------------------------------------------");
-				MainModule.main(args);
-				break;
+			} catch(Exception e) {
+				System.out.println(e.toString());
 			}
 		}
 	}
