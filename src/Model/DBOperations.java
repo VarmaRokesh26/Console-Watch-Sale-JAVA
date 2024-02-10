@@ -270,27 +270,18 @@ public class DBOperations {
 	}
 
 	// Display Cart
-	public static void showMyCart(Connection connection, Map<Integer, Integer> itemCart) throws SQLException {
-		for (int id : itemCart.keySet()) {
-			String wd = specificWatchDetail(connection, id, 1) + "_" + itemCart.get(id);
-			String wd1[] = wd.split("_");
-			System.out.println(Arrays.toString(wd1));
-			if(insertInCart(connection, wd)) {
-				UserInterface.shoppingCart(wd1);
-			}
-		}
+	public static void showMyCart(Connection connection) throws SQLException {
+		
 	}
 
-	public static boolean insertInCart(Connection connection, String cartDetails) throws SQLException {
+	public static boolean insertInCart(Connection connection, int watchIdForCart, String cartDetails) throws SQLException {
 		String cartQuery = "INSERT INTO cart (userid, cartDetails, id) VALUES (?, ?, ?)";
-		String watch[] = res.split("_");
-		int watchId = Integer.parseInt(watch[0]);
 		String userIdString = userIdForCart(connection);
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(cartQuery)) {
 			preparedStatement.setString(1, userIdString);
 			preparedStatement.setString(2, cartDetails);
-			preparedStatement.setInt(3, watchId);
+			preparedStatement.setInt(3, watchIdForCart);
 
 			rowsAffected = preparedStatement.executeUpdate();
 			if(rowsAffected>0) 
@@ -302,7 +293,7 @@ public class DBOperations {
 	public static String userIdForCart(Connection connection) throws SQLException {
 		String mailIdForCart = profile.get(0);
 		String userIdForCartString = "";
-		String query = "SELECT userid FROM userdetails WHERE emaild = ?";
+		String query = "SELECT userid FROM userdetails WHERE emailid = ?";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 			preparedStatement.setString(1, mailIdForCart);

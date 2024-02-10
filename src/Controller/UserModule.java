@@ -204,11 +204,19 @@ public class UserModule {
 			{
 				System.out.print("Enter Quantity You required : ");
 				quantity = sc.nextInt();
-				// System.out.println(id+" "+quantity);
-				if (itemCart == null) {
-			        itemCart = new HashMap<>();
-			    }
-				itemCart.put(id, quantity);
+				try {
+					String wd = DBOperations.specificWatchDetail(connection, id, 1);
+					
+					String wd1[] = wd.split("_");
+					wd = wd1[0]+"_"+wd1[1]+"_"+(Double.parseDouble(wd1[2])*quantity)+"_"+quantity;
+					wd1 = wd.split("_");
+					System.out.println(Arrays.toString(wd1));
+					if(DBOperations.insertInCart(connection, id, wd)) {
+						UserInterface.shoppingCart(wd1);
+					}
+				} catch(Exception e) {
+					System.out.println(e.toString());
+				}
 				System.out.println("Item added to the cart Succesfully");
 				break;
 			}
@@ -223,14 +231,14 @@ public class UserModule {
 				}
 				break;
 			}
-			case 'C':
-			case 'c':
+			case 'S':
+			case 's':
 			{
-				try {
-					DBOperations.showMyCart(connection, itemCart);
-				} catch(Exception e) {
-					System.out.println(e.toString());
-				}
+				// try {
+				// 	DBOperations.showMyCart(connection, itemCart);
+				// } catch(Exception e) {
+				// 	System.out.println(e.toString());
+				// }
 				break;
 			}
 			

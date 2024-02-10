@@ -29,7 +29,7 @@ public class UserInterface {
 				+ "\n|| D -> Display Watches            ||"
 				+ "\n|| O -> Place Order                ||"
 				+ "\n|| H -> History of watches         ||"
-				+ "\n|| C -> View Cart                  ||"
+				+ "\n|| S -> View Cart                  ||"
 				+ "\n|| V -> View Profile               ||"
 				+ "\n||_________________________________||"
 				+ "\n---------> ");
@@ -86,7 +86,17 @@ public class UserInterface {
 	public static void shoppingCart(String cart[]) {
 		double price = Double.parseDouble(cart[2]);
 		int quantity = Integer.parseInt(cart[3]);
-		System.out.println("**************************************************************");
 		System.out.println("Id : " + cart[0] +"|| Series Name : "+cart[1]+"|| Quantity : "+ quantity +"||Price : "+price*quantity);
+	}
+
+	public static void cartWork() {
+		System.out.print(
+				    "  _________________________________"
+			    + "\n|| Enter                           ||"
+			    + "\n|| R -> Remove an Item in Cart     ||"
+			    + "\n|| D -> Delete all item in Cart    ||"
+			    + "\n|| B -> Back                       ||"
+			    + "\n||_________________________________||"
+			    + "\n---------> ");
 	}
 }
