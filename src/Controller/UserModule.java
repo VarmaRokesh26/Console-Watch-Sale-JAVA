@@ -272,12 +272,12 @@ public class UserModule {
 
 	// Method for View Cart
 	public static void viewCart(Connection connection) {
-		// try {
-		// DBOperations.showMyCart(connection, itemCart);
-		// } catch(Exception e) {
-		// System.out.println(e.toString());
-		// }
-		System.out.println("Displaying Cart");
+		try {
+			DBOperations.showMyCart(connection);
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		System.out.println("____________________________________________");
 	}
 
 	// Method to Edit Profle

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import View.AdminInterface;
+import View.UserInterface;
 
 public class DBOperations {
 	public static String res;
@@ -271,8 +272,16 @@ public class DBOperations {
 
 	// Display Cart
 	public static void showMyCart(Connection connection) throws SQLException {
-		// Can View Cart
-		System.out.println("Cart is Displayed");
+		String cartViewQuery = "SELECT * FROM cart WHERE userid = ?";
+		userIdString = userIdForCartOrOrder(connection);
+		try (PreparedStatement cartViewPreparedStatement = connection.prepareStatement(cartViewQuery)) {
+			cartViewPreparedStatement.setString(1, userIdString);
+			try (ResultSet cartResultSet = cartViewPreparedStatement.executeQuery()) {
+				while (cartResultSet.next()) {
+					UserInterface.shoppingCart(cartResultSet.getString("cartDetails"));
+				}
+			}
+		}
 	}
 
 	public static boolean insertInCart(Connection connection, int watchIdForCart, String cartDetails)
@@ -312,7 +321,7 @@ public class DBOperations {
 			throws SQLException {
 		userIdString = userIdForCartOrOrder(connection);
 		status = "Processing";
-		String orderQuery = "INSERT INTO orders(userid, watchid, quantity, totalamount, payment, status) VALUES (?, ?, ?, ?, ?, ?)";
+		String orderQuery = "INSERT INTO orders(userid, watchid, quantity, totalamount, paymentMode, status) VALUES (?, ?, ?, ?, ?, ?)";
 		String deliveryDateQuery = "UPDATE orders SET delivery_date = DATE_ADD(orderdate, INTERVAL 7 DAY) WHERE orderid = ?";
 		String stockDecrease = "UPDATE watches SET number_of_stocks = number_of_stocks - ? WHERE id = ?";
 

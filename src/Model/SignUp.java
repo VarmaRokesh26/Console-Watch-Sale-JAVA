@@ -28,8 +28,9 @@ public class SignUp {
     }
 
     public String getAddress() {
-    	return address;
+        return address;
     }
+
     public String getPassword() {
         return password;
     }

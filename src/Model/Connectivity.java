@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class Connectivity {
 	private static Connection connection = null;
-	
-	static {		
+
+	static {
 		String URL = "jdbc:mysql://localhost:3306/onlinewatchStore";
 		String USER = "root";
 		String PASSWORD = "Rokeshv@rm@2603";
@@ -15,9 +15,9 @@ public class Connectivity {
 			connection = DriverManager.getConnection(URL, USER, PASSWORD);
 		} catch (SQLException e) {
 			System.out.println("Error establishing database connection: " + e.getMessage());
-		} 
+		}
 	}
-	
+
 	public static Connection connectivity() {
 		return connection;
 	}
