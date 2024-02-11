@@ -13,6 +13,8 @@ public class DBOperations {
 	public static String res;
 	public static int rowsAffected;
 	public static List<String> profile = new ArrayList<>();
+	public static String userIdString;
+	public static String status;
 
 	// Check Admin Details for Login
 	public static boolean checkAdminDetails(Connection connection, String email, String password) throws SQLException {
@@ -250,6 +252,7 @@ public class DBOperations {
 				double price = resultSet.getDouble("price");
 				String description = resultSet.getString("description");
 				int number_of_stocks = resultSet.getInt("number_of_stocks");
+
 				if (number_of_stocks != 0 && k == 0) {
 					AdminInterface.displayWatches(id, name, brand, price, description, number_of_stocks);
 					System.out.println("******************************************************************");
@@ -268,12 +271,14 @@ public class DBOperations {
 
 	// Display Cart
 	public static void showMyCart(Connection connection) throws SQLException {
-		
+		// Can View Cart
+		System.out.println("Cart is Displayed");
 	}
 
-	public static boolean insertInCart(Connection connection, int watchIdForCart, String cartDetails) throws SQLException {
+	public static boolean insertInCart(Connection connection, int watchIdForCart, String cartDetails)
+			throws SQLException {
 		String cartQuery = "INSERT INTO cart (userid, cartDetails, id) VALUES (?, ?, ?)";
-		String userIdString = userIdForCart(connection);
+		userIdString = userIdForCartOrOrder(connection);
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(cartQuery)) {
 			preparedStatement.setString(1, userIdString);
@@ -281,32 +286,72 @@ public class DBOperations {
 			preparedStatement.setInt(3, watchIdForCart);
 
 			rowsAffected = preparedStatement.executeUpdate();
-			if(rowsAffected>0) 
+			if (rowsAffected > 0)
 				return true;
 		}
 		return false;
 	}
 
-	public static String userIdForCart(Connection connection) throws SQLException {
+	public static String userIdForCartOrOrder(Connection connection) throws SQLException {
 		String mailIdForCart = profile.get(0);
-		String userIdForCartString = "";
 		String query = "SELECT userid FROM userdetails WHERE emailid = ?";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 			preparedStatement.setString(1, mailIdForCart);
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				while (resultSet.next()) {
-					userIdForCartString = resultSet.getString("userid");
+					userIdString = resultSet.getString("userid");
 				}
 			}
 		}
-		return userIdForCartString;
+		return userIdString;
 	}
 
 	// Place Order By the User
-	public static void placeOrder(Connection connection) throws SQLException{
-		System.out.println("Place Order for your sake ");
+	public static void placeOrder(Connection connection, int wid, int quantity, double price, String payment)
+			throws SQLException {
+		userIdString = userIdForCartOrOrder(connection);
+		status = "Processing";
+		String orderQuery = "INSERT INTO orders(userid, watchid, quantity, totalamount, payment, status) VALUES (?, ?, ?, ?, ?, ?)";
+		String deliveryDateQuery = "UPDATE orders SET delivery_date = DATE_ADD(orderdate, INTERVAL 7 DAY) WHERE orderid = ?";
+		String stockDecrease = "UPDATE watches SET number_of_stocks = number_of_stocks - ? WHERE id = ?";
 
+		try (PreparedStatement orderStatement = connection.prepareStatement(orderQuery)) {
+
+			orderStatement.setString(1, userIdString);
+			orderStatement.setInt(2, wid);
+			orderStatement.setInt(3, quantity);
+			orderStatement.setDouble(4, (price * quantity));
+			orderStatement.setString(5, payment);
+			orderStatement.setString(6, status);
+
+			int orderId = 0;
+			int affectedRows = orderStatement.executeUpdate();
+			if (affectedRows != 0) {
+				System.out.println("Order Placed Successfull!!");
+				String orderIdQuery = "SELECT orderid FROM orders WHERE userid = ? AND watchid = ?";
+				try (PreparedStatement orderIdSmt = connection.prepareStatement(orderIdQuery)) {
+					orderIdSmt.setString(1, userIdString);
+					orderIdSmt.setInt(2, wid);
+					try (ResultSet resultSet = orderIdSmt.executeQuery()) {
+						while (resultSet.next()) {
+							orderId = resultSet.getInt("orderid");
+						}
+					}
+				}
+			}
+
+			try (PreparedStatement deliveryPreparedStatement = connection.prepareStatement(deliveryDateQuery)) {
+				deliveryPreparedStatement.setInt(1, orderId);
+				deliveryPreparedStatement.executeUpdate();
+			}
+
+			try (PreparedStatement stockPreparedStatement = connection.prepareStatement(stockDecrease)) {
+				stockPreparedStatement.setInt(1, quantity);
+				stockPreparedStatement.setInt(2, wid);
+				stockPreparedStatement.executeUpdate();
+			}
+		}
 	}
 
 	// Profile Display for Both Admin and User
@@ -315,7 +360,7 @@ public class DBOperations {
 		String profEmail = profile.get(0);
 		String profPass = profile.get(1);
 		String profRole = profile.get(2);
-		String query;
+		String query = "";
 
 		if (profRole.equals("admindetails")) {
 			query = "SELECT * FROM admindetails WHERE mailid = ? AND password = ?";
