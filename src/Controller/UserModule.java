@@ -212,7 +212,7 @@ public class UserModule {
 			if (DBOperations.checkWatchId(connection, id)) {
 				try {
 					DBOperations.specificWatchDetail(connection, id, 0);
-					System.out.print("Enter Quantity You required : ");
+					System.out.print("Enter Quantity You required            : ");
 					quantity = sc.nextInt();
 					while (true) {
 						UserInterface.orderOrCart();
@@ -284,7 +284,7 @@ public class UserModule {
 	public static void editProfile(Connection connection, Scanner sc) {
 
 		while (true) {
-			System.out.print("Enter Your Name : ");
+			System.out.print("Enter Your Name     : ");
 			name = sc.next().trim() + sc.nextLine();
 			if (Validation.validateName(name))
 				break;
@@ -310,7 +310,7 @@ public class UserModule {
 		}
 
 		while (true) {
-			System.out.print("Enter your Location :");
+			System.out.print("Enter your Location : ");
 			address = sc.nextLine();
 			if (!address.isEmpty())
 				break;
@@ -349,12 +349,12 @@ public class UserModule {
 			try {
 				if (DBOperations.checkPassword(connection, currentPassword)) {
 					while (true) {
-						System.out.print("Enter new Password : ");
+						System.out.print("Enter new Password           : ");
 						String newPassword = sc.next();
 						sc.nextLine();
 						if (!newPassword.equals(currentPassword) && Validation.validatePassword(newPassword)) {
 							while (true) {
-								System.out.print("Re-enter new Password : ");
+								System.out.print("Re-enter new Password        : ");
 								String reenterPassword = sc.nextLine();
 								if (newPassword.equals(reenterPassword)) {
 									try {
