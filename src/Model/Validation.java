@@ -21,7 +21,7 @@ public class Validation {
 
 	public static boolean validateMobileNumber(String mobileNumber) {
 
-		String mobileNumberRegex = "^[6789]\\d{9}$";
+		String mobileNumberRegex = "^[9678]\\d{9}$";
 		Pattern pattern = Pattern.compile(mobileNumberRegex);
 		Matcher matcher = pattern.matcher(mobileNumber);
 
@@ -64,14 +64,5 @@ public class Validation {
 		isPasswordValid = hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
 
 		return isPasswordValid;
-	}
-
-	public static boolean isValidLicensePlate(String license_plate) {
-
-		String pattern = "^TN-[0-9]{2}-[A-Z]{2}-[0-9]{4}$";
-		Pattern licensePlatePattern = Pattern.compile(pattern);
-		Matcher matcher = licensePlatePattern.matcher(license_plate);
-
-		return matcher.matches();
 	}
 }

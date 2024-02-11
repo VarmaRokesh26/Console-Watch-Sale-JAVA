@@ -54,6 +54,7 @@ public class AdminInterface {
 		System.out.println("--Name              : " + profile[0]);
 		System.out.println("--Mobile Number     : " + profile[1]);
 		System.out.println("--Email             : " + profile[2]);
+		System.out.println("--Role              : " + profile[3]);
 		System.out.println("-----------------------------------------------------------------");
 	}
 

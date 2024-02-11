@@ -7,18 +7,30 @@ import View.AdminInterface;
 import View.MainModule;
 
 public class AdminModule {
-	public static String sname;
-	public static String brand;
-	public static double price;
-	public static String description;
-	public static int number_of_stocks;
 
+	// Variables for Watch Details 
+	private static String sname;
+	private static String brand;
+	private static double price;
+	private static String description;
+	private static int number_of_stocks;
+
+	// Variables for Dealer Details
+	private static String dealerName;
+    private static String dealerLocation;
+    private static String contactNumber;
+
+	// Variables for Admin Details
 	private static String name;
 	private static String mobileNumber;
 	private static String mailId;
 	private static String password;
 	private static String confirmPassword;
-	private static String address = "Nil";
+	private static String adminRole;
+
+	// variables for CourierService Details
+	private static String courierServiceName;
+    private static String courierServiceNumber;
 
 	private static int wId;
 
@@ -160,7 +172,7 @@ public class AdminModule {
 
 			case 'A':
 			case 'a': {
-				addNewAdmin(con, sc);
+				addRespectiveDetails(con, sc);
 				break;
 			}
 
@@ -192,6 +204,7 @@ public class AdminModule {
 				logOut(con, args);
 				break;
 			}
+
 		}
 	}
 
@@ -255,10 +268,31 @@ public class AdminModule {
 		}
 	}
 
+	public static void addRespectiveDetails(Connection con, Scanner sc) {
+		System.out.print("\nEnter \n1 -> Add new Admin \n2 -> Add Dealer \n3 -> Add Courier Service : ");
+		while(true) {
+			int add = sc.nextInt();
+			if(add==1) {
+				addNewAdmin(con, sc);
+				break;
+			}
+			else if(add==2) {
+				addNewDealer(con, sc);
+				break;
+			}
+			else if(add==3) {
+				addNewCourierService(con, sc);
+				break;
+			}
+			else 
+				System.out.println("Enter a valid Number : ");
+		}
+	}
+
 	public static void addNewAdmin(Connection con, Scanner sc) {
 
 		while (true) {
-			System.out.print("Name                : ");
+			System.out.print("Name                 : ");
 			name = sc.next() + sc.nextLine();
 			if (Validation.validateName(name))
 				break;
@@ -267,7 +301,7 @@ public class AdminModule {
 		}
 
 		while (true) {
-			System.out.print("Enter Mobile Number : ");
+			System.out.print("Enter Mobile Number  : ");
 			mobileNumber = sc.nextLine();
 			if (Validation.validateMobileNumber(mobileNumber))
 				break;
@@ -276,7 +310,7 @@ public class AdminModule {
 		}
 
 		while (true) {
-			System.out.print("Enter Email Address : ");
+			System.out.print("Enter Email Address  : ");
 			mailId = sc.nextLine();
 			if (Validation.validateEmail(mailId))
 				break;
@@ -284,21 +318,24 @@ public class AdminModule {
 				System.out.println("<---Enter a valid Email--->");
 		}
 
+		while(true) {
+			System.out.println("||Role should only be \"Executive\" and \"Manager\"||");
+			System.out.print("Enter the Admin Role : ");
+			adminRole = sc.nextLine().toLowerCase();
+			if(adminRole.equals("executive") || adminRole.equals("manager"))
+				break;
+			else 
+				System.out.println("Other emplyees cannoot have account in admin Dashboard");
+		}
+
 		while (true) {
-			System.out.print("Enter Password      : ");
+			System.out.print("Enter Password       : ");
 			password = sc.nextLine();
 			if (Validation.validatePassword(password)) {
 				while (true) {
 					System.out.print("Re-enter Password   : ");
 					confirmPassword = sc.nextLine();
 					if (password.equals(confirmPassword)) {
-						if (con != null) {
-							try {
-								DBOperations.insertAdminDetails(con, name, mobileNumber, mailId, confirmPassword);
-							} catch (Exception e) {
-								System.out.println(e.toString());
-							}
-						}
 						break;
 					}
 				}
@@ -306,6 +343,81 @@ public class AdminModule {
 			} else
 				System.out.println(
 						"<---Password should contain at least 8 characters, 1 UpperCase, 1 LowerCase, 1 Numbers, 1 SpecialCharacters--->");
+
+		}
+		Admin admin = new Admin(name, mobileNumber, mailId, adminRole, confirmPassword);
+		if(con!=null) {
+			try {
+				DBOperations.insertAdminDetails(con, admin.getAdminName(), admin.getAdminMobileNumber(), admin.getAdminMailid(), admin.getAdminRole(), admin.getPassword());
+			} catch (Exception e) {
+				System.out.println(e.toString());
+			}
+		}
+	}
+
+	public static void addNewDealer(Connection connection, Scanner sc) {
+		
+		while(true) {
+			System.out.print("Enter Dealer Name           : ");
+			dealerName = sc.next()+sc.nextLine();
+			if(Validation.validateName(dealerName))
+				break;
+			else 
+				System.out.println("Enter a valid Dealer Name");
+		}
+			
+		while (true) {
+			System.out.print("Enter Dealer Contact Number : ");
+			contactNumber = sc.nextLine();
+			if(Validation.validateMobileNumber(contactNumber))
+				break;
+			else 
+			System.out.println("<---Enter a valid mobile Number--->");
+		}
+		
+		while(true) {
+			System.out.print("Enter Dealer's Location     : ");
+			dealerLocation = sc.nextLine();
+			if(!dealerLocation.isEmpty())
+			break;
+			else	
+			System.out.println("Location of Dealer cannot be Empty");
+		}
+		
+		Dealer dealer = new Dealer(dealerName, dealerLocation, contactNumber);
+		
+		try {
+			DBOperations.insertNewDealerDetails(connection, dealer.getDealerName(), dealer.getDealerLocation(), dealer.getContactNumer());
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+	}
+	
+	public static void addNewCourierService(Connection connection, Scanner sc) {
+		while (true) {
+			System.out.print("Enter Courier Service Name  :");
+			courierServiceName = sc.nextLine();
+			if(Validation.validateName(courierServiceName))
+			break;
+			else	
+			System.out.println("Enter a valid Name");
+		}
+		
+		while(true) {
+			System.out.print("Enter Contact Number        : ");
+			courierServiceNumber = sc.nextLine();
+			if(Validation.validateMobileNumber(courierServiceNumber))
+				break;
+			else 
+				System.out.println("Enter a valid Contact Number");
+		}
+
+		CourierService courierService = new CourierService(courierServiceName, courierServiceNumber);
+
+		try {
+			DBOperations.insertNewCourierServiceDetails(connection, courierService.getCourierServiceName(), courierService.getCourierServiceNumber());
+		} catch(Exception e) {
+			System.out.println(e.toString());
 		}
 	}
 
@@ -352,7 +464,7 @@ public class AdminModule {
 				System.out.println("Enter a valid emailId");
 		}
 		try {
-			DBOperations.updateProfile(con, name, mobileNumber, mailId, address);
+			DBOperations.updateProfile(con, name, mobileNumber, mailId, "");
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}

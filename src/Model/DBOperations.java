@@ -161,16 +161,17 @@ public class DBOperations {
 	}
 
 	// Inserting Logic for new Admin
-	public static void insertAdminDetails(Connection connection, String userName, String mobileNumber, String mailid,
+	public static void insertAdminDetails(Connection connection, String userName, String mobileNumber, String mailid, String adminRole,
 			String passCode) throws SQLException {
-		String insertQuery = "INSERT INTO admindetails (adminname, mobilenumber, mailid, password) VALUES (?, ?, ?, ?)";
+		String insertQuery = "INSERT INTO admindetails (adminname, mobilenumber, mailid, role, password) VALUES (?, ?, ?, ?, ?)";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
 			preparedStatement.setString(1, userName);
 			preparedStatement.setString(2, mobileNumber);
 			preparedStatement.setString(3, mailid);
-			preparedStatement.setString(4, passCode);
+			preparedStatement.setString(4, adminRole);
+			preparedStatement.setString(5, passCode);
 
 			int rowsAffected = preparedStatement.executeUpdate();
 			if (rowsAffected >= 1) {
@@ -196,6 +197,33 @@ public class DBOperations {
 			rowsAffected = preparedStatement.executeUpdate();
 			if (rowsAffected >= 1)
 				System.out.println("\n<--Signed Up succesfully!!-->");
+		}
+	}
+
+	public static void insertNewDealerDetails(Connection connection, String dealername, String dealerLocation, String contactNumber) throws SQLException {
+		String insertQuery = "INSERT INTO dealer (DealerName, Location, ContactNumber) VALUES (?, ?, ?)";
+
+		try(PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+			preparedStatement.setString(1, dealername);
+			preparedStatement.setString(2, dealerLocation);
+			preparedStatement.setString(3, contactNumber);
+
+			rowsAffected = preparedStatement.executeUpdate();
+			if(rowsAffected>=1) 
+				System.out.println("Dealer's Detail add Successfully");
+		}
+	}
+
+	public static void insertNewCourierServiceDetails(Connection connection, String courierServiceName, String courierServiceNumber) throws SQLException {
+		String insertQuery = "INSERT INTO courierservice (courierServiceName, contactNumber) VALUES (?, ?)";
+
+		try(PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+			preparedStatement.setString(1, courierServiceName);
+			preparedStatement.setString(2, courierServiceNumber);
+
+			rowsAffected = preparedStatement.executeUpdate();
+			if(rowsAffected>=1) 
+				System.out.println("Courier Services Details are Added Successfully");
 		}
 	}
 
@@ -386,7 +414,8 @@ public class DBOperations {
 					if (profRole.equals("admindetails")) {
 						String profName = resultSet.getString("adminname");
 						String profmN = resultSet.getString("mobilenumber");
-						res += profName + "_" + profmN + "_" + profEmail;
+						String role = resultSet.getString("role");
+						res += profName + "_" + profmN + "_" + profEmail+"_"+role;
 					} else {
 						String profName = resultSet.getString("username");
 						String profmN = resultSet.getString("mobilenumber");
