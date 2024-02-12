@@ -246,12 +246,14 @@ public class DBOperations {
 					String role = resultSet.getString("role");
 					
 					res = name+"_"+number+"_"+mail+"_"+role;
+					AdminInterface.profile(res.split("_"));
 				} else if(slNo == 2) {
 					String name = resultSet.getString("DealerName");
 					String location = resultSet.getString("Location");
 					String number = resultSet.getString("ContactNumber");
 					
 					res = name+"_"+location+"_"+number;
+					
 				} else if(slNo == 3) {
 					String name = resultSet.getString("courierServiceName");
 					String number = resultSet.getString("mobilenumber");

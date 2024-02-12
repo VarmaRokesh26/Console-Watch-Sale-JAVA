@@ -1,4 +1,4 @@
-package View;
+package Main;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import Model.*;
 import Controller.*;
+import View.*;
 
 public class MainModule {
 

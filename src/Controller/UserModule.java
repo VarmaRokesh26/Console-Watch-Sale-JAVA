@@ -3,7 +3,7 @@ package Controller;
 import java.sql.Connection;
 import java.util.*;
 import Model.*;
-import View.MainModule;
+import Main.MainModule;
 import View.UserInterface;
 
 public class UserModule {
