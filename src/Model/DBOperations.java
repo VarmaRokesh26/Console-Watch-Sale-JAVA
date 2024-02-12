@@ -227,6 +227,41 @@ public class DBOperations {
 		}
 	}
 
+	public static void displayAdminDealerCourier(Connection connection, int slNo) throws SQLException {
+		String query = "";
+		if(slNo == 1) 
+			query = "SELECT * FORM admindetails";
+		else if(slNo == 2)
+			query = "SELECT * FROM dealer";
+		else if(slNo == 3)
+			query = "SELECT * FROM courierservice";
+
+		try(PreparedStatement preparedStatement = connection.prepareStatement(query); 
+				ResultSet resultSet =  preparedStatement.executeQuery()) {
+			while(resultSet.next()) {
+				if(slNo == 1) {
+					String name = resultSet.getString("adminname");
+					String number = resultSet.getString("mobilenumber");
+					String mail = resultSet.getString("mailid");
+					String role = resultSet.getString("role");
+					
+					res = name+"_"+number+"_"+mail+"_"+role;
+				} else if(slNo == 2) {
+					String name = resultSet.getString("DealerName");
+					String location = resultSet.getString("Location");
+					String number = resultSet.getString("ContactNumber");
+					
+					res = name+"_"+location+"_"+number;
+				} else if(slNo == 3) {
+					String name = resultSet.getString("courierServiceName");
+					String number = resultSet.getString("mobilenumber");
+					
+					res = name+"_"+number;
+				}
+			}
+		}
+	}
+
 	// Display Watches if it is available
 	public static String selectAllWatchesIfAvailable(Connection connection) throws SQLException {
 		String selectQuery = "SELECT * FROM watches WHERE number_of_stocks > 0";

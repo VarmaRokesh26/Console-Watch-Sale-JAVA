@@ -396,7 +396,7 @@ public class AdminModule {
 	public static void addNewCourierService(Connection connection, Scanner sc) {
 		while (true) {
 			System.out.print("Enter Courier Service Name  :");
-			courierServiceName = sc.nextLine();
+			courierServiceName = sc.next()+sc.nextLine();
 			if(Validation.validateName(courierServiceName))
 			break;
 			else	

@@ -69,5 +69,5 @@ public class AdminInterface {
 						+ "\n--Description                    : " + description
 						+ "\n--Number of Stocks available     : " + number_of_stocks);
 	}
-
+	
 }
