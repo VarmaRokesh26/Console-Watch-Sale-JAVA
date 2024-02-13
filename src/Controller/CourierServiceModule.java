@@ -31,6 +31,11 @@ public class CourierServiceModule {
 				break;
 			}
 
+			case 'B':
+			case 'b': {
+				CourierServiceInterface.courierServiceInterface(con, args, sc, 1);
+			}
+
             default:
                 break;
         }

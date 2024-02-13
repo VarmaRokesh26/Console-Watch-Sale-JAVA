@@ -313,11 +313,11 @@ public class DBOperations {
 
 	public static void displayAdminDealerCourier(Connection connection, int slNo) throws SQLException {
 		String query = "";
-		if (slNo == 1)
+		if (slNo == 2)
 			query = "SELECT * FORM admindetails";
-		else if (slNo == 2)
-			query = "SELECT * FROM dealer";
 		else if (slNo == 3)
+			query = "SELECT * FROM dealer";
+		else if (slNo == 4)
 			query = "SELECT * FROM courierservice";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query);

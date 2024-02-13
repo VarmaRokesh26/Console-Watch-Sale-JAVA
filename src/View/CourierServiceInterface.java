@@ -14,6 +14,7 @@ public class CourierServiceInterface {
 			CourierServiceModule.courierServiceTask(con, args, sc, operation);
 		}
 	}
+	
     public static void courierDetailDisplay(String profile[]) {
         System.out.println("-----------------------------------------------------------------");
 		System.out.println("--Dealer Name       : " + profile[0]);
@@ -29,6 +30,21 @@ public class CourierServiceInterface {
 						+ "\n|| Enter                           ||"
 						+ "\n|| U -> Update Delivery Status     ||"
 						+ "\n|| S -> Show Orders To Deliver     ||"
+						+ "\n|| V -> View Profile               ||"
+						+ "\n|| B -> Back                       ||"
+						+ "\n||_________________________________||"
+						+ "\n---------> ");
+	}
+
+	public static void profileAction() {
+		System.out.print(
+				"  _________________________________"
+						+ "\n|| Enter                           ||"
+						+ "\n|| V -> View Profile               ||"
+						+ "\n|| E -> Edit Profile               ||"
+						+ "\n|| P -> Change Password            ||"
+						+ "\n|| B -> Back                       ||"
+						+ "\n|| L -> Logout                     ||"
 						+ "\n||_________________________________||"
 						+ "\n---------> ");
 	}

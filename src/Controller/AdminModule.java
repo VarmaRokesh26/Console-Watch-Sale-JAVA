@@ -269,42 +269,51 @@ public class AdminModule {
 	public static void displayAsRequired(Connection con, Scanner sc) {
 		while(true) {
 			AdminInterface.optionsForAdmin();
-			int sh = sc.nextInt();
-			if (sh == 1) {
-				displayWatches(con);
+			char sh = sc.next().charAt(0);
+			if (sh == '1') {
+				try {
+					DBOperations.selectAllWatches(con, -1);
+				} catch(Exception e) {
+					System.out.println(e.toString());
+				}
 				break;
-			} else if(sh == 2) {
+			} else if(sh == '2') {
 				displayAdminDealerCourier(con, sh);
 				break;
-			} else if (sh == 3) {
+			} else if (sh == '3') {
 				displayAdminDealerCourier(con, sh);
 				break;
-			} else if (sh == 4) {
+			} else if (sh == '4') {
 				displayAdminDealerCourier(con, sh);
 				break;
+			} else if(sh == 'B') {
+				AdminInterface.adminInterface(con, null, sc, sh);
 			} else
-				System.out.println("Enter a valid Number");
+				System.out.println("Enter a valid Option");
 		}
 	}
 
 	public static void addRespectiveDetails(Connection con, Scanner sc) {
 		AdminInterface.insertOption();
 		while (true) {
-			int add = sc.nextInt();
-			if (add == 1) {
+			char add = sc.next().charAt(0);
+			if (add == '1') {
 				insertWatches(con, sc);
 				break;
-			} else if (add == 2) {
+			} else if (add == '2') {
 				addNewAdmin(con, sc);
 				break;
-			} else if (add == 3) {
+			} else if (add == '3') {
 				addNewDealer(con, sc);
 				break;
-			} else if (add == 4) {
+			} else if (add == '4') {
 				addNewCourierService(con, sc);
 				break;
-			} else
-				System.out.println("Enter a valid Number");
+			} else if(add == 'B') {
+				AdminInterface.adminInterface(con, null, sc, add);
+			}
+			else
+				System.out.println("Enter a valid Option");
 		}
 	}
 
@@ -424,7 +433,7 @@ public class AdminModule {
 			dealerPassword = sc.nextLine();
 			if (Validation.validatePassword(dealerPassword)) {
 				while (true) {
-					System.out.print("Re-enter Password   : ");
+					System.out.print("Re-enter Password           : ");
 					confirmPassword = sc.nextLine();
 					if (dealerPassword.equals(confirmPassword)) {
 						break;
@@ -467,18 +476,18 @@ public class AdminModule {
 
 		while(true) {
 			System.out.print("Enter the Dealer MailId     : ");
-			courierPasword = sc.nextLine();
-			if(Validation.validateEmail(courierPasword))
+			couriermailId = sc.nextLine();
+			if(Validation.validateEmail(couriermailId))
 				break;
 			else	System.out.println("<---Enter a valid Email--->");
 		}
 
 		while (true) {
-			System.out.print("Enter Password       : ");
+			System.out.print("Enter Password              : ");
 			courierPasword = sc.nextLine();
 			if (Validation.validatePassword(courierPasword)) {
 				while (true) {
-					System.out.print("Re-enter Password   : ");
+					System.out.print("Re-enter Password           : ");
 					confirmPassword = sc.nextLine();
 					if (courierPasword.equals(confirmPassword)) {
 						break;
