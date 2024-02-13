@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import View.AdminInterface;
+import View.CourierServiceInterface;
+import View.DealerInterface;
 import View.UserInterface;
 
 public class DBOperations {
@@ -66,6 +68,52 @@ public class DBOperations {
 		return isUser;
 	}
 
+	public static boolean checkDealerDetails(Connection connection, String email, String password) throws SQLException {
+		boolean isUser = false;
+		String checkQueryBySelect = "SELECT * FROM dealer";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(checkQueryBySelect);
+				ResultSet resultSet = preparedStatement.executeQuery()) {
+			while (resultSet.next()) {
+				String emailFromDB = resultSet.getString("emailid");
+				String passwordFromDB = resultSet.getString("password");
+				if (emailFromDB.equals(email) && passwordFromDB.equals(password)) {
+					isUser = true;
+					break;
+				}
+			}
+		}
+		if (isUser) {
+			profile.add(email);
+			profile.add(password);
+			profile.add("dealer");
+		}
+		return isUser;
+	}
+
+	public static boolean checkCourierServiceDetails(Connection connection, String email, String password) throws SQLException {
+		boolean isUser = false;
+		String checkQueryBySelect = "SELECT * FROM courierservice";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(checkQueryBySelect);
+				ResultSet resultSet = preparedStatement.executeQuery()) {
+			while (resultSet.next()) {
+				String emailFromDB = resultSet.getString("emailid");
+				String passwordFromDB = resultSet.getString("password");
+				if (emailFromDB.equals(email) && passwordFromDB.equals(password)) {
+					isUser = true;
+					break;
+				}
+			}
+		}
+		if (isUser) {
+			profile.add(email);
+			profile.add(password);
+			profile.add("courierservice");
+		}
+		return isUser;
+	}
+
 	// Insert Watches
 	public static void insertNewWatch(Connection connection, String name, String brand, double price,
 			String description, int number_of_stocks) throws SQLException {
@@ -109,15 +157,16 @@ public class DBOperations {
 		}
 	}
 
+	
 	// Delete Watch
 	public static void deleteWatch(Connection connection, int wId) throws SQLException {
 		String deleteQuery = "DELETE FROM watches WHERE id = ?";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
 			preparedStatement.setInt(1, wId);
-
+			
 			rowsAffected = preparedStatement.executeUpdate();
 			if (rowsAffected >= 1)
-				System.out.println("--Data Deleted.--");
+			System.out.println("--Data Deleted.--");
 			else
 				System.out.println("Nothnig is there to delete");
 		}
@@ -129,18 +178,18 @@ public class DBOperations {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
 			rowsAffected = preparedStatement.executeUpdate();
 			if (rowsAffected >= 1)
-				System.out.println("--Datum Deleted.--");
+			System.out.println("--Datum Deleted.--");
 			else
-				System.out.println("Not Deleted");
+			System.out.println("Not Deleted");
 		}
 	}
-
+	
 	// Display Watches
 	public static void selectAllWatches(Connection connection, int wId) throws SQLException {
 		String selectQuery = "SELECT * FROM watches";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
-				ResultSet resultSet = preparedStatement.executeQuery()) {
-
+		ResultSet resultSet = preparedStatement.executeQuery()) {
+			
 			while (resultSet.next()) {
 				int id = resultSet.getInt("id");
 				String name = resultSet.getString("name");
@@ -158,6 +207,34 @@ public class DBOperations {
 			}
 			System.out.println("******************************************************************");
 		}
+	}
+	
+	public static String[] viewOrders(Connection connection, int entry) throws SQLException {
+		String qiery = "SELECT * FROM orders";
+
+		try(PreparedStatement preparedStatement = connection.prepareStatement(qiery);
+				ResultSet resultSet = preparedStatement.executeQuery()) {
+			while(resultSet.next()) {
+				int orderId = resultSet.getInt("orderid");
+				String userId = resultSet.getString("userid");
+				int watchId = resultSet.getInt("watchid");
+				String orderdate = resultSet.getString("orderdate");
+				String deliveryDate = resultSet.getString("delivery_date");
+				int quantity = resultSet.getInt("quantity");
+				double price = resultSet.getDouble("totalamount");
+				String paymentMode = resultSet.getString("paymentMode");
+				String status = resultSet.getString("status");
+
+				if(entry==0)
+					res = orderId+"_"+userId +"_"+watchId +"_"+orderdate+"_"+deliveryDate+"_"+quantity+"_"+price+"_"+paymentMode+"_"+status;
+				else {
+					res = orderId+"_"+watchId+"_"+orderdate+"_"+deliveryDate+"_"+quantity+"_"+price+"_"+status;
+					UserInterface.orderHistory(res.split("_"));
+					System.out.println("____________________________________________");
+				}
+			}
+		}
+		return res.split("_");
 	}
 
 	// Inserting Logic for new Admin
@@ -202,13 +279,15 @@ public class DBOperations {
 	}
 
 	public static void insertNewDealerDetails(Connection connection, String dealername, String dealerLocation,
-			String contactNumber) throws SQLException {
-		String insertQuery = "INSERT INTO dealer (DealerName, Location, ContactNumber) VALUES (?, ?, ?)";
+			String contactNumber, String dealerMailId, String dealerPassword) throws SQLException {
+		String insertQuery = "INSERT INTO dealer (DealerName, Location, ContactNumber, dealermailid, password) VALUES (?, ?, ?, ?, ?)";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 			preparedStatement.setString(1, dealername);
 			preparedStatement.setString(2, dealerLocation);
 			preparedStatement.setString(3, contactNumber);
+			preparedStatement.setString(4, dealerMailId);
+			preparedStatement.setString(5, dealerPassword);
 
 			rowsAffected = preparedStatement.executeUpdate();
 			if (rowsAffected >= 1)
@@ -217,16 +296,18 @@ public class DBOperations {
 	}
 
 	public static void insertNewCourierServiceDetails(Connection connection, String courierServiceName,
-			String courierServiceNumber) throws SQLException {
-		String insertQuery = "INSERT INTO courierservice (courierServiceName, contactNumber) VALUES (?, ?)";
+			String courierServiceNumber, String courierServicemailId, String courierServicePassword) throws SQLException {
+		String insertQuery = "INSERT INTO courierservice (courierServiceName, contactNumber, courierServicemailId, password) VALUES (?, ?, ?, ?)";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 			preparedStatement.setString(1, courierServiceName);
 			preparedStatement.setString(2, courierServiceNumber);
+			preparedStatement.setString(3, courierServicemailId);
+			preparedStatement.setString(4, courierServicePassword);
 
 			rowsAffected = preparedStatement.executeUpdate();
 			if (rowsAffected >= 1)
-				System.out.println("Courier Services Details are Added Successfully");
+				System.out.println("<---Courier Services Details are Added Successfully--->");
 		}
 	}
 
@@ -254,14 +335,16 @@ public class DBOperations {
 					String name = resultSet.getString("DealerName");
 					String location = resultSet.getString("Location");
 					String number = resultSet.getString("ContactNumber");
+					String mailId = resultSet.getString("dealermailid");
 
-					res = name + "_" + location + "_" + number;
-
+					res = name + "_" + location + "_" + number+"_"+mailId;
+					DealerInterface.displayDealers(res.split("_"));
 				} else if (slNo == 3) {
 					String name = resultSet.getString("courierServiceName");
 					String number = resultSet.getString("mobilenumber");
-
-					res = name + "_" + number;
+					String mailId = resultSet.getString("courierServicemailId");
+					res = name + "_" + number+"_"+mailId;
+					CourierServiceInterface.courierDetailDisplay(res.split("_"));
 				}
 			}
 		}
@@ -333,11 +416,6 @@ public class DBOperations {
 		return res;
 	}
 
-	// History of the User of Placing Orders
-	public static void showHistory(Connection connection) {
-		System.out.println("Your Shop History");
-	}
-
 	// Display Cart
 	public static void showMyCart(Connection connection) throws SQLException {
 		String cartViewQuery = "SELECT * FROM cart WHERE userid = ?";
@@ -388,7 +466,7 @@ public class DBOperations {
 	public static void placeOrder(Connection connection, int wid, int quantity, double price, String payment)
 			throws SQLException {
 		userIdString = userIdForCartOrOrder(connection);
-		status = "Processing";
+		status = "Processed";
 		String orderQuery = "INSERT INTO orders(userid, watchid, quantity, totalamount, paymentMode, status) VALUES (?, ?, ?, ?, ?, ?)";
 		String deliveryDateQuery = "UPDATE orders SET delivery_date = DATE_ADD(orderdate, INTERVAL 7 DAY) WHERE orderid = ?";
 		String stockDecrease = "UPDATE watches SET number_of_stocks = number_of_stocks - ? WHERE id = ?";

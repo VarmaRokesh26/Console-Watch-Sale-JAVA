@@ -19,6 +19,8 @@ public class AdminModule {
 	private static String dealerName;
 	private static String dealerLocation;
 	private static String contactNumber;
+	private static String dealerMailId;
+	private static String dealerPassword;
 
 	// Variables for Admin Details
 	private static String name;
@@ -31,6 +33,8 @@ public class AdminModule {
 	// variables for CourierService Details
 	private static String courierServiceName;
 	private static String courierServiceNumber;
+	private static String couriermailId;
+	private static String courierPasword;
 
 	private static int wId;
 
@@ -140,12 +144,6 @@ public class AdminModule {
 
 		switch (operation) {
 
-			case 'I':
-			case 'i': {
-				insertWatches(con, sc);
-				break;
-			}
-
 			case 'U':
 			case 'u': {
 				updateWatchDetails(con, sc);
@@ -166,7 +164,7 @@ public class AdminModule {
 
 			case 'S':
 			case 's': {
-				displayWatches(con);
+				displayAsRequired(con, sc);
 				break;
 			}
 
@@ -190,7 +188,7 @@ public class AdminModule {
 
 			case 'P':
 			case 'p': {
-
+				changePassword(con, sc);
 				break;
 			}
 
@@ -268,24 +266,55 @@ public class AdminModule {
 		}
 	}
 
-	public static void addRespectiveDetails(Connection con, Scanner sc) {
-		System.out.print("\nEnter \n1 -> Add new Admin \n2 -> Add Dealer \n3 -> Add Courier Service : ");
-		while (true) {
-			int add = sc.nextInt();
-			if (add == 1) {
-				addNewAdmin(con, sc);
+	public static void displayAsRequired(Connection con, Scanner sc) {
+		while(true) {
+			AdminInterface.optionsForAdmin();
+			int sh = sc.nextInt();
+			if (sh == 1) {
+				displayWatches(con);
 				break;
-			} else if (add == 2) {
-				addNewDealer(con, sc);
+			} else if(sh == 2) {
+				displayAdminDealerCourier(con, sh);
 				break;
-			} else if (add == 3) {
-				addNewCourierService(con, sc);
+			} else if (sh == 3) {
+				displayAdminDealerCourier(con, sh);
+				break;
+			} else if (sh == 4) {
+				displayAdminDealerCourier(con, sh);
 				break;
 			} else
-				System.out.println("Enter a valid Number : ");
+				System.out.println("Enter a valid Number");
 		}
 	}
 
+	public static void addRespectiveDetails(Connection con, Scanner sc) {
+		AdminInterface.insertOption();
+		while (true) {
+			int add = sc.nextInt();
+			if (add == 1) {
+				insertWatches(con, sc);
+				break;
+			} else if (add == 2) {
+				addNewAdmin(con, sc);
+				break;
+			} else if (add == 3) {
+				addNewDealer(con, sc);
+				break;
+			} else if (add == 4) {
+				addNewCourierService(con, sc);
+				break;
+			} else
+				System.out.println("Enter a valid Number");
+		}
+	}
+
+	public static void displayAdminDealerCourier(Connection con, int sh) {
+		try {
+			DBOperations.displayAdminDealerCourier(con, sh);
+		} catch(Exception e) {
+			System.out.println(e.toString());
+		}
+	}
 	public static void addNewAdmin(Connection con, Scanner sc) {
 
 		while (true) {
@@ -363,30 +392,55 @@ public class AdminModule {
 			else
 				System.out.println("Enter a valid Dealer Name");
 		}
-
+		
 		while (true) {
 			System.out.print("Enter Dealer Contact Number : ");
 			contactNumber = sc.nextLine();
 			if (Validation.validateMobileNumber(contactNumber))
-				break;
+			break;
 			else
-				System.out.println("<---Enter a valid mobile Number--->");
+			System.out.println("<---Enter a valid mobile Number--->");
 		}
 
 		while (true) {
-			System.out.print("Enter Dealer's Location     : ");
+			System.out.print("Enter Dealer Location       : ");
 			dealerLocation = sc.nextLine();
 			if (!dealerLocation.isEmpty())
 				break;
 			else
-				System.out.println("Location of Dealer cannot be Empty");
+				System.out.println("<---Enter a Location--->");
 		}
 
-		Dealer dealer = new Dealer(dealerName, dealerLocation, contactNumber);
+		while(true) {
+			System.out.print("Enter the Dealer MailId     : ");
+			dealerMailId = sc.nextLine();
+			if(Validation.validateEmail(dealerMailId))
+				break;
+			else	System.out.println("<---Enter a valid Email--->");
+		}
+		
+		while (true) {
+			System.out.print("Enter Password              : ");
+			dealerPassword = sc.nextLine();
+			if (Validation.validatePassword(dealerPassword)) {
+				while (true) {
+					System.out.print("Re-enter Password   : ");
+					confirmPassword = sc.nextLine();
+					if (dealerPassword.equals(confirmPassword)) {
+						break;
+					}
+				}
+				break;
+			} else
+				System.out.println(
+						"<---Password should contain at least 8 characters, 1 UpperCase, 1 LowerCase, 1 Numbers, 1 SpecialCharacters--->");
+		}
+
+		Dealer dealer = new Dealer(dealerName, dealerMailId, dealerLocation, contactNumber, dealerPassword);
 
 		try {
 			DBOperations.insertNewDealerDetails(connection, dealer.getDealerName(), dealer.getDealerLocation(),
-					dealer.getContactNumer());
+					dealer.getContactNumer(), dealer.getDealerMailid(), dealer.getPassWord());
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -411,11 +465,36 @@ public class AdminModule {
 				System.out.println("Enter a valid Contact Number");
 		}
 
-		CourierService courierService = new CourierService(courierServiceName, courierServiceNumber);
+		while(true) {
+			System.out.print("Enter the Dealer MailId     : ");
+			courierPasword = sc.nextLine();
+			if(Validation.validateEmail(courierPasword))
+				break;
+			else	System.out.println("<---Enter a valid Email--->");
+		}
+
+		while (true) {
+			System.out.print("Enter Password       : ");
+			courierPasword = sc.nextLine();
+			if (Validation.validatePassword(courierPasword)) {
+				while (true) {
+					System.out.print("Re-enter Password   : ");
+					confirmPassword = sc.nextLine();
+					if (courierPasword.equals(confirmPassword)) {
+						break;
+					}
+				}
+				break;
+			} else
+				System.out.println(
+						"<---Password should contain at least 8 characters, 1 UpperCase, 1 LowerCase, 1 Numbers, 1 SpecialCharacters--->");
+		}
+
+		CourierService courierService = new CourierService(courierServiceName, courierServiceNumber, couriermailId, courierPasword);
 
 		try {
 			DBOperations.insertNewCourierServiceDetails(connection, courierService.getCourierServiceName(),
-					courierService.getCourierServiceNumber());
+					courierService.getCourierServiceNumber(), courierService.getCourierServiceMailId(), courierService.getPassword());
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}

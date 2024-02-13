@@ -47,6 +47,10 @@ public class MainModule {
                 AdminInterface.adminInterface(con, args, sc, 0);
             else if (DBOperations.checkUserDetails(con, login.getEmailId(), login.getPassword()))
                 UserInterface.userInterface(con, args, sc, 0);
+            else if (DBOperations.checkCourierServiceDetails(con, login.getEmailId(), login.getPassword()))
+                CourierServiceInterface.courierServiceInterface(con, args, sc, 0);
+            else if (DBOperations.checkDealerDetails(con, login.getEmailId(), login.getPassword()))
+                DealerInterface.dealerInterface(con, args, sc, 0);
             else
                 System.out.println("Invalid Combinations");
         } catch (SQLException e) {

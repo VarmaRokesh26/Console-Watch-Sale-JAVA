@@ -94,6 +94,18 @@ public class UserInterface {
 						+ "\nPrice       : " + price);
 	}
 
+	public static void orderHistory(String order[]) {
+		System.out.println(
+				"____________________________________________" +
+						  "\nOrder Id       : " + order[0]
+						+ "\nItem Id        : " + order[1]
+						+ "\nOrdered Date   : " + order[2]
+						+ "\nDelivery Date  : " + order[3]
+						+ "\nQuantity       : " + order[4]
+						+ "\nStatus         : " + order[5]
+						+ "\nPrice          : " + order[6]);
+	}
+
 	public static void cartWork() {
 		System.out.print(
 				" ___________________________________"
@@ -103,5 +115,9 @@ public class UserInterface {
 						+ "\n|| B -> Back                       ||"
 						+ "\n||_________________________________||"
 						+ "\n---------> ");
+	}
+
+	public static void showHistoryOfOrders(String orders[]) {
+
 	}
 }

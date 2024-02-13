@@ -1,5 +1,49 @@
 package View;
 
+import java.sql.Connection;
+import java.util.Scanner;
+import Controller.CourierServiceModule;
+
 public class CourierServiceInterface {
     
+
+    public static void courierServiceInterface(Connection con, String[] args, Scanner sc, int entry) {
+		while (true) {
+			actionMenu();
+			char operation = CourierServiceModule.getWhatToDo(sc);
+			CourierServiceModule.courierServiceTask(con, args, sc, operation);
+		}
+	}
+    public static void courierDetailDisplay(String profile[]) {
+        System.out.println("-----------------------------------------------------------------");
+		System.out.println("--Dealer Name       : " + profile[0]);
+		System.out.println("--Mobile Number     : " + profile[1]);
+		System.out.println("--Location          : " + profile[2]);
+        System.out.println("--Email             : " + profile[3]);
+		System.out.println("-----------------------------------------------------------------");
+    }
+
+    public static void actionMenu() {
+		System.out.print(
+				"\n  _________________________________"
+						+ "\n|| Enter                           ||"
+						+ "\n|| U -> Update Delivery Status     ||"
+						+ "\n|| S -> Show Orders To Deliver     ||"
+						+ "\n||_________________________________||"
+						+ "\n---------> ");
+	}
+
+    public static void showOrderDetails(String orders[]) {
+        System.out.println("-----------------------------------------------------------------");
+		System.out.println("--Order Id               : " + orders[0]);
+		System.out.println("--User Id                : " + orders[1]);
+		System.out.println("--Watch Id               : " + orders[2]);
+		System.out.println("--Order date             : " + orders[3]);
+		System.out.println("--Delivery Date          : " + orders[4]);
+		System.out.println("--Quantity               : " + orders[5]);
+		System.out.println("--Price                  : " + orders[6]);
+		System.out.println("--Payment Mode           : " + orders[7]);
+		System.out.println("--Status                 : " + orders[8]);
+		System.out.println("-----------------------------------------------------------------");
+    }
 }

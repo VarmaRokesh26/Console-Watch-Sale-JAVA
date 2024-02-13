@@ -23,16 +23,15 @@ public class AdminInterface {
 
 	public static void actionMenu() {
 		System.out.print(
-				"\n  _________________________________"
-						+ "\n|| Enter                           ||"
-						+ "\n|| I -> Insert watches             ||"
-						+ "\n|| U -> Update details of watches  ||"
-						+ "\n|| D -> Delete watch               ||"
-						+ "\n|| C -> Delete Watch with 0 stocks ||"
-						+ "\n|| S -> Display the list           ||"
-						+ "\n|| A -> Add new Admin              ||"
-						+ "\n|| V -> View Profile               ||"
-						+ "\n||_________________________________||"
+					"\n  ____________________________________________________"
+						+ "\n|| Enter                                              ||"
+						+ "\n|| A -> Add new Watch/ Admin/ Dealer/ CourierServices ||"
+						+ "\n|| C -> Delete Watch with 0 stocks                    ||"
+						+ "\n|| D -> Delete watch                                  ||"
+						+ "\n|| S -> Display Watch/ Admin/ Dealer/ CourierServices ||"
+						+ "\n|| U -> Update details of watches                     ||"
+						+ "\n|| V -> View Profile                                  ||"
+						+ "\n||____________________________________________________||"
 						+ "\n---------> ");
 	}
 
@@ -70,4 +69,29 @@ public class AdminInterface {
 						+ "\n--Number of Stocks available     : " + number_of_stocks);
 	}
 	
+	public static void insertOption() {
+		System.out.print(
+				"  _________________________________"
+						+ "\n|| Enter                           ||"
+						+ "\n|| 1 -> Add New Watch              ||"
+						+ "\n|| 2 -> Add New Admin              ||"
+						+ "\n|| 3 -> Add New Dealer Details     ||"
+						+ "\n|| 4 -> Add NEw Courier Service    ||"
+						+ "\n|| B -> Back                       ||"
+						+ "\n||_________________________________||"
+						+ "\n---------> ");
+	}
+
+	public static void optionsForAdmin() {
+		System.out.print(
+				"  _________________________________"
+						+ "\n|| Enter                           ||"
+						+ "\n|| 1 -> Display Watches            ||"
+						+ "\n|| 2 -> Display Admin              ||"
+						+ "\n|| 3 -> Display Dealer List        ||"
+						+ "\n|| 4 -> Display Courier List       ||"
+						+ "\n|| B -> Back                       ||"
+						+ "\n||_________________________________||"
+						+ "\n---------> ");
+	}
 }
