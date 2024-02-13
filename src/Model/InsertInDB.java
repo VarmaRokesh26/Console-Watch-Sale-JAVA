@@ -10,39 +10,42 @@ public class InsertInDB {
     private static String userIdString;
 
     // Insert Watches
-    public static void insertNewWatch(Connection connection, String name, String brand, double price,
-            String description, int number_of_stocks) throws SQLException {
-        String insertQuery = "INSERT INTO watches (seriesName, brand, price, description, numberOfStocks) VALUES (?, ?, ?, ?, ?)";
+    public static void insertNewWatch(Connection connection, String watchId, String name, String brand, double price,
+            String description, int numberOfStocks) throws SQLException {
+        String insertQuery = "INSERT INTO watches (watchId, seriesName, brand, price, description, numberOfStocks) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, brand);
-            preparedStatement.setDouble(3, price);
-            preparedStatement.setString(4, description);
-            preparedStatement.setInt(5, number_of_stocks);
+            preparedStatement.setString(1, watchId);
+            preparedStatement.setString(2, name);
+            preparedStatement.setString(3, brand);
+            preparedStatement.setDouble(4, price);
+            preparedStatement.setString(5, description);
+            preparedStatement.setInt(6, numberOfStocks);
 
             rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected >= 1) {
                 System.out.println("<---Data Inserted--->");
+            } else {
+                System.out.println("Data haven't Inserted");
             }
         }
     }
 
     // Inserting Logic for new Admin
-    public static void insertAdminDetails(Connection connection, String userName, String mobileNumber, String mailid,
-            String adminRole,
-            String passCode) throws SQLException {
-        String insertQuery = "INSERT INTO admin (adminName, mobileNumber, mailId, role, password) VALUES (?, ?, ?, ?, ?)";
+    public static void insertAdminDetails(Connection connection, String adminId, String adminName, String mobileNumber, String mailId,
+            String adminRole, String password) throws SQLException {
+        String insertQuery = "INSERT INTO admin (adminId, adminName, mobileNumber, mailId, role, password) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
-            preparedStatement.setString(1, userName);
+            preparedStatement.setString(1, adminId);
+            preparedStatement.setString(1, adminName);
             preparedStatement.setString(2, mobileNumber);
-            preparedStatement.setString(3, mailid);
+            preparedStatement.setString(3, mailId);
             preparedStatement.setString(4, adminRole);
-            preparedStatement.setString(5, passCode);
+            preparedStatement.setString(5, password);
 
-            int rowsAffected = preparedStatement.executeUpdate();
+            rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected >= 1) {
                 System.out.println("Admin Added succesfully!!");
             }
@@ -50,18 +53,19 @@ public class InsertInDB {
     }
 
     // Inserting Logic for New User
-    public static void insertUserDetails(Connection connection, String userName, String mobileNumber, String email,
-            String address, String passCode) throws SQLException {
+    public static void insertUserDetails(Connection connection, String userId, String userName, String mobileNumber, String emailId,
+            String address, String password) throws SQLException {
 
-        String insertQuery = "INSERT INTO user (userName, mobileNumber, emailId, address, password) VALUES (?, ?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO user (userId, userName, mobileNumber, emailId, address, password) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
+            preparedStatement.setString(1, userId);
             preparedStatement.setString(1, userName);
             preparedStatement.setString(2, mobileNumber);
-            preparedStatement.setString(3, email);
+            preparedStatement.setString(3, emailId);
             preparedStatement.setString(4, address);
-            preparedStatement.setString(5, passCode);
+            preparedStatement.setString(5, password);
 
             rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected >= 1)
@@ -88,16 +92,17 @@ public class InsertInDB {
     }
 
     // Insert Logic for New Courier Service
-    public static void insertNewCourierServiceDetails(Connection connection, String courierServiceName,
+    public static void insertNewCourierServiceDetails(Connection connection, String courierServiceId, String courierServiceName,
             String courierServiceNumber, String courierServicemailId, String courierServicePassword)
             throws SQLException {
-        String insertQuery = "INSERT INTO courierservice (courierServiceName, contactNumber, courierServiceMailId, cSpassword) VALUES (?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO courierservice (courierServiceId, courierServiceName, contactNumber, courierServiceMailId, cSpassword) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
-            preparedStatement.setString(1, courierServiceName);
-            preparedStatement.setString(2, courierServiceNumber);
-            preparedStatement.setString(3, courierServicemailId);
-            preparedStatement.setString(4, courierServicePassword);
+            preparedStatement.setString(1, courierServiceId);
+            preparedStatement.setString(2, courierServiceName);
+            preparedStatement.setString(3, courierServiceNumber);
+            preparedStatement.setString(4, courierServicemailId);
+            preparedStatement.setString(5, courierServicePassword);
 
             rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected >= 1)
@@ -105,6 +110,7 @@ public class InsertInDB {
         }
     }
 
+    // Users selected item will be added in the cart
     public static boolean insertInCart(Connection connection, String watchIdForCart, String cartDetails)
             throws SQLException {
         String cartQuery = "INSERT INTO cart (userId, cartDetails, watchId) VALUES (?, ?, ?)";
@@ -118,8 +124,9 @@ public class InsertInDB {
             rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0)
                 return true;
+            else
+                System.out.println("No Items in The cart");
         }
         return false;
     }
-
 }

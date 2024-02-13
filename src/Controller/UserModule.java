@@ -13,6 +13,7 @@ public class UserModule {
 	private static String payment;
 	private static double price;
 
+	private static String userId;
 	private static String name;
 	private static String mobileNumber;
 	private static String email;
@@ -48,6 +49,12 @@ public class UserModule {
 
 	// Sign Up logic
 	public static SignUp getSignUpDetails(Scanner sc) {
+
+		while(true) {
+			userId = sc.nextLine();
+			if(userId.isEmpty())
+				break;
+		}
 
 		while (true) {
 			// userName
@@ -114,7 +121,7 @@ public class UserModule {
 				System.out.println("<---Password should contains atleast \n8 characters, \n1 UpperCase, "
 						+ "\n1 LowerCase, \n1 Numbers, \n1 SpecialCharacters--->");
 		}
-		return new SignUp(name, mobileNumber, email, address, confirmPassword);
+		return new SignUp(userId, name, mobileNumber, email, address, confirmPassword);
 	}
 
 	// Perform User task

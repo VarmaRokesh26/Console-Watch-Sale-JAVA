@@ -1,5 +1,4 @@
 checkDb
-
     checkAdminDetails
     checkUserDetails
     checkDealerDetails
@@ -13,6 +12,9 @@ insertInDB
     insertNewWatch
     insertAdminDetails
     insertUserDetails
+    insertNewDealerDetails
+    insertNewCourierServiceDetails
+    insertInCart
 
 deletFromDB
     deleteWatch
@@ -22,4 +24,5 @@ deletFromDB
 updateFromDB
     updateWatch
     placeOrder
-    
+    updateProfile
+    changePassword

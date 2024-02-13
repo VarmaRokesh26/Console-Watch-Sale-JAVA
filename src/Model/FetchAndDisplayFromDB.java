@@ -144,7 +144,6 @@ public class FetchAndDisplayFromDB {
     // Specific Detail about Watch is to Cearly mention the required watch for the
     // user
     public static String specificWatchDetail(Connection connection, String watchId, int k) throws SQLException {
-        String res = "";
         query = "SELECT * FROM watches WHERE watchId = " + watchId;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -184,21 +183,18 @@ public class FetchAndDisplayFromDB {
 
     // Profile Display for Both Admin and User
     public static String displayProfile(Connection connection) throws SQLException {
-        String res = "";
         String profEmail = profile.get(0);
         String profPass = profile.get(1);
         String profRole = profile.get(2);
-        String query = "";
 
-        if (profRole.equals("admindetails")) {
+        if (profRole.equals("admin"))
             query = "SELECT * FROM admin WHERE mailId = ? AND password = ?";
-        } else if (profRole.equals("userdetails")) {
+        else if (profRole.equals("user"))
             query = "SELECT * FROM user WHERE emailId = ? AND password = ?";
-        } else if (profRole.equals("dealer")) {
-            query = "SELECT * FROM delear WHERE dealerMailId = ? AND password = ?";
-        } else {
+        else if (profRole.equals("dealer"))
+            query = "SELECT * FROM dealer WHERE dealerMailId = ? AND password = ?";
+        else if(profRole.equals("courierservice"))
             query = "SELECT * FROM courierservice WHERE courierServiceMailId = ? AND cSPassword = ?";
-        }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, profEmail);
@@ -207,24 +203,28 @@ public class FetchAndDisplayFromDB {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     if (profRole.equals("admin")) {
+                        String id = resultSet.getString("adminId");
                         String profName = resultSet.getString("adminName");
                         String profmN = resultSet.getString("mobileNumber");
                         String role = resultSet.getString("role");
-                        res = profName + "_" + profmN + "_" + profEmail + "_" + role;
+                        res = id + "_" + profName + "_" + profmN + "_" + profEmail + "_" + role;
                     } else if (profRole.equals("user")) {
+                        String id = resultSet.getString("userId");
                         String profName = resultSet.getString("userName");
                         String profmN = resultSet.getString("mobileNumber");
                         String profAdd = resultSet.getString("address");
-                        res = profName + "_" + profmN + "_" + profEmail + "_" + profAdd;
+                        res = id + "_" + profName + "_" + profmN + "_" + profEmail + "_" + profAdd;
                     } else if (profRole.equals("dealer")) {
+                        String id = resultSet.getString("dealerId");
                         String profName = resultSet.getString("dealerName");
                         String profmN = resultSet.getString("contactNumber");
                         String profAdd = resultSet.getString("location");
-                        res = profName + "_" + profmN + "_" + profEmail + "_" + profAdd;
-                    } else {
+                        res = id + "_" + profName + "_" + profmN + "_" + profEmail + "_" + profAdd;
+                    } else if (profRole.equals("dealer")) {
+                        String id = resultSet.getString("courierServiceId");
                         String profName = resultSet.getString("courierServiceName");
                         String profmN = resultSet.getString("contactNumber");
-                        res = profName + "_" + profmN + "_" + profEmail;
+                        res = id + "_" + profName + "_" + profmN + "_" + profEmail;
                     }
                 }
             }

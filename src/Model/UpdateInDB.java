@@ -14,17 +14,17 @@ public class UpdateInDB {
     private static List<String> profile = CheckFromDB.profileList();
 
     // Update Watches
-    public static void updateWatch(Connection connection, String sName, String brand, double price, String desc,
-            int nOS, int wId) throws SQLException {
-        String updateQuery = "UPDATE watches SET seriesName=?, brand=?, price=?, description=?, numberOfStocks=? WHERE watchId=?";
+    public static void updateWatch(Connection connection, String seriesName, String brand, double price, String desc,
+            int numberOfStocks, int watchId) throws SQLException {
+        String updateQuery = "UPDATE watches SET serieseriesName=?, brand=?, price=?, description=?, numberOfStocks=? WHERE watchId=?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-            preparedStatement.setString(1, sName);
+            preparedStatement.setString(1, seriesName);
             preparedStatement.setString(2, brand);
             preparedStatement.setDouble(3, price);
             preparedStatement.setString(4, desc);
-            preparedStatement.setInt(5, nOS);
-            preparedStatement.setInt(6, wId);
+            preparedStatement.setInt(5, numberOfStocks);
+            preparedStatement.setInt(6, watchId);
             rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
@@ -36,31 +36,32 @@ public class UpdateInDB {
     }
 
     // Place Order By the User
-    public static void placeOrder(Connection connection, String wid, int quantity, double price, String payment)
+    public static void placeOrder(Connection connection, String watchId, int quantity, double price, String paymentMode)
             throws SQLException {
         userIdString = CheckFromDB.userIdForCartOrOrder(connection);
         status = "Processed";
-        String orderQuery = "INSERT INTO orders(orderId, userId, dealerId, watchId, quantity, totalamount, paymentMode, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String orderId = "";
+        String orderQuery = "INSERT INTO orders(orderId, userId, dealerId, watchId, quantity, totalAmount, paymentMode, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         String deliveryDateQuery = "UPDATE orders SET deliveryDate = DATE_ADD(orderDate, INTERVAL 7 DAY) WHERE orderId = ?";
         String stockDecrease = "UPDATE watches SET numberOfStocks = numberOfStocks - ? WHERE watchId = ?";
 
         try (PreparedStatement orderStatement = connection.prepareStatement(orderQuery)) {
 
-            orderStatement.setString(1, userIdString);
-            orderStatement.setString(2, wid);
-            orderStatement.setInt(3, quantity);
-            orderStatement.setDouble(4, (price * quantity));
-            orderStatement.setString(5, payment);
-            orderStatement.setString(6, status);
+            orderStatement.setString(1, orderId);
+            orderStatement.setString(2, userIdString);
+            orderStatement.setString(4, watchId);
+            orderStatement.setInt(5, quantity);
+            orderStatement.setDouble(6, (price * quantity));
+            orderStatement.setString(7, paymentMode);
+            orderStatement.setString(8, status);
 
-            String orderId = "";
-            int affectedRows = orderStatement.executeUpdate();
-            if (affectedRows != 0) {
+            rowsAffected = orderStatement.executeUpdate();
+            if (rowsAffected != 0) {
                 System.out.println("Order Placed Successfull!!");
                 String orderIdQuery = "SELECT orderId FROM orders WHERE userId = ? AND watchId = ?";
                 try (PreparedStatement orderIdSmt = connection.prepareStatement(orderIdQuery)) {
                     orderIdSmt.setString(1, userIdString);
-                    orderIdSmt.setString(2, wid);
+                    orderIdSmt.setString(2, watchId);
                     try (ResultSet resultSet = orderIdSmt.executeQuery()) {
                         while (resultSet.next()) {
                             orderId = resultSet.getString("orderId");
@@ -76,7 +77,7 @@ public class UpdateInDB {
 
             try (PreparedStatement stockPreparedStatement = connection.prepareStatement(stockDecrease)) {
                 stockPreparedStatement.setInt(1, quantity);
-                stockPreparedStatement.setString(2, wid);
+                stockPreparedStatement.setString(2, watchId);
                 stockPreparedStatement.executeUpdate();
             }
         }
@@ -121,7 +122,7 @@ public class UpdateInDB {
                 }
             }
         } else if (profile.get(2).equals("dealer")) {
-            String profileUpdateQueryDealer = "UPDATE dealer SET DealerName = ?, Location = ?, ContactNumber = ?, dealermailid = ? WHERE dealermailid = ? AND password = ?";
+            String profileUpdateQueryDealer = "UPDATE dealer SET dealerName = ?, location = ?, contactNumber = ?, dealerMailId = ? WHERE dealerMailId = ? AND dealerPassword = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(profileUpdateQueryDealer)) {
                 preparedStatement.setString(1, name);
                 preparedStatement.setString(2, mobileNumber);
@@ -158,7 +159,7 @@ public class UpdateInDB {
         }
     }
 
-    // new Password Update Logic for Both Admin and User
+    // New Password Update Logic for Both Admin and User
     public static void changePassword(Connection connection, String newPassword) throws SQLException {
         if (profile.get(2).equals("admin")) {
             String passwordChangeQuery = "UPDATE admin SET password = ? WHERE password = ?";
@@ -166,7 +167,7 @@ public class UpdateInDB {
                 preparedStatement.setString(1, newPassword);
                 preparedStatement.setString(2, profile.get(1));
 
-                int rowsAffected = preparedStatement.executeUpdate();
+                rowsAffected = preparedStatement.executeUpdate();
                 if (rowsAffected > 0) {
                     System.out.println("Password changed Successfully");
                     profile.set(1, newPassword);
@@ -180,7 +181,7 @@ public class UpdateInDB {
                 preparedStatement.setString(1, newPassword);
                 preparedStatement.setString(2, profile.get(1));
 
-                int rowsAffected = preparedStatement.executeUpdate();
+                rowsAffected = preparedStatement.executeUpdate();
                 if (rowsAffected > 0) {
                     System.out.println("Password changed Successfully");
                     profile.set(1, newPassword);
@@ -189,12 +190,12 @@ public class UpdateInDB {
                 }
             }
         } else if (profile.get(2).equals("dealer")) {
-            String passwordChangeQuery = "UPDATE userdetails SET password = ? WHERE password = ?";
+            String passwordChangeQuery = "UPDATE dealer SET dealerPassword = ? WHERE dealerPassword = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(passwordChangeQuery)) {
                 preparedStatement.setString(1, newPassword);
                 preparedStatement.setString(2, profile.get(1));
 
-                int rowsAffected = preparedStatement.executeUpdate();
+                rowsAffected = preparedStatement.executeUpdate();
                 if (rowsAffected > 0) {
                     System.out.println("Password changed Successfully");
                     profile.set(1, newPassword);
@@ -208,7 +209,7 @@ public class UpdateInDB {
                 preparedStatement.setString(1, newPassword);
                 preparedStatement.setString(2, profile.get(1));
 
-                int rowsAffected = preparedStatement.executeUpdate();
+                rowsAffected = preparedStatement.executeUpdate();
                 if (rowsAffected > 0) {
                     System.out.println("Password changed Successfully");
                     profile.set(1, newPassword);
@@ -218,5 +219,4 @@ public class UpdateInDB {
             }
         }
     }
-
 }
