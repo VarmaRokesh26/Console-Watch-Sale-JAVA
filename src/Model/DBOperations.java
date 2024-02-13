@@ -75,7 +75,7 @@ public class DBOperations {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(checkQueryBySelect);
 				ResultSet resultSet = preparedStatement.executeQuery()) {
 			while (resultSet.next()) {
-				String emailFromDB = resultSet.getString("emailid");
+				String emailFromDB = resultSet.getString("dealermailid");
 				String passwordFromDB = resultSet.getString("password");
 				if (emailFromDB.equals(email) && passwordFromDB.equals(password)) {
 					isUser = true;
@@ -98,7 +98,7 @@ public class DBOperations {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(checkQueryBySelect);
 				ResultSet resultSet = preparedStatement.executeQuery()) {
 			while (resultSet.next()) {
-				String emailFromDB = resultSet.getString("emailid");
+				String emailFromDB = resultSet.getString("courierServicemailId");
 				String passwordFromDB = resultSet.getString("password");
 				if (emailFromDB.equals(email) && passwordFromDB.equals(password)) {
 					isUser = true;
@@ -519,8 +519,12 @@ public class DBOperations {
 
 		if (profRole.equals("admindetails")) {
 			query = "SELECT * FROM admindetails WHERE mailid = ? AND password = ?";
-		} else {
+		} else if(profRole.equals("userdetails")) {
 			query = "SELECT * FROM userdetails WHERE emailid = ? AND password = ?";
+		} else if(profRole.equals("dealer")) {
+			query = "SELECT * FROM delear WHERE dealermailid = ? AND password = ?";
+		} else {
+			query = "SELECT * FROM courierservice WHERE courierServicemailId = ? AND password = ?";
 		}
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -533,12 +537,17 @@ public class DBOperations {
 						String profName = resultSet.getString("adminname");
 						String profmN = resultSet.getString("mobilenumber");
 						String role = resultSet.getString("role");
-						res += profName + "_" + profmN + "_" + profEmail + "_" + role;
-					} else {
+						res = profName + "_" + profmN + "_" + profEmail + "_" + role;
+					} else if(profRole.equals("userdetails")) {
 						String profName = resultSet.getString("username");
 						String profmN = resultSet.getString("mobilenumber");
 						String profAdd = resultSet.getString("address");
-						res += profName + "_" + profmN + "_" + profEmail + "_" + profAdd;
+						res = profName + "_" + profmN + "_" + profEmail + "_" + profAdd;
+					} else if(profRole.equals("dealer")) {
+						String profName = resultSet.getString("DealerName");
+						String profmN = resultSet.getString("ContactNumber");
+						String profAdd = resultSet.getString("Location");
+						res = profName + "_" + profmN + "_" + profEmail + "_" + profAdd; 
 					}
 				}
 			}
@@ -574,6 +583,41 @@ public class DBOperations {
 				preparedStatement.setString(2, mobileNumber);
 				preparedStatement.setString(3, emailId);
 				preparedStatement.setString(4, address);
+				preparedStatement.setString(5, profile.get(0));
+				preparedStatement.setString(6, profile.get(1));
+
+				int rowsAffected = preparedStatement.executeUpdate();
+				if (rowsAffected > 0) {
+					System.out.println("Update successful.");
+					profile.set(0, emailId);
+				} else {
+					System.out.println("Updation Unsuccessfull.");
+				}
+			}
+		} else if(profile.get(2).equals("dealer")) {
+			String profileUpdateQueryDealer = "UPDATE dealer SET DealerName = ?, Location = ?, ContactNumber = ?, dealermailid = ? WHERE dealermailid = ? AND password = ?";
+			try (PreparedStatement preparedStatement = connection.prepareStatement(profileUpdateQueryDealer)) {
+				preparedStatement.setString(1, name);
+				preparedStatement.setString(2, mobileNumber);
+				preparedStatement.setString(3, emailId);
+				preparedStatement.setString(4, address);
+				preparedStatement.setString(5, profile.get(0));
+				preparedStatement.setString(6, profile.get(1));
+
+				int rowsAffected = preparedStatement.executeUpdate();
+				if (rowsAffected > 0) {
+					System.out.println("Update successful.");
+					profile.set(0, emailId);
+				} else {
+					System.out.println("Updation Unsuccessfull.");
+				}
+			}
+		} else if(profile.get(2).equals("courierservice")) {
+			String profileUpdateQueryCourier = "UPDATE dealer SET courierServiceName = ?, contactNumber = ?, courierServicemailId = ? WHERE dealermailid = ? AND password = ?";
+			try (PreparedStatement preparedStatement = connection.prepareStatement(profileUpdateQueryCourier)) {
+				preparedStatement.setString(1, name);
+				preparedStatement.setString(2, mobileNumber);
+				preparedStatement.setString(3, emailId);
 				preparedStatement.setString(5, profile.get(0));
 				preparedStatement.setString(6, profile.get(1));
 

@@ -97,7 +97,7 @@ public class UserInterface {
 	public static void orderHistory(String order[]) {
 		System.out.println(
 				"____________________________________________" +
-						  "\nOrder Id       : " + order[0]
+						"\nOrder Id       : " + order[0]
 						+ "\nItem Id        : " + order[1]
 						+ "\nOrdered Date   : " + order[2]
 						+ "\nDelivery Date  : " + order[3]

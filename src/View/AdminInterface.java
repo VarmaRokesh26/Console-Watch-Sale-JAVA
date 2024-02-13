@@ -23,7 +23,7 @@ public class AdminInterface {
 
 	public static void actionMenu() {
 		System.out.print(
-					"\n  ____________________________________________________"
+				"\n  ____________________________________________________"
 						+ "\n|| Enter                                              ||"
 						+ "\n|| A -> Add new Watch/ Admin/ Dealer/ CourierServices ||"
 						+ "\n|| C -> Delete Watch with 0 stocks                    ||"
@@ -68,7 +68,7 @@ public class AdminInterface {
 						+ "\n--Description                    : " + description
 						+ "\n--Number of Stocks available     : " + number_of_stocks);
 	}
-	
+
 	public static void insertOption() {
 		System.out.print(
 				"  _________________________________"

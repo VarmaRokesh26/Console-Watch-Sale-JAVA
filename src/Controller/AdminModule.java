@@ -267,17 +267,17 @@ public class AdminModule {
 	}
 
 	public static void displayAsRequired(Connection con, Scanner sc) {
-		while(true) {
+		while (true) {
 			AdminInterface.optionsForAdmin();
 			char sh = sc.next().charAt(0);
 			if (sh == '1') {
 				try {
 					DBOperations.selectAllWatches(con, -1);
-				} catch(Exception e) {
+				} catch (Exception e) {
 					System.out.println(e.toString());
 				}
 				break;
-			} else if(sh == '2') {
+			} else if (sh == '2') {
 				displayAdminDealerCourier(con, sh);
 				break;
 			} else if (sh == '3') {
@@ -286,7 +286,7 @@ public class AdminModule {
 			} else if (sh == '4') {
 				displayAdminDealerCourier(con, sh);
 				break;
-			} else if(sh == 'B') {
+			} else if (sh == 'B') {
 				AdminInterface.adminInterface(con, null, sc, sh);
 			} else
 				System.out.println("Enter a valid Option");
@@ -309,10 +309,9 @@ public class AdminModule {
 			} else if (add == '4') {
 				addNewCourierService(con, sc);
 				break;
-			} else if(add == 'B') {
+			} else if (add == 'B') {
 				AdminInterface.adminInterface(con, null, sc, add);
-			}
-			else
+			} else
 				System.out.println("Enter a valid Option");
 		}
 	}
@@ -320,10 +319,11 @@ public class AdminModule {
 	public static void displayAdminDealerCourier(Connection con, int sh) {
 		try {
 			DBOperations.displayAdminDealerCourier(con, sh);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
 	}
+
 	public static void addNewAdmin(Connection con, Scanner sc) {
 
 		while (true) {
@@ -401,14 +401,14 @@ public class AdminModule {
 			else
 				System.out.println("Enter a valid Dealer Name");
 		}
-		
+
 		while (true) {
 			System.out.print("Enter Dealer Contact Number : ");
 			contactNumber = sc.nextLine();
 			if (Validation.validateMobileNumber(contactNumber))
-			break;
+				break;
 			else
-			System.out.println("<---Enter a valid mobile Number--->");
+				System.out.println("<---Enter a valid mobile Number--->");
 		}
 
 		while (true) {
@@ -420,14 +420,15 @@ public class AdminModule {
 				System.out.println("<---Enter a Location--->");
 		}
 
-		while(true) {
+		while (true) {
 			System.out.print("Enter the Dealer MailId     : ");
 			dealerMailId = sc.nextLine();
-			if(Validation.validateEmail(dealerMailId))
+			if (Validation.validateEmail(dealerMailId))
 				break;
-			else	System.out.println("<---Enter a valid Email--->");
+			else
+				System.out.println("<---Enter a valid Email--->");
 		}
-		
+
 		while (true) {
 			System.out.print("Enter Password              : ");
 			dealerPassword = sc.nextLine();
@@ -474,12 +475,13 @@ public class AdminModule {
 				System.out.println("Enter a valid Contact Number");
 		}
 
-		while(true) {
+		while (true) {
 			System.out.print("Enter the Dealer MailId     : ");
 			couriermailId = sc.nextLine();
-			if(Validation.validateEmail(couriermailId))
+			if (Validation.validateEmail(couriermailId))
 				break;
-			else	System.out.println("<---Enter a valid Email--->");
+			else
+				System.out.println("<---Enter a valid Email--->");
 		}
 
 		while (true) {
@@ -499,11 +501,13 @@ public class AdminModule {
 						"<---Password should contain at least 8 characters, 1 UpperCase, 1 LowerCase, 1 Numbers, 1 SpecialCharacters--->");
 		}
 
-		CourierService courierService = new CourierService(courierServiceName, courierServiceNumber, couriermailId, courierPasword);
+		CourierService courierService = new CourierService(courierServiceName, courierServiceNumber, couriermailId,
+				courierPasword);
 
 		try {
 			DBOperations.insertNewCourierServiceDetails(connection, courierService.getCourierServiceName(),
-					courierService.getCourierServiceNumber(), courierService.getCourierServiceMailId(), courierService.getPassword());
+					courierService.getCourierServiceNumber(), courierService.getCourierServiceMailId(),
+					courierService.getPassword());
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}

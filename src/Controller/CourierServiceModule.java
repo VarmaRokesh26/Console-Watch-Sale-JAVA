@@ -11,6 +11,7 @@ public class CourierServiceModule {
     public static char getWhatToDo(Scanner sc) {
         return sc.next().charAt(0);
     }
+
     public static void courierServiceTask(Connection con, String[] args, Scanner sc, char operation) {
         switch(operation) {
             case 'S':
@@ -57,7 +58,7 @@ public class CourierServiceModule {
 
 			while (true) {
 				CourierServiceInterface.actionMenu();
-				operation = AdminModule.getWhatToDo(sc);
+				operation = getWhatToDo(sc);
 				courierServiceTask(con, args, sc, operation);
 			}
 		} catch (Exception e) {
