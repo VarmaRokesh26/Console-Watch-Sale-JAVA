@@ -95,15 +95,17 @@ public class UserInterface {
 	}
 
 	public static void orderHistory(String order[]) {
+		String s[] = order[3].split(" ");
+		String t[] = order[2].split(" ");
 		System.out.println(
 				"____________________________________________" +
 						"\nOrder Id       : " + order[0]
 						+ "\nItem Id        : " + order[1]
-						+ "\nOrdered Date   : " + order[2]
-						+ "\nDelivery Date  : " + order[3]
+						+ "\nOrdered Date   : " + t[0]
+						+ "\nExpected Date  : " + s[0]
 						+ "\nQuantity       : " + order[4]
 						+ "\nStatus         : " + order[5]
-						+ "\nPrice          : " + order[6]);
+						+ "\nPrice          : " + order[6]);				
 	}
 
 	public static void cartWork() {

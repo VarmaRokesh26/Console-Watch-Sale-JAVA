@@ -128,10 +128,10 @@ public class DBOperations {
 
 			rowsAffected = preparedStatement.executeUpdate();
 			if (rowsAffected >= 1) {
-				System.out.println("Data Inserted!!");
-				res = "[" + name + ", " + brand + ", " + price + ", " + description + ", " + number_of_stocks + "]";
+				System.out.println("<---Data Inserted--->");
+				// res = "[" + name + ", " + brand + ", " + price + ", " + description + ", " + number_of_stocks + "]";
 			}
-			System.out.println("Inserted Data : " + res);
+			// System.out.println("Inserted Data : " + res);
 		}
 	}
 
@@ -230,9 +230,9 @@ public class DBOperations {
 				else {
 					res = orderId+"_"+watchId+"_"+orderdate+"_"+deliveryDate+"_"+quantity+"_"+price+"_"+status;
 					UserInterface.orderHistory(res.split("_"));
-					System.out.println("____________________________________________");
 				}
 			}
+			System.out.println("____________________________________________");
 		}
 		return res.split("_");
 	}
@@ -418,7 +418,7 @@ public class DBOperations {
 
 	// Display Cart
 	public static void showMyCart(Connection connection) throws SQLException {
-		String cartViewQuery = "SELECT * FROM cart WHERE userid = ?";
+		String cartViewQuery = "SELECT cartDetails FROM cart WHERE userid = ?";
 		userIdString = userIdForCartOrOrder(connection);
 		try (PreparedStatement cartViewPreparedStatement = connection.prepareStatement(cartViewQuery)) {
 			cartViewPreparedStatement.setString(1, userIdString);
@@ -426,6 +426,7 @@ public class DBOperations {
 				while (cartResultSet.next()) {
 					UserInterface.shoppingCart(cartResultSet.getString("cartDetails"));
 				}
+				System.out.println("____________________________________________");
 			}
 		}
 	}

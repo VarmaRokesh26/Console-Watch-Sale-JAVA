@@ -164,7 +164,7 @@ public class AdminModule {
 
 			case 'S':
 			case 's': {
-				displayAsRequired(con, sc);
+				displayAsRequired(con, args, sc);
 				break;
 			}
 
@@ -266,7 +266,7 @@ public class AdminModule {
 		}
 	}
 
-	public static void displayAsRequired(Connection con, Scanner sc) {
+	public static void displayAsRequired(Connection con, String[] args, Scanner sc) {
 		while (true) {
 			AdminInterface.optionsForAdmin();
 			char sh = sc.next().charAt(0);
@@ -276,18 +276,14 @@ public class AdminModule {
 				} catch (Exception e) {
 					System.out.println(e.toString());
 				}
-				break;
 			} else if (sh == '2') {
-				displayAdminDealerCourier(con, sh);
-				break;
+				displayAdminDealerCourier(con, Character.getNumericValue(sh));
 			} else if (sh == '3') {
-				displayAdminDealerCourier(con, sh);
-				break;
+				displayAdminDealerCourier(con, Character.getNumericValue(sh));
 			} else if (sh == '4') {
-				displayAdminDealerCourier(con, sh);
-				break;
+				displayAdminDealerCourier(con, Character.getNumericValue(sh));
 			} else if (sh == 'B') {
-				AdminInterface.adminInterface(con, null, sc, sh);
+				AdminInterface.adminInterface(con, args, sc, sh);
 			} else
 				System.out.println("Enter a valid Option");
 		}

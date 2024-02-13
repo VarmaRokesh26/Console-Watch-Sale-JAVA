@@ -19,7 +19,7 @@ public class MainModule {
 
         while (true) {
             System.out.println("-----------------------------------------------------------------");
-            System.out.print("For New User Type 0 or Type 1 for Login : ");
+            System.out.print("For New User Type 0 or Type 1 if already has an account? : ");
             loginOrSignUp = sc.nextInt();
             sc.nextLine();
 

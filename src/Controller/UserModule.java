@@ -277,7 +277,6 @@ public class UserModule {
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
-		System.out.println("____________________________________________");
 	}
 
 	// Method to Edit Profle
