@@ -1,6 +1,7 @@
 package Controller;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 import Model.*;
 import View.AdminInterface;
@@ -9,6 +10,7 @@ import Model.DBOperations.*;
 
 public class AdminModule {
 
+	private static List<String> profile = CheckFromDB.profileList();
 	// Variables for Watch Details
 	private static String watchId;
 	private static String seriesName;
@@ -18,6 +20,7 @@ public class AdminModule {
 	private static int numberOfStocks;
 
 	// Variables for Dealer Details
+	private static String dealerId;
 	private static String dealerName;
 	private static String dealerLocation;
 	private static String contactNumber;
@@ -25,14 +28,16 @@ public class AdminModule {
 	private static String dealerPassword;
 
 	// Variables for Admin Details
+	private static String adminId;
 	private static String name;
 	private static String mobileNumber;
 	private static String mailId;
 	private static String password;
 	private static String confirmPassword;
 	private static String adminRole;
-
+	
 	// variables for CourierService Details
+	private static String courierServiceId;
 	private static String courierServiceName;
 	private static String courierServiceNumber;
 	private static String couriermailId;
@@ -43,14 +48,10 @@ public class AdminModule {
 	}
 
 	// New watch Details inserting logic
-	public static Watch getNewWatchDetails(Scanner sc) {
+	public static Watch getNewWatchDetails(Connection con, Scanner sc) throws SQLException {
 		System.out.println("------Enter the watch details to be added:------");
 
-		while(true) {
-			watchId = sc.next();
-			if(watchId.isEmpty())	
-				break;
-		}
+		watchId = UIDGenerator.IdGenerator(con, "watches");
 
 		while (true) {
 			System.out.print("Enter series Name                 :");
@@ -146,7 +147,7 @@ public class AdminModule {
 		return new Watch(watchId, seriesName, brand, price, description, numberOfStocks);
 	}
 
-	public static void performAdminTask(Connection con, String[] args, Scanner sc, char operation) {
+	public static void performAdminTask(Connection con, String[] args, Scanner sc, char operation) throws SQLException {
 
 		switch (operation) {
 
@@ -212,8 +213,8 @@ public class AdminModule {
 		}
 	}
 
-	public static void insertWatches(Connection con, Scanner sc) {
-		Watch newWatch = getNewWatchDetails(sc);
+	public static void insertWatches(Connection con, Scanner sc) throws SQLException {
+		Watch newWatch = getNewWatchDetails(con, sc);
 
 		if (con != null) {
 			try {
@@ -226,9 +227,9 @@ public class AdminModule {
 	}
 
 	public static void updateWatchDetails(Connection con, Scanner sc) {
-		watchId = AdminModule.getIdToUpdateOrDelete(sc);
+		watchId = getIdToUpdateOrDelete(sc);
 		
-		Watch toUpdate = AdminModule.getNewWatchDetails(sc);
+		Watch toUpdate = getwacthDetailsToUpdate(sc);
 		if (con != null && !watchId.isEmpty()) {
 			try {
 				System.out.println("Enter Watch series name, brand, price, number of stocks");
@@ -241,7 +242,7 @@ public class AdminModule {
 	}
 
 	public static void deleteWatch(Connection con, Scanner sc) {
-		watchId = AdminModule.getIdToUpdateOrDelete(sc);
+		watchId = getIdToUpdateOrDelete(sc);
 
 		if (con != null && !watchId.isEmpty()) {
 			try {
@@ -254,13 +255,13 @@ public class AdminModule {
 
 	public static void deletemanyWatches(Connection con) {
 		try {
-			DBOperations.deleteWatchByNOS(con);
+			DeleteFromDB.deleteWatchByNOS(con);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
 	}
 
-	public static void displayAsRequired(Connection con, String[] args, Scanner sc) {
+	public static void displayAsRequired(Connection con, String[] args, Scanner sc) throws SQLException {
 		while (true) {
 			AdminInterface.optionsForAdmin();
 			char sh = sc.next().charAt(0);
@@ -283,7 +284,7 @@ public class AdminModule {
 		}
 	}
 
-	public static void addRespectiveDetails(Connection con, Scanner sc) {
+	public static void addRespectiveDetails(Connection con, Scanner sc) throws SQLException {
 		AdminInterface.insertOption();
 		while (true) {
 			char add = sc.next().charAt(0);
@@ -308,14 +309,17 @@ public class AdminModule {
 
 	public static void displayAdminDealerCourier(Connection con, int sh) {
 		try {
-			DBOperations.displayAdminDealerCourierDB(con, sh);
+			FetchAndDisplayFromDB.displayAdminDealerCourierDB(con, sh);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
 	}
 
-	public static void addNewAdmin(Connection con, Scanner sc) {
+	public static void addNewAdmin(Connection con, Scanner sc) throws SQLException {
 		System.out.println("<---Enter the Details of the Employee to Add as Admin--->");
+		
+		adminId = UIDGenerator.IdGenerator(con, "admin");
+
 		while (true) {
 			System.out.print("Name                 : ");
 			name = sc.next() + sc.nextLine();
@@ -358,7 +362,7 @@ public class AdminModule {
 			password = sc.nextLine();
 			if (Validation.validatePassword(password)) {
 				while (true) {
-					System.out.print("Re-enter Password   : ");
+					System.out.print("Re-enter Password    : ");
 					confirmPassword = sc.nextLine();
 					if (password.equals(confirmPassword)) {
 						break;
@@ -370,10 +374,10 @@ public class AdminModule {
 						"<---Password should contain at least 8 characters, 1 UpperCase, 1 LowerCase, 1 Numbers, 1 SpecialCharacters--->");
 
 		}
-		Admin admin = new Admin(name, mobileNumber, mailId, adminRole, confirmPassword);
+		Admin admin = new Admin(name, adminId, mobileNumber, mailId, adminRole, confirmPassword);
 		if (con != null) {
 			try {
-				DBOperations.insertAdminDetails(con, admin.getAdminName(), admin.getAdminMobileNumber(),
+				InsertInDB.insertAdminDetails(con, admin.getAdminId(), admin.getAdminName(), admin.getAdminMobileNumber(),
 						admin.getAdminMailid(), admin.getAdminRole(), admin.getPassword());
 			} catch (Exception e) {
 				System.out.println(e.toString());
@@ -381,8 +385,9 @@ public class AdminModule {
 		}
 	}
 
-	public static void addNewDealer(Connection connection, Scanner sc) {
+	public static void addNewDealer(Connection connection, Scanner sc) throws SQLException {
 
+		dealerId = UIDGenerator.IdGenerator(connection, "dealer");
 		while (true) {
 			System.out.print("Enter Dealer Name           : ");
 			dealerName = sc.next() + sc.nextLine();
@@ -436,17 +441,20 @@ public class AdminModule {
 						"<---Password should contain at least 8 characters, 1 UpperCase, 1 LowerCase, 1 Numbers, 1 SpecialCharacters--->");
 		}
 
-		Dealer dealer = new Dealer(dealerName, dealerMailId, dealerLocation, contactNumber, dealerPassword);
+		Dealer dealer = new Dealer(dealerId, dealerName, dealerMailId, dealerLocation, contactNumber, dealerPassword);
 
 		try {
-			DBOperations.insertNewDealerDetails(connection, dealer.getDealerName(), dealer.getDealerLocation(),
-					dealer.getContactNumer(), dealer.getDealerMailid(), dealer.getPassWord());
+			InsertInDB.insertNewDealerDetails(connection, dealer.getDealerId(), dealer.getDealerName(), dealer.getDealerLocation(),
+					dealer.getContactNumer(), dealer.getDealerMailid(), dealer.getPassword());
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
 	}
 
-	public static void addNewCourierService(Connection connection, Scanner sc) {
+	public static void addNewCourierService(Connection connection, Scanner sc) throws SQLException {
+		
+		courierServiceId = UIDGenerator.IdGenerator(connection, "courierservice");
+
 		while (true) {
 			System.out.print("Enter Courier Service Name  :");
 			courierServiceName = sc.next() + sc.nextLine();
@@ -491,11 +499,11 @@ public class AdminModule {
 						"<---Password should contain at least 8 characters, 1 UpperCase, 1 LowerCase, 1 Numbers, 1 SpecialCharacters--->");
 		}
 
-		CourierService courierService = new CourierService(courierServiceName, courierServiceNumber, couriermailId,
+		CourierService courierService = new CourierService(courierServiceId, courierServiceName, courierServiceNumber, couriermailId,
 				courierPasword);
 
 		try {
-			DBOperations.insertNewCourierServiceDetails(connection, courierService.getCourierServiceName(),
+			InsertInDB.insertNewCourierServiceDetails(connection, courierService.getCourierServiceId(), courierService.getCourierServiceName(),
 					courierService.getCourierServiceNumber(), courierService.getCourierServiceMailId(),
 					courierService.getPassword());
 		} catch (Exception e) {
@@ -505,7 +513,7 @@ public class AdminModule {
 
 	public static void viewAdminProfile(Connection con, String[] args, Scanner sc, char operation) {
 		try {
-			String profile[] = DBOperations.displayProfile(con).split("_");
+			String profile[] = FetchAndDisplayFromDB.displayProfile(con).split("_");
 			AdminInterface.profile(profile);
 
 			while (true) {
@@ -545,8 +553,20 @@ public class AdminModule {
 			else
 				System.out.println("Enter a valid emailId");
 		}
+
+		while (true) {
+			System.out.print("Enter your Password : ");
+			password = sc.nextLine();
+			if (Validation.validatePassword(password)) {
+				if(profile.get(1).equals(password))
+					break;
+			}
+			else
+				System.out.println("Password is Incorrect");
+		}
+
 		try {
-			DBOperations.updateProfile(con, name, mobileNumber, mailId, "");
+			UpdateInDB.updateProfile(con, name, mobileNumber, mailId, "");
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -559,7 +579,7 @@ public class AdminModule {
 			String currentPassword = sc.next().trim();
 			sc.nextLine();
 			try {
-				if (DBOperations.checkPassword(con, currentPassword)) {
+				if (CheckFromDB.checkPassword(con, currentPassword)) {
 					while (true) {
 						System.out.print("Enter new Password           : ");
 						String newPassword = sc.next();
@@ -570,7 +590,7 @@ public class AdminModule {
 								String reenterPassword = sc.nextLine();
 								if (newPassword.equals(reenterPassword)) {
 									try {
-										DBOperations.changePassword(con, newPassword);
+										UpdateInDB.changePassword(con, newPassword);
 									} catch (Exception e) {
 										System.out.println(e.toString());
 									}
@@ -597,7 +617,7 @@ public class AdminModule {
 	public static void logOut(Connection con, String[] args) {
 
 		try {
-			DBOperations.clearProfile(con);
+			DeleteFromDB.clearProfile(con);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}

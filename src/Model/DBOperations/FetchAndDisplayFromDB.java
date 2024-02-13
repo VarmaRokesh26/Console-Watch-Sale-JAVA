@@ -31,10 +31,6 @@ public class FetchAndDisplayFromDB {
                 double price = resultSet.getDouble("price");
                 String description = resultSet.getString("description");
                 int numberOfStocks = resultSet.getInt("numberOfStocks");
-
-                // if (id.equals(watchId)) {
-                //     break;
-                // }
                 if ("-1".equals(watchId)) {
                     AdminInterface.displayWatches(id, name, brand, price, description, numberOfStocks);
                 }
@@ -94,6 +90,8 @@ public class FetchAndDisplayFromDB {
                     String role = resultSet.getString("role");
 
                     res = adminId + "_" + name + "_" + number + "_" + mail + "_" + role;
+                    if(res.isEmpty())
+                        System.out.println("No Admins");
                     AdminInterface.profile(res.split("_"));
                 } else if (slNo == 3) {
                     String dealerId = resultSet.getString("dealerId");
@@ -103,6 +101,8 @@ public class FetchAndDisplayFromDB {
                     String mailId = resultSet.getString("dealerMailId");
 
                     res = dealerId + "_" + name + "_" + location + "_" + number + "_" + mailId;
+                    if(res.isEmpty())
+                        System.out.println("No Dealers");
                     DealerInterface.displayDealers(res.split("_"));
                 } else if (slNo == 4) {
                     String courierServiceId = resultSet.getString("courierServiceId");
@@ -110,6 +110,8 @@ public class FetchAndDisplayFromDB {
                     String number = resultSet.getString("contactNumber");
                     String mailId = resultSet.getString("courierServiceMailId");
                     res = courierServiceId + "_" + name + "_" + number + "_" + mailId;
+                    if(res.isEmpty())
+                        System.out.println("No Courier Services");
                     CourierServiceInterface.courierDetailDisplay(res.split("_"));
                 }
             }

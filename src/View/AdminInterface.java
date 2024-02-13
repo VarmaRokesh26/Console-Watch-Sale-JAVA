@@ -6,7 +6,7 @@ import Controller.*;
 
 public class AdminInterface {
 
-	public static void adminInterface(Connection con, String[] args, Scanner sc, int entry) {
+	public static void adminInterface(Connection con, String[] args, Scanner sc, int entry) throws SQLException {
 
 		if (entry == 0)
 			welcomeMsg();

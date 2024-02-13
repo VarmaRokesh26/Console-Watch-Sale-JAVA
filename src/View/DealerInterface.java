@@ -1,13 +1,14 @@
 package View;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import Controller.AdminModule;
 
 public class DealerInterface {
 
-    public static void dealerInterface(Connection con, String[] args, Scanner sc, int entry) {
+    public static void dealerInterface(Connection con, String[] args, Scanner sc, int entry) throws SQLException {
         while (true) {
             actionMenu();
             char operation = AdminModule.getWhatToDo(sc);

@@ -45,7 +45,7 @@ public class CourierServiceModule {
     public static void showOrders(Connection con) {
 
         try {
-            DBOperations.viewOrders(con, 0); 
+            FetchAndDisplayFromDB.viewOrders(con, 0); 
         } catch(Exception e) {
             System.out.println(e.toString());
         }
@@ -53,7 +53,7 @@ public class CourierServiceModule {
 
     public static void viewAdminProfile(Connection con, String[] args, Scanner sc, char operation) {
 		try {
-			String profile[] = DBOperations.displayProfile(con).split("_");
+			String profile[] = FetchAndDisplayFromDB.displayProfile(con).split("_");
 			CourierServiceInterface.courierDetailDisplay(profile);
 
 			while (true) {

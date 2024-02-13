@@ -1,6 +1,7 @@
 package Controller;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import Model.DBOperations.*;
@@ -12,7 +13,7 @@ public class DealerModule {
     public static char getWhatToDo(Scanner sc) {
         return sc.next().charAt(0);
     }
-    public static void dealerTask(Connection con, String[] args, Scanner sc, char operation) {
+    public static void dealerTask(Connection con, String[] args, Scanner sc, char operation) throws SQLException {
         switch(operation) {
             case 'S':
 			case 's': {
@@ -45,7 +46,7 @@ public class DealerModule {
     public static void showOrders(Connection con) {
 
         try {
-            DBOperations.viewOrders(con, 0); 
+            FetchAndDisplayFromDB.viewOrders(con, 0); 
         } catch(Exception e) {
             System.out.println(e.toString());
         }
@@ -53,7 +54,7 @@ public class DealerModule {
 
     public static void viewAdminProfile(Connection con, String[] args, Scanner sc, char operation) {
 		try {
-			String profile[] = DBOperations.displayProfile(con).split("_");
+			String profile[] = FetchAndDisplayFromDB.displayProfile(con).split("_");
 			CourierServiceInterface.courierDetailDisplay(profile);
 
 			while (true) {

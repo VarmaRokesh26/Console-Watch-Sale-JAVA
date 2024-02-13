@@ -39,11 +39,11 @@ public class InsertInDB {
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
             preparedStatement.setString(1, adminId);
-            preparedStatement.setString(1, adminName);
-            preparedStatement.setString(2, mobileNumber);
-            preparedStatement.setString(3, mailId);
-            preparedStatement.setString(4, adminRole);
-            preparedStatement.setString(5, password);
+            preparedStatement.setString(2, adminName);
+            preparedStatement.setString(3, mobileNumber);
+            preparedStatement.setString(4, mailId);
+            preparedStatement.setString(5, adminRole);
+            preparedStatement.setString(6, password);
 
             rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected >= 1) {
@@ -61,11 +61,11 @@ public class InsertInDB {
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
             preparedStatement.setString(1, userId);
-            preparedStatement.setString(1, userName);
-            preparedStatement.setString(2, mobileNumber);
-            preparedStatement.setString(3, emailId);
-            preparedStatement.setString(4, address);
-            preparedStatement.setString(5, password);
+            preparedStatement.setString(2, userName);
+            preparedStatement.setString(3, mobileNumber);
+            preparedStatement.setString(4, emailId);
+            preparedStatement.setString(5, address);
+            preparedStatement.setString(6, password);
 
             rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected >= 1)
@@ -74,16 +74,18 @@ public class InsertInDB {
     }
 
     // Insert Logic for New Dealer
-    public static void insertNewDealerDetails(Connection connection, String dealername, String dealerLocation,
+    public static void insertNewDealerDetails(Connection connection, String dealerId, String dealername, String dealerLocation,
             String contactNumber, String dealerMailId, String dealerPassword) throws SQLException {
-        String insertQuery = "INSERT INTO dealer (dealerName, location, contactNumber, dealerMailId, dealerPassword) VALUES (?, ?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO dealer (dealerId, dealerName, location, contactNumber, dealerMailId, dealerPassword) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
-            preparedStatement.setString(1, dealername);
-            preparedStatement.setString(2, dealerLocation);
-            preparedStatement.setString(3, contactNumber);
-            preparedStatement.setString(4, dealerMailId);
-            preparedStatement.setString(5, dealerPassword);
+           
+            preparedStatement.setString(1, dealerId);
+            preparedStatement.setString(2, dealername);
+            preparedStatement.setString(3, dealerLocation);
+            preparedStatement.setString(4, contactNumber);
+            preparedStatement.setString(5, dealerMailId);
+            preparedStatement.setString(6, dealerPassword);
 
             rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected >= 1)
@@ -95,9 +97,10 @@ public class InsertInDB {
     public static void insertNewCourierServiceDetails(Connection connection, String courierServiceId, String courierServiceName,
             String courierServiceNumber, String courierServicemailId, String courierServicePassword)
             throws SQLException {
-        String insertQuery = "INSERT INTO courierservice (courierServiceId, courierServiceName, contactNumber, courierServiceMailId, cSpassword) VALUES (?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO courierservice (courierServiceId, courierServiceName, contactNumber, courierServiceMailId, cSpassword) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+            
             preparedStatement.setString(1, courierServiceId);
             preparedStatement.setString(2, courierServiceName);
             preparedStatement.setString(3, courierServiceNumber);
