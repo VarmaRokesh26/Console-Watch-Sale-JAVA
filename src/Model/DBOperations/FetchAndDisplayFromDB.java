@@ -1,4 +1,4 @@
-package Model;
+package Model.DBOperations;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +19,7 @@ public class FetchAndDisplayFromDB {
     private static List<String> profile = CheckFromDB.profileList();
 
     // Display Watches
-    public static void selectAllWatches(Connection connection, String wId) throws SQLException {
+    public static void selectAllWatches(Connection connection, String watchId) throws SQLException {
         String selectQuery = "SELECT * FROM watches";
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
                 ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -32,10 +32,10 @@ public class FetchAndDisplayFromDB {
                 String description = resultSet.getString("description");
                 int numberOfStocks = resultSet.getInt("numberOfStocks");
 
-                if (id.equals(wId)) {
-                    break;
-                }
-                if ("-1".equals(wId)) {
+                // if (id.equals(watchId)) {
+                //     break;
+                // }
+                if ("-1".equals(watchId)) {
                     AdminInterface.displayWatches(id, name, brand, price, description, numberOfStocks);
                 }
             }

@@ -2,8 +2,8 @@ package Controller;
 
 import java.sql.Connection;
 import java.util.Scanner;
+import Model.DBOperations.*;
 
-import Model.DBOperations;
 import View.CourierServiceInterface;
 
 public class CourierServiceModule {

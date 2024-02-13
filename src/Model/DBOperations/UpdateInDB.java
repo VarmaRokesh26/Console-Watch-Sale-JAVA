@@ -1,4 +1,4 @@
-package Model;
+package Model.DBOperations;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +15,7 @@ public class UpdateInDB {
 
     // Update Watches
     public static void updateWatch(Connection connection, String seriesName, String brand, double price, String desc,
-            int numberOfStocks, int watchId) throws SQLException {
+            int numberOfStocks, String watchId) throws SQLException {
         String updateQuery = "UPDATE watches SET serieseriesName=?, brand=?, price=?, description=?, numberOfStocks=? WHERE watchId=?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
@@ -24,7 +24,7 @@ public class UpdateInDB {
             preparedStatement.setDouble(3, price);
             preparedStatement.setString(4, desc);
             preparedStatement.setInt(5, numberOfStocks);
-            preparedStatement.setInt(6, watchId);
+            preparedStatement.setString(6, watchId);
             rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {

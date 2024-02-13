@@ -5,15 +5,17 @@ import java.util.*;
 import Model.*;
 import View.AdminInterface;
 import Main.MainModule;
+import Model.DBOperations.*;
 
 public class AdminModule {
 
 	// Variables for Watch Details
-	private static String sname;
+	private static String watchId;
+	private static String seriesName;
 	private static String brand;
 	private static double price;
 	private static String description;
-	private static int number_of_stocks;
+	private static int numberOfStocks;
 
 	// Variables for Dealer Details
 	private static String dealerName;
@@ -35,9 +37,7 @@ public class AdminModule {
 	private static String courierServiceNumber;
 	private static String couriermailId;
 	private static String courierPasword;
-
-	private static int wId;
-
+	
 	public static char getWhatToDo(Scanner sc) {
 		return sc.next().charAt(0);
 	}
@@ -46,10 +46,16 @@ public class AdminModule {
 	public static Watch getNewWatchDetails(Scanner sc) {
 		System.out.println("------Enter the watch details to be added:------");
 
+		while(true) {
+			watchId = sc.next();
+			if(watchId.isEmpty())	
+				break;
+		}
+
 		while (true) {
 			System.out.print("Enter series Name                 :");
-			sname = sc.next() + sc.nextLine();
-			if (!sname.equals(""))
+			seriesName = sc.next() + sc.nextLine();
+			if (!seriesName.equals(""))
 				break;
 		}
 
@@ -76,26 +82,26 @@ public class AdminModule {
 
 		System.out.print("Enter amount of stocks available  :");
 		while (true) {
-			number_of_stocks = sc.nextInt();
+			numberOfStocks = sc.nextInt();
 			sc.nextLine();
-			if (number_of_stocks >= 0)
+			if (numberOfStocks >= 0)
 				break;
 		}
 
-		return new Watch(sname, brand, price, description, number_of_stocks);
+		return new Watch(watchId, seriesName, brand, price, description, numberOfStocks);
 	}
 
-	public static int getIdToUpdateOrDelete(Scanner sc) {
+	public static String getIdToUpdateOrDelete(Scanner sc) {
 
 		while (true) {
 			System.out.print("Enter the required Id to update : ");
-			wId = sc.nextInt();
-			if (wId != 0)
+			watchId = sc.next();
+			if (!watchId.isEmpty())
 				break;
 			else
 				System.out.println("Enter the valid Id");
 		}
-		return wId;
+		return watchId;
 	}
 
 	public static Watch getwacthDetailsToUpdate(Scanner sc) {
@@ -103,8 +109,8 @@ public class AdminModule {
 
 		while (true) {
 			System.out.print("Enter series Name                 :");
-			sname = sc.next().trim() + sc.nextLine();
-			if (!sname.equals(""))
+			seriesName = sc.next().trim() + sc.nextLine();
+			if (!seriesName.equals(""))
 				break;
 		}
 
@@ -131,13 +137,13 @@ public class AdminModule {
 
 		System.out.print("Enter amount of stocks available  :");
 		while (true) {
-			number_of_stocks = sc.nextInt();
+			numberOfStocks = sc.nextInt();
 			sc.nextLine();
-			if (number_of_stocks >= 0)
+			if (numberOfStocks >= 0)
 				break;
 		}
 
-		return new Watch(sname, brand, price, description, number_of_stocks);
+		return new Watch(watchId, seriesName, brand, price, description, numberOfStocks);
 	}
 
 	public static void performAdminTask(Connection con, String[] args, Scanner sc, char operation) {
@@ -211,7 +217,7 @@ public class AdminModule {
 
 		if (con != null) {
 			try {
-				DBOperations.insertNewWatch(con, newWatch.getName(), newWatch.getBrand(),
+				InsertInDB.insertNewWatch(con, newWatch.getWatchId(), newWatch.getName(), newWatch.getBrand(),
 						newWatch.getPrice(), newWatch.getDescription(), newWatch.getNumberOfStocks());
 			} catch (Exception e) {
 				System.out.println(e.toString());
@@ -220,14 +226,14 @@ public class AdminModule {
 	}
 
 	public static void updateWatchDetails(Connection con, Scanner sc) {
-		wId = AdminModule.getIdToUpdateOrDelete(sc);
-
+		watchId = AdminModule.getIdToUpdateOrDelete(sc);
+		
 		Watch toUpdate = AdminModule.getNewWatchDetails(sc);
-		if (con != null && wId != 0) {
+		if (con != null && !watchId.isEmpty()) {
 			try {
 				System.out.println("Enter Watch series name, brand, price, number of stocks");
-				DBOperations.updateWatch(con, toUpdate.getName(), toUpdate.getBrand(),
-						toUpdate.getPrice(), toUpdate.getDescription(), toUpdate.getNumberOfStocks(), wId);
+				UpdateInDB.updateWatch(con, toUpdate.getName(), toUpdate.getBrand(),
+						toUpdate.getPrice(), toUpdate.getDescription(), toUpdate.getNumberOfStocks(), watchId);
 			} catch (Exception e) {
 				System.out.println(e.toString());
 			}
@@ -235,11 +241,11 @@ public class AdminModule {
 	}
 
 	public static void deleteWatch(Connection con, Scanner sc) {
-		wId = AdminModule.getIdToUpdateOrDelete(sc);
+		watchId = AdminModule.getIdToUpdateOrDelete(sc);
 
-		if (con != null && wId != 0) {
+		if (con != null && !watchId.isEmpty()) {
 			try {
-				DBOperations.deleteWatch(con, wId);
+				DeleteFromDB.deleteWatch(con, watchId);
 			} catch (Exception e) {
 				System.out.println(e.toString());
 			}
@@ -260,7 +266,7 @@ public class AdminModule {
 			char sh = sc.next().charAt(0);
 			if (sh == '1') {
 				try {
-					DBOperations.selectAllWatches(con, "-1");
+					FetchAndDisplayFromDB.selectAllWatches(con, "-1");
 				} catch (Exception e) {
 					System.out.println(e.toString());
 				}

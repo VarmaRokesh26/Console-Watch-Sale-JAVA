@@ -1,4 +1,4 @@
-checkDb
+CheckFromDB
     checkAdminDetails
     checkUserDetails
     checkDealerDetails
@@ -8,7 +8,7 @@ checkDb
     profileList
     checkPassword
 
-insertInDB
+InsertInDB
     insertNewWatch
     insertAdminDetails
     insertUserDetails
@@ -16,13 +16,22 @@ insertInDB
     insertNewCourierServiceDetails
     insertInCart
 
-deletFromDB
+DeleteFromDB
     deleteWatch
     deleteWatchByNOS
     clearProfile
 
-updateFromDB
+UpdateInDB
     updateWatch
     placeOrder
     updateProfile
     changePassword
+
+FetchAndDisplayFromDB
+    selectAllWatches
+    viewOrders
+    displayAdminDealerCourierDB
+    selectAllWatchesIfAvailable
+    specificWatchDetail
+    showMyCart
+    displayProfile

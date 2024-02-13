@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import Model.*;
+import Model.DBOperations.*;
 import Controller.*;
 import View.*;
 

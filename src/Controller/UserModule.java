@@ -5,10 +5,11 @@ import java.util.*;
 import Model.*;
 import Main.MainModule;
 import View.UserInterface;
+import Model.DBOperations.*;
 
 public class UserModule {
 
-	private static String id;
+	private static String watchId;
 	private static int quantity;
 	private static String payment;
 	private static double price;
@@ -142,12 +143,12 @@ public class UserModule {
 			case 'N':
 			case 'n': {
 				try {
-					String wd = DBOperations.specificWatchDetail(connection, id, 1);
+					String wd = FetchAndDisplayFromDB.specificWatchDetail(connection, watchId, 1);
 					String wd1[] = wd.split("_");
 					price = Double.parseDouble(wd1[2]);
 					System.out.print("Payment Method Cash On Deliviry Or Online Payment : ");
 					payment = sc.next();
-					DBOperations.placeOrder(connection, id, quantity, price, payment);
+					UpdateInDB.placeOrder(connection, watchId, quantity, price, payment);
 				} catch (Exception e) {
 					System.out.println(e.toString());
 				}
@@ -205,7 +206,7 @@ public class UserModule {
 	// Method for Display Watches
 	public static void displayWatches(Connection connection) {
 		try {
-			DBOperations.selectAllWatchesIfAvailable(connection);
+			FetchAndDisplayFromDB.selectAllWatchesIfAvailable(connection);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -214,11 +215,11 @@ public class UserModule {
 	// Method for buy item
 	public static void buyItem(Connection connection, String[] args, Scanner sc, char operation) {
 		System.out.print("Enter the item Id to Display Seperatly : ");
-		id = sc.next();
+		watchId = sc.next();
 		try {
-			if (DBOperations.checkWatchId(connection, id)) {
+			if (CheckFromDB.checkWatchId(connection, watchId)) {
 				try {
-					DBOperations.specificWatchDetail(connection, id, 0);
+					FetchAndDisplayFromDB.specificWatchDetail(connection, watchId, 0);
 					System.out.print("Enter Quantity You required            : ");
 					quantity = sc.nextInt();
 					while (true) {
@@ -240,14 +241,14 @@ public class UserModule {
 	// Method for add to cart
 	public static void adddToCart(Connection connection) {
 		try {
-			String wd = DBOperations.specificWatchDetail(connection, id, 1);
+			String wd = FetchAndDisplayFromDB.specificWatchDetail(connection, watchId, 1);
 
 			String wd1[] = wd.split("_");
 			price = Double.parseDouble(wd1[2]);
 			wd = wd1[0] + "_" + wd1[1] + "_" + (price * quantity) + "_" + quantity;
 			wd1 = wd.split("_");
 			System.out.println(Arrays.toString(wd1));
-			if (DBOperations.insertInCart(connection, id, wd)) {
+			if (InsertInDB.insertInCart(connection, watchId, wd)) {
 				System.out.println("Item added to the cart Succesfully");
 				// UserInterface.shoppingCart(wd1);
 			}
@@ -259,7 +260,7 @@ public class UserModule {
 	// Method for display user order history
 	public static void history(Connection connection) {
 		try {
-			DBOperations.viewOrders(connection, 1);
+			FetchAndDisplayFromDB.viewOrders(connection, 1);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -268,7 +269,7 @@ public class UserModule {
 	// Method for Logout
 	public static void logOut(Connection connection, String[] args) {
 		try {
-			DBOperations.clearProfile(connection);
+			DeleteFromDB.clearProfile(connection);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -280,7 +281,7 @@ public class UserModule {
 	// Method for View Cart
 	public static void viewCart(Connection connection) {
 		try {
-			DBOperations.showMyCart(connection);
+			FetchAndDisplayFromDB.showMyCart(connection);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -326,7 +327,7 @@ public class UserModule {
 
 		Profile profile = new Profile(name, mobileNumber, email, address);
 		try {
-			DBOperations.updateProfile(connection, profile.getName(), profile.getMobileNumber(), profile.getEmailId(),
+			UpdateInDB.updateProfile(connection, profile.getName(), profile.getMobileNumber(), profile.getEmailId(),
 					profile.getAddress());
 		} catch (Exception e) {
 			System.out.println(e.toString());
@@ -335,7 +336,7 @@ public class UserModule {
 
 	public static void profileView(Connection connection, String[] args, Scanner sc, char operation) {
 		try {
-			String profile[] = DBOperations.displayProfile(connection).split("_");
+			String profile[] = FetchAndDisplayFromDB.displayProfile(connection).split("_");
 			UserInterface.profile(profile);
 			while (true) {
 				UserInterface.profileAction();
@@ -353,7 +354,7 @@ public class UserModule {
 			String currentPassword = sc.next().trim();
 			sc.nextLine();
 			try {
-				if (DBOperations.checkPassword(connection, currentPassword)) {
+				if (CheckFromDB.checkPassword(connection, currentPassword)) {
 					while (true) {
 						System.out.print("Enter new Password           : ");
 						String newPassword = sc.next();
@@ -364,7 +365,7 @@ public class UserModule {
 								String reenterPassword = sc.nextLine();
 								if (newPassword.equals(reenterPassword)) {
 									try {
-										DBOperations.changePassword(connection, newPassword);
+										UpdateInDB.changePassword(connection, newPassword);
 									} catch (Exception e) {
 										System.out.println(e.toString());
 									}
