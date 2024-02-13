@@ -17,10 +17,11 @@ public class DealerInterface {
 
     public static void displayDealers(String profile[]) {
         System.out.println("-----------------------------------------------------------------");
-        System.out.println("--Dealer Name       : " + profile[0]);
-        System.out.println("--Mobile Number     : " + profile[1]);
-        System.out.println("--Location          : " + profile[2]);
-        System.out.println("--MailId            : " + profile[3]);
+        System.out.println("--Dealer UID        : " + profile[0]);
+        System.out.println("--Dealer Name       : " + profile[1]);
+        System.out.println("--Mobile Number     : " + profile[2]);
+        System.out.println("--Location          : " + profile[3]);
+        System.out.println("--MailId            : " + profile[4]);
         System.out.println("-----------------------------------------------------------------");
     }
 

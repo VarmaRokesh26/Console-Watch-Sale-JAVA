@@ -254,25 +254,13 @@ public class AdminModule {
 		}
 	}
 
-	public static void displayWatches(Connection con) {
-		System.out.println();
-
-		if (con != null) {
-			try {
-				DBOperations.selectAllWatches(con, -1);
-			} catch (Exception e) {
-				System.out.println(e.toString());
-			}
-		}
-	}
-
 	public static void displayAsRequired(Connection con, String[] args, Scanner sc) {
 		while (true) {
 			AdminInterface.optionsForAdmin();
 			char sh = sc.next().charAt(0);
 			if (sh == '1') {
 				try {
-					DBOperations.selectAllWatches(con, -1);
+					DBOperations.selectAllWatches(con, "-1");
 				} catch (Exception e) {
 					System.out.println(e.toString());
 				}
@@ -314,14 +302,14 @@ public class AdminModule {
 
 	public static void displayAdminDealerCourier(Connection con, int sh) {
 		try {
-			DBOperations.displayAdminDealerCourier(con, sh);
+			DBOperations.displayAdminDealerCourierDB(con, sh);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
 	}
 
 	public static void addNewAdmin(Connection con, Scanner sc) {
-
+		System.out.println("<---Enter the Details of the Employee to Add as Admin--->");
 		while (true) {
 			System.out.print("Name                 : ");
 			name = sc.next() + sc.nextLine();

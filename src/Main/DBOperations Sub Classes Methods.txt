@@ -1,0 +1,24 @@
+checkDb
+    checkAdminDetails
+    checkUserDetails
+    checkDealerDetails
+    checkCourierServiceDetails
+    checkWatchId
+    userIdForCartOrOrder
+    profileList
+    checkPassword
+
+insertInDB
+    insertNewWatch
+    insertAdminDetails
+    insertUserDetails
+
+deletFromDB
+    deleteWatch
+    deleteWatchByNOS
+    clearProfile
+
+updateFromDB
+    updateWatch
+    placeOrder
+    

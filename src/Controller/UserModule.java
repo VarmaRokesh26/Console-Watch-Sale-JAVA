@@ -8,7 +8,7 @@ import View.UserInterface;
 
 public class UserModule {
 
-	private static int id;
+	private static String id;
 	private static int quantity;
 	private static String payment;
 	private static double price;
@@ -207,7 +207,7 @@ public class UserModule {
 	// Method for buy item
 	public static void buyItem(Connection connection, String[] args, Scanner sc, char operation) {
 		System.out.print("Enter the item Id to Display Seperatly : ");
-		id = sc.nextInt();
+		id = sc.next();
 		try {
 			if (DBOperations.checkWatchId(connection, id)) {
 				try {

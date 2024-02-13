@@ -16,10 +16,10 @@ public class CourierServiceInterface {
 
 	public static void courierDetailDisplay(String profile[]) {
 		System.out.println("-----------------------------------------------------------------");
-		System.out.println("--Dealer Name       : " + profile[0]);
-		System.out.println("--Mobile Number     : " + profile[1]);
-		System.out.println("--Location          : " + profile[2]);
-		System.out.println("--Email             : " + profile[3]);
+		System.out.println("--Courier Service UID    : " + profile[0]);
+		System.out.println("--Courier Service Name   : " + profile[1]);
+		System.out.println("--Contact Number         : " + profile[2]);
+		System.out.println("--Email ID               : " + profile[3]);
 		System.out.println("-----------------------------------------------------------------");
 	}
 

@@ -43,13 +43,13 @@ public class MainModule {
 
     private static void performLogin(Connection con, Login login, String[] args) {
         try {
-            if (DBOperations.checkAdminDetails(con, login.getEmailId(), login.getPassword()))
+            if (CheckFromDB.checkAdminDetails(con, login.getEmailId(), login.getPassword()))
                 AdminInterface.adminInterface(con, args, sc, 0);
-            else if (DBOperations.checkUserDetails(con, login.getEmailId(), login.getPassword()))
+            else if (CheckFromDB.checkUserDetails(con, login.getEmailId(), login.getPassword()))
                 UserInterface.userInterface(con, args, sc, 0);
-            else if (DBOperations.checkCourierServiceDetails(con, login.getEmailId(), login.getPassword()))
+            else if (CheckFromDB.checkCourierServiceDetails(con, login.getEmailId(), login.getPassword()))
                 CourierServiceInterface.courierServiceInterface(con, args, sc, 0);
-            else if (DBOperations.checkDealerDetails(con, login.getEmailId(), login.getPassword()))
+            else if (CheckFromDB.checkDealerDetails(con, login.getEmailId(), login.getPassword()))
                 DealerInterface.dealerInterface(con, args, sc, 0);
             else
                 System.out.println("Invalid Combinations");
