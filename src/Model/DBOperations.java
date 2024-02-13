@@ -161,7 +161,8 @@ public class DBOperations {
 	}
 
 	// Inserting Logic for new Admin
-	public static void insertAdminDetails(Connection connection, String userName, String mobileNumber, String mailid, String adminRole,
+	public static void insertAdminDetails(Connection connection, String userName, String mobileNumber, String mailid,
+			String adminRole,
 			String passCode) throws SQLException {
 		String insertQuery = "INSERT INTO admindetails (adminname, mobilenumber, mailid, role, password) VALUES (?, ?, ?, ?, ?)";
 
@@ -200,65 +201,67 @@ public class DBOperations {
 		}
 	}
 
-	public static void insertNewDealerDetails(Connection connection, String dealername, String dealerLocation, String contactNumber) throws SQLException {
+	public static void insertNewDealerDetails(Connection connection, String dealername, String dealerLocation,
+			String contactNumber) throws SQLException {
 		String insertQuery = "INSERT INTO dealer (DealerName, Location, ContactNumber) VALUES (?, ?, ?)";
 
-		try(PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 			preparedStatement.setString(1, dealername);
 			preparedStatement.setString(2, dealerLocation);
 			preparedStatement.setString(3, contactNumber);
 
 			rowsAffected = preparedStatement.executeUpdate();
-			if(rowsAffected>=1) 
+			if (rowsAffected >= 1)
 				System.out.println("Dealer's Detail add Successfully");
 		}
 	}
 
-	public static void insertNewCourierServiceDetails(Connection connection, String courierServiceName, String courierServiceNumber) throws SQLException {
+	public static void insertNewCourierServiceDetails(Connection connection, String courierServiceName,
+			String courierServiceNumber) throws SQLException {
 		String insertQuery = "INSERT INTO courierservice (courierServiceName, contactNumber) VALUES (?, ?)";
 
-		try(PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 			preparedStatement.setString(1, courierServiceName);
 			preparedStatement.setString(2, courierServiceNumber);
 
 			rowsAffected = preparedStatement.executeUpdate();
-			if(rowsAffected>=1) 
+			if (rowsAffected >= 1)
 				System.out.println("Courier Services Details are Added Successfully");
 		}
 	}
 
 	public static void displayAdminDealerCourier(Connection connection, int slNo) throws SQLException {
 		String query = "";
-		if(slNo == 1) 
+		if (slNo == 1)
 			query = "SELECT * FORM admindetails";
-		else if(slNo == 2)
+		else if (slNo == 2)
 			query = "SELECT * FROM dealer";
-		else if(slNo == 3)
+		else if (slNo == 3)
 			query = "SELECT * FROM courierservice";
 
-		try(PreparedStatement preparedStatement = connection.prepareStatement(query); 
-				ResultSet resultSet =  preparedStatement.executeQuery()) {
-			while(resultSet.next()) {
-				if(slNo == 1) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+				ResultSet resultSet = preparedStatement.executeQuery()) {
+			while (resultSet.next()) {
+				if (slNo == 1) {
 					String name = resultSet.getString("adminname");
 					String number = resultSet.getString("mobilenumber");
 					String mail = resultSet.getString("mailid");
 					String role = resultSet.getString("role");
-					
-					res = name+"_"+number+"_"+mail+"_"+role;
+
+					res = name + "_" + number + "_" + mail + "_" + role;
 					AdminInterface.profile(res.split("_"));
-				} else if(slNo == 2) {
+				} else if (slNo == 2) {
 					String name = resultSet.getString("DealerName");
 					String location = resultSet.getString("Location");
 					String number = resultSet.getString("ContactNumber");
-					
-					res = name+"_"+location+"_"+number;
-					
-				} else if(slNo == 3) {
+
+					res = name + "_" + location + "_" + number;
+
+				} else if (slNo == 3) {
 					String name = resultSet.getString("courierServiceName");
 					String number = resultSet.getString("mobilenumber");
-					
-					res = name+"_"+number;
+
+					res = name + "_" + number;
 				}
 			}
 		}
@@ -452,7 +455,7 @@ public class DBOperations {
 						String profName = resultSet.getString("adminname");
 						String profmN = resultSet.getString("mobilenumber");
 						String role = resultSet.getString("role");
-						res += profName + "_" + profmN + "_" + profEmail+"_"+role;
+						res += profName + "_" + profmN + "_" + profEmail + "_" + role;
 					} else {
 						String profName = resultSet.getString("username");
 						String profmN = resultSet.getString("mobilenumber");
