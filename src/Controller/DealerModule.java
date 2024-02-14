@@ -14,11 +14,20 @@ public class DealerModule {
 
 	private static List<String> profile = CheckFromDB.profileList();
 
+	private static String dealerId;
 	private static String dealerName;
 	private static String dealerLocation;
 	private static String contactNumber;
 	private static String dealerMailId;
 	private static String dealerPassword;
+
+	// Variables for Watch Details
+	private static String watchId;
+	private static String seriesName;
+	private static String brand;
+	private static double price;
+	private static String description;
+	private static int numberOfStocks;
     
     public static char getWhatToDo(Scanner sc) {
         return sc.next().charAt(0);
@@ -34,6 +43,12 @@ public class DealerModule {
 			case 'U':
 			case 'u': {
 				// updateWatchDetails(con, sc);
+				break;
+			}
+
+			case 'A':
+			case 'a': {
+				insertWatches(con, args, sc, operation);
 				break;
 			}
 
@@ -203,4 +218,69 @@ public class DealerModule {
 		}
 	}
 
+	public static void insertWatches(Connection con, String[] args, Scanner sc, char operation) throws SQLException {
+		Watch newWatch = getNewWatchDetails(con, sc);
+
+		if (con != null) {
+			try {
+				InsertInDB.insertNewWatch(con, newWatch.getWatchId(), newWatch.getName(), newWatch.getBrand(),
+						newWatch.getPrice(), newWatch.getDescription(), newWatch.getNumberOfStocks(), newWatch.getDealerId());
+			} catch (Exception e) {
+				System.out.println(e.toString());
+			}
+		}
+	}
+
+	public static Watch getNewWatchDetails(Connection con, Scanner sc) throws SQLException {
+		System.out.println("------Enter the watch details to be added:------");
+
+		watchId = UIDGenerator.IdGenerator(con, "watches");
+
+		while (true) {
+			System.out.print("Enter series Name                 :");
+			seriesName = sc.next() + sc.nextLine();
+			if (!seriesName.equals(""))
+				break;
+		}
+
+		while (true) {
+			System.out.print("Enter brand name                  :");
+			brand = sc.next() + sc.nextLine();
+			if (!brand.trim().isEmpty()) {
+				break;
+			} else {
+				System.out.print("Enter a valid brand Name");
+			}
+		}
+
+		System.out.print("Enter price for the watches       :");
+		price = sc.nextDouble();
+
+		System.out.print("'/' seperated description\n");
+		while (true) {
+			System.out.print("Enter description for the watches :");
+			description = sc.next() + sc.nextLine();
+			if (!description.trim().isEmpty())
+				break;
+		}
+
+		System.out.print("Enter amount of stocks available  :");
+		while (true) {
+			numberOfStocks = sc.nextInt();
+			sc.nextLine();
+			if (numberOfStocks >= 0)
+				break;
+		}
+
+		System.out.print("Enter the Dealer Id               :");
+		while(true) {
+			dealerId = sc.next();
+			if(!dealerId.isEmpty())
+				break;
+			else	
+				System.out.println("Enter the Dealer ID for Inserting Watch");
+		}
+
+		return new Watch(watchId, seriesName, brand, price, description, numberOfStocks, dealerId);
+	}
 }

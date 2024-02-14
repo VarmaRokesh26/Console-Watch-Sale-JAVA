@@ -37,11 +37,12 @@ public class UpdateInDB {
     }
 
     // Place Order By the User
-    public static void placeOrder(Connection connection, String watchId, int quantity, double price, String paymentMode)
+    public static void placeOrder(Connection connection, String orderId, String watchId, int quantity, double price, String paymentMode, String dealerId)
             throws SQLException {
         userIdString = CheckFromDB.userIdForCartOrOrder(connection);
+        // System.out.println(userIdString);
         status = "Processed";
-        String orderId = "";
+        
         String orderQuery = "INSERT INTO orders(orderId, userId, dealerId, watchId, quantity, totalAmount, paymentMode, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         String deliveryDateQuery = "UPDATE orders SET deliveryDate = DATE_ADD(orderDate, INTERVAL 7 DAY) WHERE orderId = ?";
         String stockDecrease = "UPDATE watches SET numberOfStocks = numberOfStocks - ? WHERE watchId = ?";
@@ -50,6 +51,7 @@ public class UpdateInDB {
 
             orderStatement.setString(1, orderId);
             orderStatement.setString(2, userIdString);
+            orderStatement.setString(3, dealerId);
             orderStatement.setString(4, watchId);
             orderStatement.setInt(5, quantity);
             orderStatement.setDouble(6, (price * quantity));
@@ -57,19 +59,6 @@ public class UpdateInDB {
             orderStatement.setString(8, status);
 
             rowsAffected = orderStatement.executeUpdate();
-            if (rowsAffected != 0) {
-                System.out.println("Order Placed Successfull!!");
-                String orderIdQuery = "SELECT orderId FROM orders WHERE userId = ? AND watchId = ?";
-                try (PreparedStatement orderIdSmt = connection.prepareStatement(orderIdQuery)) {
-                    orderIdSmt.setString(1, userIdString);
-                    orderIdSmt.setString(2, watchId);
-                    try (ResultSet resultSet = orderIdSmt.executeQuery()) {
-                        while (resultSet.next()) {
-                            orderId = resultSet.getString("orderId");
-                        }
-                    }
-                }
-            }
 
             try (PreparedStatement deliveryPreparedStatement = connection.prepareStatement(deliveryDateQuery)) {
                 deliveryPreparedStatement.setString(1, orderId);
@@ -81,6 +70,8 @@ public class UpdateInDB {
                 stockPreparedStatement.setString(2, watchId);
                 stockPreparedStatement.executeUpdate();
             }
+            if(rowsAffected>=0)
+                System.out.println("<----Order Placed Successfully---->");
         }
     }
 

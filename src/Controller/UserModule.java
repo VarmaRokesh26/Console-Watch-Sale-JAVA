@@ -10,6 +10,8 @@ import Model.DBOperations.*;
 
 public class UserModule {
 
+	private static String dealerId; 
+
 	private static String watchId;
 	private static int quantity;
 	private static String payment;
@@ -144,9 +146,12 @@ public class UserModule {
 					String wd = FetchAndDisplayFromDB.specificWatchDetail(connection, watchId, 1);
 					String wd1[] = wd.split("_");
 					price = Double.parseDouble(wd1[2]);
+					dealerId = wd1[wd1.length-1];
+					String orderId = UIDGenerator.IdGenerator(connection, "orders");
+					// System.out.println(orderId);
 					System.out.print("Payment Method Cash On Deliviry Or Online Payment : ");
 					payment = sc.next();
-					UpdateInDB.placeOrder(connection, watchId, quantity, price, payment);
+					UpdateInDB.placeOrder(connection, orderId, watchId, quantity, price, payment, dealerId);
 				} catch (Exception e) {
 					System.out.println(e.toString());
 				}

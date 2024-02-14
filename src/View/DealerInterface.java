@@ -3,8 +3,6 @@ package View;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
-
-import Controller.AdminModule;
 import Controller.DealerModule;
 
 public class DealerInterface {
@@ -31,6 +29,7 @@ public class DealerInterface {
         System.out.print(
                 "\n  _________________________________"
                         + "\n|| Enter                           ||"
+						+ "\n|| A -> Add new Watch              ||"
                         + "\n|| U -> Update Shipment Status     ||"
                         + "\n|| S -> Show Orders To Deliver     ||"
                         + "\n|| V -> View Profile               ||"

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import Model.UIDGenerator;
+
 public class InsertInDB {
 
     private static int rowsAffected;
@@ -117,13 +119,14 @@ public class InsertInDB {
     // Users selected item will be added in the cart
     public static boolean insertInCart(Connection connection, String watchIdForCart, String cartDetails)
             throws SQLException {
-        String cartQuery = "INSERT INTO cart (userId, cartDetails, watchId) VALUES (?, ?, ?)";
+        String cartQuery = "INSERT INTO cart (cartId, userId, watchId, cartDetails) VALUES (?, ?, ?, ?)";
         userIdString = CheckFromDB.userIdForCartOrOrder(connection);
-
+        String cartId = UIDGenerator.IdGenerator(connection, "cart");
         try (PreparedStatement preparedStatement = connection.prepareStatement(cartQuery)) {
-            preparedStatement.setString(1, userIdString);
-            preparedStatement.setString(2, cartDetails);
+            preparedStatement.setString(1, cartId);
+            preparedStatement.setString(2, userIdString);
             preparedStatement.setString(3, watchIdForCart);
+            preparedStatement.setString(4, cartDetails);
 
             rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0)
