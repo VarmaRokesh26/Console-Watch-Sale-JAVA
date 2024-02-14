@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
-import Model.UIDGenerator;
 import View.AdminInterface;
 import View.CourierServiceInterface;
 import View.DealerInterface;
