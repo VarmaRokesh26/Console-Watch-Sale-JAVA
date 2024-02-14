@@ -68,10 +68,12 @@ public class FetchAndDisplayFromDB {
                 String paymentMode = resultSet.getString("paymentMode");
                 String status = resultSet.getString("status");
 
-                if (entry == 0)
+                if (entry == 0) {
                     res = orderId + "_" + userId + "_" + dealerId + "_" + watchId + "_" + orderDate + "_" + deliveryDate
                             + "_" + quantity
                             + "_" + price + "_" + paymentMode + "_" + status;
+                    DealerInterface.showOrderDetails(res.split("_"));
+                }
                 else {
                     res = orderId + "_" + watchId + "_" + orderDate + "_" + deliveryDate + "_" + quantity + "_" + price
                             + "_" + status;

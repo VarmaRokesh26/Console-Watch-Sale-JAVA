@@ -216,12 +216,7 @@ public class AdminModule {
 				changePassword(con, sc);
 				break;
 			}
-
-			case 'B':
-			case 'b': {
-				AdminInterface.adminInterface(con, args, sc, 1);
-			}
-
+			
 			case 'L':
 			case 'l': {
 				logOut(con, args);
@@ -298,7 +293,7 @@ public class AdminModule {
 				displayAdminDealerCourier(con, Character.getNumericValue(sh));
 			} else if (sh == '4') {
 				displayAdminDealerCourier(con, Character.getNumericValue(sh));
-			} else if (sh == 'B') {
+			} else if (sh == 'B' || sh == 'b') {
 				AdminInterface.adminInterface(con, args, sc, sh);
 			} else
 				System.out.println("Enter a valid Option");
@@ -321,7 +316,7 @@ public class AdminModule {
 			} else if (add == '4') {
 				addNewCourierService(con, sc);
 				break;
-			} else if (add == 'B') {
+			} else if (add == 'B' || add == 'b') {
 				AdminInterface.adminInterface(con, null, sc, add);
 			} else
 				System.out.println("Enter a valid Option");

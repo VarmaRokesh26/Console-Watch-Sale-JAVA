@@ -55,7 +55,7 @@ public class UserModule {
 	public static SignUp getSignUpDetails(Connection con, Scanner sc) throws SQLException {
 
 		userId = UIDGenerator.IdGenerator(con, "user");
-		System.out.println(userId);
+		// System.out.println(userId);
 
 		while (true) {
 			// userName

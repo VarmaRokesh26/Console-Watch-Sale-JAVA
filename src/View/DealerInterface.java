@@ -30,8 +30,8 @@ public class DealerInterface {
                 "\n  _________________________________"
                         + "\n|| Enter                           ||"
 						+ "\n|| A -> Add new Watch              ||"
-                        + "\n|| U -> Update Shipment Status     ||"
                         + "\n|| S -> Show Orders To Deliver     ||"
+						+ "\n|| C -> Completed Orders           ||"
                         + "\n|| V -> View Profile               ||"
                         + "\n||_________________________________||"
                         + "\n---------> ");
@@ -41,13 +41,14 @@ public class DealerInterface {
         System.out.println("-----------------------------------------------------------------");
 		System.out.println("--Order Id               : " + orders[0]);
 		System.out.println("--User Id                : " + orders[1]);
-		System.out.println("--Watch Id               : " + orders[2]);
-		System.out.println("--Order date             : " + orders[3]);
-		System.out.println("--Delivery Date          : " + orders[4]);
-		System.out.println("--Quantity               : " + orders[5]);
-		System.out.println("--Price                  : " + orders[6]);
-		System.out.println("--Payment Mode           : " + orders[7]);
-		System.out.println("--Status                 : " + orders[8]);
+		System.out.println("--Dealer Id              : " + orders[2]);
+		System.out.println("--Watch Id               : " + orders[3]);
+		System.out.println("--Order date             : " + orders[4]);
+		System.out.println("--Delivery Date          : " + orders[5]);
+		System.out.println("--Quantity               : " + orders[6]);
+		System.out.println("--Price                  : " + orders[7]);
+		System.out.println("--Payment Mode           : " + orders[8]);
+		System.out.println("--Status                 : " + orders[9]);
 		System.out.println("-----------------------------------------------------------------");
     }
 
@@ -71,6 +72,20 @@ public class DealerInterface {
 						+ "\n|| B -> Back                       ||"
 						+ "\n|| L -> Logout                     ||"
 						+ "\n||_________________________________||"
+						+ "\n---------> ");
+	}
+
+    public static void orderActions() {
+		System.out.print(
+				" ___________________________________"
+						+ "\n|| Enter                            ||"
+						+ "\n|| 1 -> Order is Ready for Shippig  ||"
+						+ "\n|| 2 -> Order is Shipped            ||"
+						+ "\n|| 3 -> Order Reached user's Region ||"
+						+ "\n|| 4 -> Deliverd                    ||"
+						+ "\n|| 5 -> On Hold                     ||"
+						+ "\n|| B -> Back                        ||"
+						+ "\n||__________________________________||"
 						+ "\n---------> ");
 	}
 

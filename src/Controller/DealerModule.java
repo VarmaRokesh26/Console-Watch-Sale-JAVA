@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import Main.MainModule;
 import Model.DBOperations.*;
+import View.AdminInterface;
 import View.DealerInterface;
 import Model.*;
 
@@ -28,6 +29,8 @@ public class DealerModule {
 	private static double price;
 	private static String description;
 	private static int numberOfStocks;
+
+	private static String status;
     
     public static char getWhatToDo(Scanner sc) {
         return sc.next().charAt(0);
@@ -36,13 +39,13 @@ public class DealerModule {
         switch(operation) {
             case 'S':
 			case 's': {
-				showOrders(con);
+				showOrders(con, args, sc);
 				break;
 			}
 
-			case 'U':
-			case 'u': {
-				// updateWatchDetails(con, sc);
+			case 'C':
+			case 'c': {
+				showDeliveredOrders(con, sc);
 				break;
 			}
 
@@ -83,10 +86,47 @@ public class DealerModule {
         }
     }
 
-    public static void showOrders(Connection con) {
+public static void showDeliveredOrders(Connection connection, Scanner sc) {
 
+}
+
+	public static void optionsForOrders(Connection con, String[] args, Scanner sc) throws SQLException {
+		System.out.print("Enter the Orderid to Update the order Status :");
+		String orderId = sc.next();
+		System.out.print("Enter the valid option to update the Order status : ");
+		char ch = sc.next().charAt(0);
+		while(true) {
+			DealerInterface.orderActions();
+			if(ch == '1') {
+				status = "Order Ready For Shipment";
+			} else if(ch == '2'){
+				status = "Your Order is Shipped";
+			} else if(ch == '3') {
+				status = "Your Order Reached Your region";
+			} else if(ch == '4') {
+				status = "Delivered";
+			} else if(ch == '5') {
+				status = "On Hold";
+			} else if (ch == 'B' || ch == 'b') {
+				DealerInterface.dealerInterface(con, args, sc, ch);
+			} else
+				System.out.println("Enter a valid Option");
+			updateStatusInDb(con, status, orderId);
+		}
+	}
+
+	public static void updateStatusInDb(Connection con, String status, String orderId) {
+		try{
+			UpdateInDB.updateOrderStatus(con, status, orderId);
+		} catch(Exception e) {
+			System.out.println(e.toString());
+		}
+	}
+    public static void showOrders(Connection con, String[] args, Scanner sc) {
         try {
-            FetchAndDisplayFromDB.viewOrders(con, 0); 
+            FetchAndDisplayFromDB.viewOrders(con, 0);
+			optionsForOrders(con, args, sc);
+
         } catch(Exception e) {
             System.out.println(e.toString());
         }

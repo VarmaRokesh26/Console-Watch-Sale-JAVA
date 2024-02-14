@@ -210,4 +210,25 @@ public class UpdateInDB {
             }
         }
     }
+
+    public static void updateOrderStatus(Connection connection, String status, String orderId) throws SQLException {
+        String query = "";
+    
+        if(status.equals("Delivered"))  {
+            query = "UPDATE orders SET deliveryDate = CURRENT_TIMESTAMP, status = ? WHERE orderId = ?";
+        } else {
+            query = "UPDATE orders SET status = ? WHERE orderId = ?";
+        }
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, status);
+            preparedStatement.setString(2, orderId);
+
+            rowsAffected = preparedStatement.executeUpdate();
+
+            if(rowsAffected > 0) {
+                System.out.println("Updated Successfully");
+            } else 
+                System.out.println("Updation failed");
+        } 
+    }
 }
