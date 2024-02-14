@@ -9,6 +9,7 @@ public class SignUp {
     private String password;
 
     public SignUp(String userId, String userName, String mobileNumber, String emailId, String address, String password) {
+        this.userId = userId;
         this.userName = userName;
         this.mobileNumber = mobileNumber;
         this.emailId = emailId;

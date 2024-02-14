@@ -14,7 +14,7 @@ public class MainModule {
     private static int loginOrSignUp;
     static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
         Connection con = Connectivity.connectivity();
 
@@ -31,7 +31,7 @@ public class MainModule {
                 performLogin(con, login, args);
             } else if (loginOrSignUp == 0) {
                 // Sign-up logic
-                SignUp signUp = UserModule.getSignUpDetails(sc);
+                SignUp signUp = UserModule.getSignUpDetails(con, sc);
                 System.out.println("-----------------------------------------------------------------");
                 performSignUp(con, signUp);
 

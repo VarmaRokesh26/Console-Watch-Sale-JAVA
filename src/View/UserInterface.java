@@ -1,13 +1,14 @@
 package View;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 
 import Controller.*;
 
 public class UserInterface {
 
-	public static void userInterface(Connection connection, String[] args, Scanner sc, int entry) {
+	public static void userInterface(Connection connection, String[] args, Scanner sc, int entry) throws SQLException {
 		if (entry == 0)
 			welcomeMsg();
 
@@ -62,10 +63,11 @@ public class UserInterface {
 	public static void profile(String[] profile) {
 		String s = "                      ";
 		System.out.println("-----------------------------------------------------------------");
-		System.out.println("--Name              : " + profile[0]);
-		System.out.println("--Mobile Number     : " + profile[1]);
-		System.out.println("--Email             : " + profile[2]);
-		displayAddress(profile[3], s);
+		System.out.println("--User UID          : " + profile[0]);
+		System.out.println("--Name              : " + profile[1]);
+		System.out.println("--Mobile Number     : " + profile[2]);
+		System.out.println("--Email             : " + profile[3]);
+		displayAddress(profile[4], s);
 		System.out.println("-----------------------------------------------------------------");
 	}
 
@@ -119,7 +121,17 @@ public class UserInterface {
 						+ "\n---------> ");
 	}
 
-	public static void showHistoryOfOrders(String orders[]) {
-
+	public static void displayWatches(String id, String name, String brand, double price, String description,
+			int number_of_stocks, String dealerName) {
+		System.out.println("******************************************************************");
+		System.out.println(
+				"--ID                             : " + id
+						+ "\n--Name                           : " + name
+						+ "\n--Brand                          : " + brand
+						+ "\n--Price                          : " + price
+						+ "\n--Description                    : " + description
+						+ "\n--Number of Stocks available     : " + number_of_stocks
+						+ "\n--Dealer of the Watch            : " + dealerName);
 	}
+
 }

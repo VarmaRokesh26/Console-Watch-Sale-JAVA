@@ -5,24 +5,25 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import Controller.AdminModule;
+import Controller.DealerModule;
 
 public class DealerInterface {
 
     public static void dealerInterface(Connection con, String[] args, Scanner sc, int entry) throws SQLException {
         while (true) {
             actionMenu();
-            char operation = AdminModule.getWhatToDo(sc);
-            AdminModule.performAdminTask(con, args, sc, operation);
+            char operation = DealerModule.getWhatToDo(sc);
+            DealerModule.dealerTask(con, args, sc, operation);
         }
     }
 
-    public static void displayDealers(String profile[]) {
+    public static void displayDealers(String profileDealers[]) {
         System.out.println("-----------------------------------------------------------------");
-        System.out.println("--Dealer UID        : " + profile[0]);
-        System.out.println("--Dealer Name       : " + profile[1]);
-        System.out.println("--Mobile Number     : " + profile[2]);
-        System.out.println("--Location          : " + profile[3]);
-        System.out.println("--MailId            : " + profile[4]);
+        System.out.println("--Dealer UID        : " + profileDealers[0]);
+        System.out.println("--Dealer Name       : " + profileDealers[1]);
+        System.out.println("--MailId            : " + profileDealers[3]);
+        System.out.println("--Mobile Number     : " + profileDealers[2]);
+        System.out.println("--Location          : " + profileDealers[4]);
         System.out.println("-----------------------------------------------------------------");
     }
 
@@ -32,6 +33,7 @@ public class DealerInterface {
                         + "\n|| Enter                           ||"
                         + "\n|| U -> Update Shipment Status     ||"
                         + "\n|| S -> Show Orders To Deliver     ||"
+                        + "\n|| V -> View Profile               ||"
                         + "\n||_________________________________||"
                         + "\n---------> ");
     }

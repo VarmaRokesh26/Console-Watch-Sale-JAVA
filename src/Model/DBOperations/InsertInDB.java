@@ -11,8 +11,8 @@ public class InsertInDB {
 
     // Insert Watches
     public static void insertNewWatch(Connection connection, String watchId, String name, String brand, double price,
-            String description, int numberOfStocks) throws SQLException {
-        String insertQuery = "INSERT INTO watches (watchId, seriesName, brand, price, description, numberOfStocks) VALUES (?, ?, ?, ?, ?, ?)";
+            String description, int numberOfStocks, String dealerId) throws SQLException {
+        String insertQuery = "INSERT INTO watches (watchId, seriesName, brand, price, description, numberOfStocks, dealerId) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
             preparedStatement.setString(1, watchId);
@@ -21,6 +21,7 @@ public class InsertInDB {
             preparedStatement.setDouble(4, price);
             preparedStatement.setString(5, description);
             preparedStatement.setInt(6, numberOfStocks);
+            preparedStatement.setString(7, dealerId);
 
             rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected >= 1) {

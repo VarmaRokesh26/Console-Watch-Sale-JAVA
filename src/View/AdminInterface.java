@@ -48,7 +48,7 @@ public class AdminInterface {
 						+ "\n---------> ");
 	}
 
-	public static void profile(String[] profile) {
+	public static void viewProfile(String[] profile) {
 		System.out.println("-----------------------------------------------------------------");
 		System.out.println("--Admin UID         : " + profile[0]);
 		System.out.println("--Name              : " + profile[1]);
@@ -59,7 +59,7 @@ public class AdminInterface {
 	}
 
 	public static void displayWatches(String id, String name, String brand, double price, String description,
-			int number_of_stocks) {
+			int number_of_stocks, String dealerId, String dealerName) {
 		System.out.println("******************************************************************");
 		System.out.println(
 				"--ID                             : " + id
@@ -67,7 +67,9 @@ public class AdminInterface {
 						+ "\n--Brand                          : " + brand
 						+ "\n--Price                          : " + price
 						+ "\n--Description                    : " + description
-						+ "\n--Number of Stocks available     : " + number_of_stocks);
+						+ "\n--Number of Stocks available     : " + number_of_stocks
+						+ "\n--Id to Dealer                   : " + dealerId
+						+ "\n--Dealer of the Watch            : " + dealerName);
 	}
 
 	public static void insertOption() {

@@ -1,12 +1,13 @@
 package View;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Scanner;
 import Controller.CourierServiceModule;
 
 public class CourierServiceInterface {
 
-	public static void courierServiceInterface(Connection con, String[] args, Scanner sc, int entry) {
+	public static void courierServiceInterface(Connection con, String[] args, Scanner sc, int entry) throws SQLException {
 		while (true) {
 			actionMenu();
 			char operation = CourierServiceModule.getWhatToDo(sc);
@@ -30,7 +31,6 @@ public class CourierServiceInterface {
 						+ "\n|| U -> Update Delivery Status     ||"
 						+ "\n|| S -> Show Orders To Deliver     ||"
 						+ "\n|| V -> View Profile               ||"
-						+ "\n|| B -> Back                       ||"
 						+ "\n||_________________________________||"
 						+ "\n---------> ");
 	}

@@ -21,9 +21,10 @@ public class FetchAndDisplayFromDB {
     // Display Watches
     public static void selectAllWatches(Connection connection, String watchId) throws SQLException {
         String selectQuery = "SELECT * FROM watches";
+        String dealerName = "";
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
-                ResultSet resultSet = preparedStatement.executeQuery()) {
-
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+    
             while (resultSet.next()) {
                 String id = resultSet.getString("watchId");
                 String name = resultSet.getString("seriesName");
@@ -31,13 +32,25 @@ public class FetchAndDisplayFromDB {
                 double price = resultSet.getDouble("price");
                 String description = resultSet.getString("description");
                 int numberOfStocks = resultSet.getInt("numberOfStocks");
-                if ("-1".equals(watchId)) {
-                    AdminInterface.displayWatches(id, name, brand, price, description, numberOfStocks);
+                String dealerId = resultSet.getString("dealerId");
+    
+                String query = "SELECT dealerName FROM dealer WHERE dealerId = ?";
+                try (PreparedStatement preparedStatement1 = connection.prepareStatement(query)) {
+                    preparedStatement1.setString(1, dealerId);
+                    try (ResultSet resultSet1 = preparedStatement1.executeQuery()) {
+                        while (resultSet1.next()) {
+                            dealerName = resultSet1.getString("dealerName");
+                        }
+                        if ("-1".equals(watchId)) {
+                            AdminInterface.displayWatches(id, name, brand, price, description, numberOfStocks, dealerId, dealerName);
+                        }
+                    }
                 }
             }
             System.out.println("******************************************************************");
         }
     }
+    
 
     public static String[] viewOrders(Connection connection, int entry) throws SQLException {
         query = "SELECT * FROM orders";
@@ -92,7 +105,7 @@ public class FetchAndDisplayFromDB {
                     res = adminId + "_" + name + "_" + number + "_" + mail + "_" + role;
                     if(res.isEmpty())
                         System.out.println("No Admins");
-                    AdminInterface.profile(res.split("_"));
+                    AdminInterface.viewProfile(res.split("_"));
                 } else if (slNo == 3) {
                     String dealerId = resultSet.getString("dealerId");
                     String name = resultSet.getString("dealerName");
@@ -122,7 +135,7 @@ public class FetchAndDisplayFromDB {
     public static String selectAllWatchesIfAvailable(Connection connection) throws SQLException {
         query = "SELECT * FROM watches WHERE numberOfStocks > 0";
         String res = null;
-
+        String dealerName = "";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query);
                 ResultSet resultSet = preparedStatement.executeQuery()) {
 
@@ -134,8 +147,18 @@ public class FetchAndDisplayFromDB {
                 double price = resultSet.getDouble("price");
                 String description = resultSet.getString("description");
                 int numberOfStocks = resultSet.getInt("numberOfStocks");
+                String dealerId = resultSet.getString("dealerId");
+
+                String query = "SELECT dealerName FROM dealer WHERE dealerId = "+dealerId;
+                try(PreparedStatement preparedStatement1= connection.prepareStatement(query);
+                        ResultSet resultSet1 = preparedStatement1.executeQuery()) {
+                    while(resultSet1.next()) {
+                        dealerName = resultSet1.getString("dealerName");
+                    }
+                        AdminInterface.displayWatches(id, name, brand, price, description, numberOfStocks, dealerId, dealerName);
+                }
                 if (numberOfStocks != 0) {
-                    AdminInterface.displayWatches(id, name, brand, price, description, numberOfStocks);
+                    UserInterface.displayWatches(id, name, brand, price, description, numberOfStocks, dealerName);
                 }
             }
             System.out.println("******************************************************************");
@@ -147,18 +170,31 @@ public class FetchAndDisplayFromDB {
     // user
     public static String specificWatchDetail(Connection connection, String watchId, int k) throws SQLException {
         query = "SELECT * FROM watches WHERE watchId = " + watchId;
-
+        String dealerName = "";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query);
                 ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
+                String id = resultSet.getString("watchId");
                 String name = resultSet.getString("seriesName");
                 String brand = resultSet.getString("brand");
                 double price = resultSet.getDouble("price");
                 String description = resultSet.getString("description");
                 int numberOfStocks = resultSet.getInt("numberOfStocks");
+                String dealerId = resultSet.getString("dealerId");
 
+                String query = "SELECT dealerName FROM dealer WHERE dealerId = \'"+dealerId+"\'";
+                try(PreparedStatement preparedStatement1= connection.prepareStatement(query);
+                        ResultSet resultSet1 = preparedStatement1.executeQuery()) {
+                    while(resultSet1.next()) {
+                        dealerName = resultSet1.getString("dealerName");
+                    }
+                        AdminInterface.displayWatches(id, name, brand, price, description, numberOfStocks, dealerId, dealerName);
+                }
+                if (numberOfStocks != 0) {
+                    UserInterface.displayWatches(id, name, brand, price, description, numberOfStocks, dealerName);
+                }
                 if (numberOfStocks != 0 && k == 0) {
-                    AdminInterface.displayWatches(watchId, name, brand, price, description, numberOfStocks);
+                    UserInterface.displayWatches(watchId, name, brand, price, description, numberOfStocks, dealerName);
                     System.out.println("******************************************************************");
                 } else {
                     res += watchId + "_" + name + "_" + price;
@@ -194,7 +230,7 @@ public class FetchAndDisplayFromDB {
         else if (profRole.equals("user"))
             query = "SELECT * FROM user WHERE emailId = ? AND password = ?";
         else if (profRole.equals("dealer"))
-            query = "SELECT * FROM dealer WHERE dealerMailId = ? AND password = ?";
+            query = "SELECT * FROM dealer WHERE dealerMailId = ? AND dealerPassword = ?";
         else if(profRole.equals("courierservice"))
             query = "SELECT * FROM courierservice WHERE courierServiceMailId = ? AND cSPassword = ?";
 
@@ -222,7 +258,7 @@ public class FetchAndDisplayFromDB {
                         String profmN = resultSet.getString("contactNumber");
                         String profAdd = resultSet.getString("location");
                         res = id + "_" + profName + "_" + profmN + "_" + profEmail + "_" + profAdd;
-                    } else if (profRole.equals("dealer")) {
+                    } else if (profRole.equals("courierservice")) {
                         String id = resultSet.getString("courierServiceId");
                         String profName = resultSet.getString("courierServiceName");
                         String profmN = resultSet.getString("contactNumber");

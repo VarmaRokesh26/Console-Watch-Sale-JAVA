@@ -89,7 +89,16 @@ public class AdminModule {
 				break;
 		}
 
-		return new Watch(watchId, seriesName, brand, price, description, numberOfStocks);
+		System.out.print("Enter the Dealer Id               :");
+		while(true) {
+			dealerId = sc.next();
+			if(!dealerId.isEmpty())
+				break;
+			else	
+				System.out.println("Enter the Dealer ID for Inserting Watch");
+		}
+
+		return new Watch(watchId, seriesName, brand, price, description, numberOfStocks, dealerId);
 	}
 
 	public static String getIdToUpdateOrDelete(Scanner sc) {
@@ -144,7 +153,16 @@ public class AdminModule {
 				break;
 		}
 
-		return new Watch(watchId, seriesName, brand, price, description, numberOfStocks);
+		System.out.print("Enter the Dealer Id               :");
+		while(true) {
+			dealerId = sc.next();
+			if(!dealerId.isEmpty())
+				break;
+			else 
+				System.out.println("Enter a valid Dealer Id");
+		}
+
+		return new Watch(watchId, seriesName, brand, price, description, numberOfStocks, dealerId);
 	}
 
 	public static void performAdminTask(Connection con, String[] args, Scanner sc, char operation) throws SQLException {
@@ -177,7 +195,7 @@ public class AdminModule {
 
 			case 'A':
 			case 'a': {
-				addRespectiveDetails(con, sc);
+				addRespectiveDetails(con, args, sc, operation);
 				break;
 			}
 
@@ -213,13 +231,16 @@ public class AdminModule {
 		}
 	}
 
-	public static void insertWatches(Connection con, Scanner sc) throws SQLException {
+	public static void insertWatches(Connection con, String[] args, Scanner sc, char operation) throws SQLException {
 		Watch newWatch = getNewWatchDetails(con, sc);
 
 		if (con != null) {
 			try {
 				InsertInDB.insertNewWatch(con, newWatch.getWatchId(), newWatch.getName(), newWatch.getBrand(),
-						newWatch.getPrice(), newWatch.getDescription(), newWatch.getNumberOfStocks());
+						newWatch.getPrice(), newWatch.getDescription(), newWatch.getNumberOfStocks(), newWatch.getDealerId());
+				while (true) {
+					addRespectiveDetails(con, args, sc, operation);
+				}
 			} catch (Exception e) {
 				System.out.println(e.toString());
 			}
@@ -234,7 +255,7 @@ public class AdminModule {
 			try {
 				System.out.println("Enter Watch series name, brand, price, number of stocks");
 				UpdateInDB.updateWatch(con, toUpdate.getName(), toUpdate.getBrand(),
-						toUpdate.getPrice(), toUpdate.getDescription(), toUpdate.getNumberOfStocks(), watchId);
+						toUpdate.getPrice(), toUpdate.getDescription(), toUpdate.getNumberOfStocks(), toUpdate.getDealerId(), watchId);
 			} catch (Exception e) {
 				System.out.println(e.toString());
 			}
@@ -284,12 +305,12 @@ public class AdminModule {
 		}
 	}
 
-	public static void addRespectiveDetails(Connection con, Scanner sc) throws SQLException {
-		AdminInterface.insertOption();
+	public static void addRespectiveDetails(Connection con, String[] args,Scanner sc, char operation) throws SQLException {
 		while (true) {
+			AdminInterface.insertOption();
 			char add = sc.next().charAt(0);
 			if (add == '1') {
-				insertWatches(con, sc);
+				insertWatches(con, args, sc, operation);
 				break;
 			} else if (add == '2') {
 				addNewAdmin(con, sc);
@@ -514,7 +535,7 @@ public class AdminModule {
 	public static void viewAdminProfile(Connection con, String[] args, Scanner sc, char operation) {
 		try {
 			String profile[] = FetchAndDisplayFromDB.displayProfile(con).split("_");
-			AdminInterface.profile(profile);
+			AdminInterface.viewProfile(profile);
 
 			while (true) {
 				AdminInterface.profileAction();
@@ -614,7 +635,7 @@ public class AdminModule {
 		}
 	}
 
-	public static void logOut(Connection con, String[] args) {
+	public static void logOut(Connection con, String[] args) throws SQLException {
 
 		try {
 			DeleteFromDB.clearProfile(con);

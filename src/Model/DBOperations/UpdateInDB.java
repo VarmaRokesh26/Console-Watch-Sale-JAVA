@@ -15,8 +15,8 @@ public class UpdateInDB {
 
     // Update Watches
     public static void updateWatch(Connection connection, String seriesName, String brand, double price, String desc,
-            int numberOfStocks, String watchId) throws SQLException {
-        String updateQuery = "UPDATE watches SET serieseriesName=?, brand=?, price=?, description=?, numberOfStocks=? WHERE watchId=?";
+            int numberOfStocks, String dealerId, String watchId) throws SQLException {
+        String updateQuery = "UPDATE watches SET serieseriesName=?, brand=?, price=?, description=?, numberOfStocks=? dealerId = ? WHERE watchId=?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
             preparedStatement.setString(1, seriesName);
@@ -24,7 +24,8 @@ public class UpdateInDB {
             preparedStatement.setDouble(3, price);
             preparedStatement.setString(4, desc);
             preparedStatement.setInt(5, numberOfStocks);
-            preparedStatement.setString(6, watchId);
+            preparedStatement.setString(6, dealerId);
+            preparedStatement.setString(7, watchId);
             rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
@@ -125,9 +126,9 @@ public class UpdateInDB {
             String profileUpdateQueryDealer = "UPDATE dealer SET dealerName = ?, location = ?, contactNumber = ?, dealerMailId = ? WHERE dealerMailId = ? AND dealerPassword = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(profileUpdateQueryDealer)) {
                 preparedStatement.setString(1, name);
-                preparedStatement.setString(2, mobileNumber);
-                preparedStatement.setString(3, emailId);
-                preparedStatement.setString(4, address);
+                preparedStatement.setString(2, address);
+                preparedStatement.setString(3, mobileNumber);
+                preparedStatement.setString(4, emailId);
                 preparedStatement.setString(5, profile.get(0));
                 preparedStatement.setString(6, profile.get(1));
 

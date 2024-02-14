@@ -1,6 +1,7 @@
 package Controller;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 import Model.*;
 import Main.MainModule;
@@ -49,13 +50,10 @@ public class UserModule {
 	}
 
 	// Sign Up logic
-	public static SignUp getSignUpDetails(Scanner sc) {
+	public static SignUp getSignUpDetails(Connection con, Scanner sc) throws SQLException {
 
-		while(true) {
-			userId = sc.nextLine();
-			if(userId.isEmpty())
-				break;
-		}
+		userId = UIDGenerator.IdGenerator(con, "user");
+		System.out.println(userId);
 
 		while (true) {
 			// userName
@@ -126,7 +124,7 @@ public class UserModule {
 	}
 
 	// Perform User task
-	public static void performUserTask(Connection connection, String[] args, Scanner sc, char operation) {
+	public static void performUserTask(Connection connection, String[] args, Scanner sc, char operation) throws SQLException {
 		switch (operation) {
 			case 'D':
 			case 'd': {
@@ -267,7 +265,7 @@ public class UserModule {
 	}
 
 	// Method for Logout
-	public static void logOut(Connection connection, String[] args) {
+	public static void logOut(Connection connection, String[] args) throws SQLException {
 		try {
 			DeleteFromDB.clearProfile(connection);
 		} catch (Exception e) {
