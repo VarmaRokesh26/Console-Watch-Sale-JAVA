@@ -7,7 +7,8 @@ import Controller.CourierServiceModule;
 
 public class CourierServiceInterface {
 
-	public static void courierServiceInterface(Connection con, String[] args, Scanner sc, int entry) throws SQLException {
+	public static void courierServiceInterface(Connection con, String[] args, Scanner sc, int entry)
+			throws SQLException {
 		while (true) {
 			actionMenu();
 			char operation = CourierServiceModule.getWhatToDo(sc);
@@ -26,25 +27,27 @@ public class CourierServiceInterface {
 
 	public static void actionMenu() {
 		System.out.print(
-				"\n  _________________________________"
-						+ "\n|| Enter                           ||"
-						+ "\n|| U -> Update Delivery Status     ||"
-						+ "\n|| S -> Show Orders To Deliver     ||"
-						+ "\n|| V -> View Profile               ||"
-						+ "\n||_________________________________||"
+				"+---------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ U -> Update Delivery Status           +"
+						+ "\n+ S -> Show Orders To Deliver           +"
+						+ "\n+ V -> View Profile                     +"
+						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
 
 	public static void profileAction() {
 		System.out.print(
-				"  _________________________________"
-						+ "\n|| Enter                           ||"
-						+ "\n|| V -> View Profile               ||"
-						+ "\n|| E -> Edit Profile               ||"
-						+ "\n|| P -> Change Password            ||"
-						+ "\n|| B -> Back                       ||"
-						+ "\n|| L -> Logout                     ||"
-						+ "\n||_________________________________||"
+				"+---------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ V -> View Profile                     +"
+						+ "\n+ E -> Edit Profile                     +"
+						+ "\n+ P -> Change Password                  +"
+						+ "\n+ B -> Back                             +"
+						+ "\n+ L -> Logout                           +"
+						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
 

@@ -11,6 +11,7 @@ public class AdminInterface {
 		if (entry == 0)
 			welcomeMsg();
 		while (true) {
+			actionDisply();
 			actionMenu();
 			char operation = AdminModule.getWhatToDo(sc);
 			AdminModule.performAdminTask(con, args, sc, operation);
@@ -18,49 +19,61 @@ public class AdminInterface {
 	}
 
 	public static void welcomeMsg() {
-		System.out.print("\n---------Welcome back admin---------");
+		System.out.print("\n+-------------------------------------------------------+\n"
+				+ "+                 Welcome back admin                    +");
+	}
+
+	public static void actionDisply() {
+		System.out.print("\n+-------------------------------------------------------+"
+				+ "\n+                    Action Menu                        +");
 	}
 
 	public static void actionMenu() {
 		System.out.print(
-				"\n  ____________________________________________________"
-						+ "\n|| Enter                                              ||"
-						+ "\n|| A -> Add new Watch/ Admin/ Dealer/ CourierServices ||"
-						+ "\n|| C -> Delete Watch with 0 stocks                    ||"
-						+ "\n|| D -> Delete watch                                  ||"
-						+ "\n|| S -> Display Watch/ Admin/ Dealer/ CourierServices ||"
-						+ "\n|| U -> Update details of watches                     ||"
-						+ "\n|| V -> View Profile                                  ||"
-						+ "\n||____________________________________________________||"
+				"\n+-------------------------------------------------------+"
+						+ "\n+ Enter                                                 +"
+						+ "\n+-------------------------------------------------------+"
+						+ "\n+ --A -> Add new Watch/ Admin/ Dealer/ CourierServices  +"
+						+ "\n+ --C -> Delete Watch with 0 stocks                     +"
+						+ "\n+ --D -> Delete watch                                   +"
+						+ "\n+ --S -> Display Watch/ Admin/ Dealer/ CourierServices  +"
+						+ "\n+ --U -> Update details of watches                      +"
+						+ "\n+ --V -> View Profile                                   +"
+						+ "\n+-------------------------------------------------------+"
 						+ "\n---------> ");
 	}
 
 	public static void profileAction() {
 		System.out.print(
-				"  _________________________________"
-						+ "\n|| Enter                           ||"
-						+ "\n|| V -> View Profile               ||"
-						+ "\n|| E -> Edit Profile               ||"
-						+ "\n|| P -> Change Password            ||"
-						+ "\n|| B -> Back                       ||"
-						+ "\n|| L -> Logout                     ||"
-						+ "\n||_________________________________||"
+				"+---------------------------------------+"
+						+ "\n+              Profile Menu             +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ --V -> View Profile                   +"
+						+ "\n+ --E -> Edit Profile                   +"
+						+ "\n+ --P -> Change Password                +"
+						+ "\n+ --B -> Back                           +"
+						+ "\n+ --L -> Logout                         +"
+						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
 
 	public static void viewProfile(String[] profile) {
-		System.out.println("-----------------------------------------------------------------");
-		System.out.println("--Admin UID         : " + profile[0]);
-		System.out.println("--Name              : " + profile[1]);
-		System.out.println("--Mobile Number     : " + profile[2]);
-		System.out.println("--Email             : " + profile[3]);
-		System.out.println("--Role              : " + profile[4]);
-		System.out.println("-----------------------------------------------------------------");
+		System.out.println("+---------------------------------------------------------------+"
+				+ "\n+                             Profile                           +"
+				+ "\n+---------------------------------------------------------------+"
+				+ "\n--Admin UID         : " + profile[0]
+				+ "\n--Name              : " + profile[1]
+				+ "\n--Mobile Number     : " + profile[2]
+				+ "\n--Email             : " + profile[3]
+				+ "\n--Role              : " + profile[4]
+				+ "\n+---------------------------------------------------------------+");
 	}
 
 	public static void displayWatches(String id, String name, String brand, double price, String description,
 			int number_of_stocks, String dealerId, String dealerName) {
-		System.out.println("******************************************************************");
+		System.out.println("-------------------------------------------------------------------");
 		System.out.println(
 				"--ID                             : " + id
 						+ "\n--Name                           : " + name
@@ -74,27 +87,33 @@ public class AdminInterface {
 
 	public static void insertOption() {
 		System.out.print(
-				"  _________________________________"
-						+ "\n|| Enter                           ||"
-						+ "\n|| 1 -> Add New Watch              ||"
-						+ "\n|| 2 -> Add New Admin              ||"
-						+ "\n|| 3 -> Add New Dealer Details     ||"
-						+ "\n|| 4 -> Add NEw Courier Service    ||"
-						+ "\n|| B -> Back                       ||"
-						+ "\n||_________________________________||"
+				"+---------------------------------------+"
+						+ "\n+              Insert Menu              +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ --1 -> Add New Watch                  +"
+						+ "\n+ --2 -> Add New Admin                  +"
+						+ "\n+ --3 -> Add New Dealer Details         +"
+						+ "\n+ --4 -> Add NEw Courier Service        +"
+						+ "\n+ --B -> Back                           +"
+						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
 
-	public static void optionsForAdmin() {
+	public static void displayOptionsForAdmin() {
 		System.out.print(
-				"  _________________________________"
-						+ "\n|| Enter                           ||"
-						+ "\n|| 1 -> Display Watches            ||"
-						+ "\n|| 2 -> Display Admin              ||"
-						+ "\n|| 3 -> Display Dealer List        ||"
-						+ "\n|| 4 -> Display Courier List       ||"
-						+ "\n|| B -> Back                       ||"
-						+ "\n||_________________________________||"
+				"+---------------------------------------+"
+						+ "\n+             Display Menu              +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ --1 -> Display Watches                +"
+						+ "\n+ --2 -> Display Admin                  +"
+						+ "\n+ --3 -> Display Dealer List            +"
+						+ "\n+ --4 -> Display Courier List           +"
+						+ "\n+ --B -> Back                           +"
+						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
 }

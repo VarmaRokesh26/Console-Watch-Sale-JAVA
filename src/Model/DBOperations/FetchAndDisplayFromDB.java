@@ -47,7 +47,7 @@ public class FetchAndDisplayFromDB {
                     }
                 }
             }
-            System.out.println("******************************************************************");
+            System.out.println("-------------------------------------------------------------------");
         }
     }
 
@@ -71,7 +71,7 @@ public class FetchAndDisplayFromDB {
                         + "_" + status;
                 UserInterface.orderHistory(res.split("_"));
             }
-            System.out.println("____________________________________________");
+            System.out.println("-------------------------------------------------------------------");
         }
         return res.split("_");
     }
@@ -104,10 +104,11 @@ public class FetchAndDisplayFromDB {
                             + "_" + price + "_" + paymentMode + "_" + status;
                     DealerInterface.showOrderDetails(res.split("_"));
                 }
-                if (res.isEmpty())
-                    System.out.println("No Orders to Display");
+                if (!resultSet.next()) {
+                    DealerInterface.noItemStatement();
+                    return;
+                }
             }
-            System.out.println("____________________________________________");
         }
     }
 
@@ -190,7 +191,7 @@ public class FetchAndDisplayFromDB {
                     UserInterface.displayWatches(id, name, brand, price, description, numberOfStocks, dealerName);
                 }
             }
-            System.out.println("******************************************************************");
+            System.out.println("-------------------------------------------------------------------");
         }
         return res;
     }
@@ -226,7 +227,7 @@ public class FetchAndDisplayFromDB {
                     if (numberOfStocks != 0 && k == 0) {
                         UserInterface.displayWatches(id, name, brand, price, description, numberOfStocks,
                                 dealerName);
-                        System.out.println("******************************************************************");
+                        System.out.println("-------------------------------------------------------------------");
                     } else {
                         res += watchId + "_" + name + "_" + price + "_" + dealerId;
                     }
@@ -246,7 +247,7 @@ public class FetchAndDisplayFromDB {
                 while (cartResultSet.next()) {
                     UserInterface.shoppingCart(cartResultSet.getString("cartDetails"));
                 }
-                System.out.println("____________________________________________");
+                System.out.println("-------------------------------------------------------------------");
             }
         }
     }

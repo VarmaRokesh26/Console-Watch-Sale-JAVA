@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.*;
 import Model.*;
 import View.AdminInterface;
+import View.DealerInterface;
 import Main.MainModule;
 import Model.DBOperations.*;
 
@@ -216,6 +217,11 @@ public class AdminModule {
 				changePassword(con, sc);
 				break;
 			}
+
+			case 'B':
+			case 'b': {
+				AdminInterface.adminInterface(con, args, sc, operation);
+			}
 			
 			case 'L':
 			case 'l': {
@@ -279,7 +285,7 @@ public class AdminModule {
 
 	public static void displayAsRequired(Connection con, String[] args, Scanner sc) throws SQLException {
 		while (true) {
-			AdminInterface.optionsForAdmin();
+			AdminInterface.displayOptionsForAdmin();
 			char sh = sc.next().charAt(0);
 			if (sh == '1') {
 				try {

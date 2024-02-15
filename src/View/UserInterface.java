@@ -25,50 +25,61 @@ public class UserInterface {
 
 	public static void actionMenu() {
 		System.out.print(
-				"\n ___________________________________"
-						+ "\n|| Enter                           ||"
-						+ "\n|| D -> Display Watches            ||"
-						+ "\n|| O -> Place Order                ||"
-						+ "\n|| H -> History of Orders          ||"
-						+ "\n|| C -> View Cart                  ||"
-						+ "\n|| V -> View Profile               ||"
-						+ "\n||_________________________________||"
+				"+---------------------------------------+"
+						+ "\n+               User Menu               +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ D -> Display Watches                  +"
+						+ "\n+ O -> Place Order                      +"
+						+ "\n+ H -> History of Orders                +"
+						+ "\n+ C -> View Cart                        +"
+						+ "\n+ V -> View Profile                     +"
+						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
 
 	public static void profileAction() {
 		System.out.print(
-				" ___________________________________"
-						+ "\n|| Enter                           ||"
-						+ "\n|| V -> View Profile               ||"
-						+ "\n|| E -> Edit Profile               ||"
-						+ "\n|| P -> Change Password            ||"
-						+ "\n|| B -> Back                       ||"
-						+ "\n|| L -> Logout                     ||"
-						+ "\n||_________________________________||"
+				"+---------------------------------------+"
+						+ "\n+              Profile Menu             +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ V -> View Profile                     +"
+						+ "\n+ E -> Edit Profile                     +"
+						+ "\n+ P -> Change Password                  +"
+						+ "\n+ B -> Back                             +"
+						+ "\n+ L -> Logout                           +"
+						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
 
 	public static void orderOrCart() {
 		System.out.print(
-				" ___________________________________"
-						+ "\n|| Enter                           ||"
-						+ "\n|| N -> Buy Now                    ||"
-						+ "\n|| A -> Add to Cart                ||"
-						+ "\n|| B -> Back                       ||"
-						+ "\n||_________________________________||"
+				"+---------------------------------------+"
+						+ "\n+              Order Menu             +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ N -> Buy Now                          +"
+						+ "\n+ A -> Add to Cart                      +"
+						+ "\n+ B -> Back                             +"
+						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
 
 	public static void profile(String[] profile) {
 		String s = "                      ";
-		System.out.println("-----------------------------------------------------------------");
-		System.out.println("--User UID          : " + profile[0]);
-		System.out.println("--Name              : " + profile[1]);
-		System.out.println("--Mobile Number     : " + profile[2]);
-		System.out.println("--Email             : " + profile[3]);
+		System.out.println("+---------------------------------------------------------------+"
+				+ "\n+                             Profile                           +"
+				+ "\n-----------------------------------------------------------------"
+				+ "\n--User UID          : " + profile[0]
+				+ "\n--Name              : " + profile[1]
+				+ "\n--Mobile Number     : " + profile[2]
+				+ "\n--Email             : " + profile[3]);
 		displayAddress(profile[4], s);
-		System.out.println("-----------------------------------------------------------------");
+		System.out.println("\n-----------------------------------------------------------------");
 	}
 
 	public static void displayAddress(String s, String dec) {
@@ -89,7 +100,7 @@ public class UserInterface {
 		double price = Double.parseDouble(cart[2]);
 		int quantity = Integer.parseInt(cart[3]);
 		System.out.println(
-				"____________________________________________" +
+				"+---------------------------------------+" +
 						"\nItem Id     : " + cart[0]
 						+ "\nSeries Name : " + cart[1]
 						+ "\nQuantity    : " + quantity
@@ -100,30 +111,31 @@ public class UserInterface {
 		String s[] = order[3].split(" ");
 		String t[] = order[2].split(" ");
 		System.out.println(
-				"____________________________________________" +
+				"+---------------------------------------+" +
 						"\nOrder Id       : " + order[0]
 						+ "\nItem Id        : " + order[1]
 						+ "\nOrdered Date   : " + t[0]
 						+ "\nExpected Date  : " + s[0]
 						+ "\nQuantity       : " + order[4]
 						+ "\nStatus         : " + order[5]
-						+ "\nPrice          : " + order[6]);				
+						+ "\nPrice          : " + order[6]);
 	}
 
 	public static void cartWork() {
 		System.out.print(
-				" ___________________________________"
-						+ "\n|| Enter                           ||"
-						+ "\n|| R -> Remove an Item in Cart     ||"
-						+ "\n|| D -> Delete all item in Cart    ||"
-						+ "\n|| B -> Back                       ||"
-						+ "\n||_________________________________||"
+				"+---------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ R -> Remove an Item in Cart           +"
+						+ "\n+ D -> Delete all item in Cart          +"
+						+ "\n+ B -> Back                             +"
+						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
 
 	public static void displayWatches(String id, String name, String brand, double price, String description,
 			int number_of_stocks, String dealerName) {
-		System.out.println("******************************************************************");
+		System.out.println("-------------------------------------------------------------------");
 		System.out.println(
 				"--ID                             : " + id
 						+ "\n--Name                           : " + name

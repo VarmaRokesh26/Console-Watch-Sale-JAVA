@@ -7,39 +7,40 @@ import Controller.DealerModule;
 
 public class DealerInterface {
 
-    public static void dealerInterface(Connection con, String[] args, Scanner sc, int entry) throws SQLException {
-        while (true) {
-            actionMenu();
-            char operation = DealerModule.getWhatToDo(sc);
-            DealerModule.dealerTask(con, args, sc, operation);
-        }
-    }
+	public static void dealerInterface(Connection con, String[] args, Scanner sc, int entry) throws SQLException {
+		while (true) {
+			actionMenu();
+			char operation = DealerModule.getWhatToDo(sc);
+			DealerModule.dealerTask(con, args, sc, operation);
+		}
+	}
 
-    public static void displayDealers(String profileDealers[]) {
-        System.out.println("-----------------------------------------------------------------");
-        System.out.println("--Dealer UID        : " + profileDealers[0]);
-        System.out.println("--Dealer Name       : " + profileDealers[1]);
-        System.out.println("--MailId            : " + profileDealers[3]);
-        System.out.println("--Mobile Number     : " + profileDealers[2]);
-        System.out.println("--Location          : " + profileDealers[4]);
-        System.out.println("-----------------------------------------------------------------");
-    }
+	public static void displayDealers(String profileDealers[]) {
+		System.out.println("-----------------------------------------------------------------");
+		System.out.println("--Dealer UID        : " + profileDealers[0]);
+		System.out.println("--Dealer Name       : " + profileDealers[1]);
+		System.out.println("--MailId            : " + profileDealers[3]);
+		System.out.println("--Mobile Number     : " + profileDealers[2]);
+		System.out.println("--Location          : " + profileDealers[4]);
+		System.out.println("-----------------------------------------------------------------");
+	}
 
-    public static void actionMenu() {
-        System.out.print(
-                "\n  _________________________________"
-                        + "\n|| Enter                           ||"
-						+ "\n|| A -> Add new Watch              ||"
-						+ "\n|| D -> Display Orders             ||"
-                        + "\n|| S -> Update Status of Order     ||"
-						+ "\n|| C -> Completed Orders           ||"
-                        + "\n|| V -> View Profile               ||"
-                        + "\n||_________________________________||"
-                        + "\n---------> ");
-    }
+	public static void actionMenu() {
+		System.out.print(
+				"+--------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ --1 -> Add New Watch                  +"
+						+ "\n+ D -> Display Orders                   +"
+						+ "\n+ S -> Update Status of Order           +"
+						+ "\n+ C -> Completed Orders                 +"
+						+ "\n+ V -> View Profile                     +"
+						+ "\n+---------------------------------------+"
+						+ "\n---------> ");
+	}
 
-    public static void showOrderDetails(String orders[]) {
-        System.out.println("-----------------------------------------------------------------");
+	public static void showOrderDetails(String orders[]) {
+		System.out.println("-----------------------------------------------------------------");
 		System.out.println("--Order Id               : " + orders[0]);
 		System.out.println("--User Id                : " + orders[1]);
 		System.out.println("--Dealer Id              : " + orders[2]);
@@ -51,9 +52,9 @@ public class DealerInterface {
 		System.out.println("--Payment Mode           : " + orders[8]);
 		System.out.println("--Status                 : " + orders[9]);
 		System.out.println("-----------------------------------------------------------------");
-    }
+	}
 
-    public static void profile(String[] profile) {
+	public static void profile(String[] profile) {
 		String s = "                      ";
 		System.out.println("-----------------------------------------------------------------");
 		System.out.println("--Name              : " + profile[0]);
@@ -63,34 +64,36 @@ public class DealerInterface {
 		System.out.println("-----------------------------------------------------------------");
 	}
 
-    public static void profileAction() {
+	public static void profileAction() {
 		System.out.print(
-				" ___________________________________"
-						+ "\n|| Enter                           ||"
-						+ "\n|| V -> View Profile               ||"
-						+ "\n|| E -> Edit Profile               ||"
-						+ "\n|| P -> Change Password            ||"
-						+ "\n|| B -> Back                       ||"
-						+ "\n|| L -> Logout                     ||"
-						+ "\n||_________________________________||"
+				"+---------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ V -> View Profile                     +"
+						+ "\n+ E -> Edit Profile                     +"
+						+ "\n+ P -> Change Password                  +"
+						+ "\n+ B -> Back                             +"
+						+ "\n+ --L -> Logout                         +"
+						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
 
-    public static void orderActions() {
+	public static void orderActions() {
 		System.out.print(
-				" ___________________________________"
-						+ "\n|| Enter                            ||"
-						+ "\n|| 1 -> Order is Ready for Shippig  ||"
-						+ "\n|| 2 -> Order is Shipped            ||"
-						+ "\n|| 3 -> Order Reached user's Region ||"
-						+ "\n|| 4 -> Deliverd                    ||"
-						+ "\n|| 5 -> On Hold                     ||"
-						+ "\n|| B -> Back                        ||"
-						+ "\n||__________________________________||"
+				"+---------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ 1 -> Order is Ready for Shippig       +"
+						+ "\n+ 2 -> Order is Shipped                 +"
+						+ "\n+ 3 -> Order Reached user's Region      +"
+						+ "\n+ 4 -> Deliverd                         +"
+						+ "\n+ 5 -> On Hold                          +"
+						+ "\n+ B -> Back                             +"
+						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
 
-    public static void displayAddress(String s, String dec) {
+	public static void displayAddress(String s, String dec) {
 		String address[] = s.split(",");
 		System.out.print("--Location          : ");
 		for (int i = 0; i < address.length; i++) {
@@ -101,5 +104,11 @@ public class DealerInterface {
 			else
 				System.out.print(dec + "" + address[i].trim() + ".\n");
 		}
+	}
+
+	public static void noItemStatement() {
+		System.out.println("+------------------------------------------+");
+		System.out.println("+          No Orders to Display            +");
+		System.out.println("+------------------------------------------+");
 	}
 }

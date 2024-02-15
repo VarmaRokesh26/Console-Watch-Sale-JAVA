@@ -263,7 +263,7 @@ public class UserModule {
 	// Method for display user order history
 	public static void history(Connection connection) {
 		try {
-			FetchAndDisplayFromDB.viewOrders(connection, 1);
+			FetchAndDisplayFromDB.viewOrders(connection);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}

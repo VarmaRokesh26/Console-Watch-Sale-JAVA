@@ -72,7 +72,7 @@ public class CourierServiceModule {
     public static void showOrders(Connection con) {
 
         try {
-            FetchAndDisplayFromDB.viewOrders(con, 0); 
+            FetchAndDisplayFromDB.viewOrders(con); 
         } catch(Exception e) {
             System.out.println(e.toString());
         }
