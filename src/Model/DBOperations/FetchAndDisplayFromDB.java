@@ -51,38 +51,64 @@ public class FetchAndDisplayFromDB {
         }
     }
 
-    public static String[] viewOrders(Connection connection, int entry) throws SQLException {
+    public static String[] viewOrders(Connection connection) throws SQLException {
         query = "SELECT * FROM orders";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query);
                 ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 String orderId = resultSet.getString("orderId");
-                String userId = resultSet.getString("userId");
-                String dealerId = resultSet.getString("dealerId");
+                // String userId = resultSet.getString("userId");
+                // String dealerId = resultSet.getString("dealerId");
                 String watchId = resultSet.getString("watchId");
                 String orderDate = resultSet.getString("orderDate");
                 String deliveryDate = resultSet.getString("deliveryDate");
                 int quantity = resultSet.getInt("quantity");
                 double price = resultSet.getDouble("totalAmount");
-                String paymentMode = resultSet.getString("paymentMode");
+                // String paymentMode = resultSet.getString("paymentMode");
                 String status = resultSet.getString("status");
+                res = orderId + "_" + watchId + "_" + orderDate + "_" + deliveryDate + "_" + quantity + "_" + price
+                        + "_" + status;
+                UserInterface.orderHistory(res.split("_"));
+            }
+            System.out.println("____________________________________________");
+        }
+        return res.split("_");
+    }
 
-                if (entry == 0) {
+    public static void viewOrderForRespectiveDealer(Connection connection) throws SQLException {
+        query = "SELECT * FROM orders WHERE status != ? AND dealerId = ?";
+        String dealerIdForCheck = CheckFromDB.getDealerId(connection);
+        String checkStatus = "Delivered";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, checkStatus);
+            preparedStatement.setString(2, dealerIdForCheck);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+
+                    String orderId = resultSet.getString("orderId");
+                    String userId = resultSet.getString("userId");
+                    String dealerId = resultSet.getString("dealerId");
+                    String watchId = resultSet.getString("watchId");
+                    String orderDate = resultSet.getString("orderDate");
+                    String deliveryDate = resultSet.getString("deliveryDate");
+                    int quantity = resultSet.getInt("quantity");
+                    double price = resultSet.getDouble("totalAmount");
+                    String paymentMode = resultSet.getString("paymentMode");
+                    String status = resultSet.getString("status");
+
                     res = orderId + "_" + userId + "_" + dealerId + "_" + watchId + "_" + orderDate + "_" + deliveryDate
                             + "_" + quantity
                             + "_" + price + "_" + paymentMode + "_" + status;
                     DealerInterface.showOrderDetails(res.split("_"));
                 }
-                else {
-                    res = orderId + "_" + watchId + "_" + orderDate + "_" + deliveryDate + "_" + quantity + "_" + price
-                            + "_" + status;
-                    UserInterface.orderHistory(res.split("_"));
-                }
+                if (res.isEmpty())
+                    System.out.println("No Orders to Display");
             }
             System.out.println("____________________________________________");
         }
-        return res.split("_");
     }
 
     public static void displayAdminDealerCourierDB(Connection connection, int slNo) throws SQLException {
@@ -172,7 +198,7 @@ public class FetchAndDisplayFromDB {
     // Specific Detail about Watch is to Clearly mention the required watch for the
     // user
     public static String specificWatchDetail(Connection connection, String watchId, int k) throws SQLException {
-        
+
         String query = "SELECT * FROM watches WHERE watchId = ?";
         String res = "";
         String dealerName = "";

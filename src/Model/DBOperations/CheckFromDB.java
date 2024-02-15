@@ -147,4 +147,21 @@ public class CheckFromDB {
 		return profile.get(1).equals(currentPassword);
 	}
 
+	public static String getDealerId(Connection connection) throws SQLException {
+		String query = "SELECT dealerId FROM dealer WHERE dealerMailId = ? AND dealerPassword = ?";
+		String reqId = "";
+
+		try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+			preparedStatement.setString(1, profile.get(0));
+			preparedStatement.setString(2, profile.get(1));
+
+			try(ResultSet resultSet = preparedStatement.executeQuery()) {
+				while(resultSet.next()) {
+					reqId = resultSet.getString("dealerId");
+				}
+			}
+		}
+		return reqId;
+	}
+
 }

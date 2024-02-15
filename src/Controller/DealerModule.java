@@ -36,8 +36,13 @@ public class DealerModule {
     }
     public static void dealerTask(Connection con, String[] args, Scanner sc, char operation) throws SQLException {
         switch(operation) {
-            case 'S':
-			case 's': {
+            case 'D':
+			case 'd': {
+				showOrders(con, args, sc);
+				break;
+			}
+            case 'U':
+			case 'u': {
 				showOrders(con, args, sc);
 				break;
 			}
@@ -90,12 +95,12 @@ public static void showDeliveredOrders(Connection connection, Scanner sc) {
 }
 
 	public static void optionsForOrders(Connection con, String[] args, Scanner sc) throws SQLException {
-		System.out.print("Enter the Orderid to Update the order Status :");
-		String orderId = sc.next();
-		System.out.print("Enter the valid option to update the Order status : ");
-		char ch = sc.next().charAt(0);
 		while(true) {
+			System.out.print("Enter the Orderid to Update the order Status :");
+			String orderId = sc.next();
 			DealerInterface.orderActions();
+			System.out.print("Enter the valid option to update the Order status : ");
+			char ch = sc.next().charAt(0);
 			if(ch == '1') {
 				status = "Order Ready For Shipment";
 			} else if(ch == '2'){
@@ -117,14 +122,15 @@ public static void showDeliveredOrders(Connection connection, Scanner sc) {
 	public static void updateStatusInDb(Connection con, String status, String orderId) {
 		try{
 			UpdateInDB.updateOrderStatus(con, status, orderId);
+			FetchAndDisplayFromDB.viewOrders(con);
 		} catch(Exception e) {
 			System.out.println(e.toString());
 		}
 	}
     public static void showOrders(Connection con, String[] args, Scanner sc) {
         try {
-            FetchAndDisplayFromDB.viewOrders(con, 0);
-			optionsForOrders(con, args, sc);
+            FetchAndDisplayFromDB.viewOrderForRespectiveDealer(con);
+			// optionsForOrders(con, args, sc);
 
         } catch(Exception e) {
             System.out.println(e.toString());
