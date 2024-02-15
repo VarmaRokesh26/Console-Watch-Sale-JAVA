@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 import Main.MainModule;
 import Model.DBOperations.*;
-import View.AdminInterface;
 import View.DealerInterface;
 import Model.*;
 

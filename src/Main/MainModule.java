@@ -63,7 +63,8 @@ public class MainModule {
 
         if (con != null) {
             try {
-                InsertInDB.insertUserDetails(con, signUp.getUserId(), signUp.getUserName(), signUp.getMobileNumber(), signUp.getEmailId(),
+                InsertInDB.insertUserDetails(con, signUp.getUserId(), signUp.getUserName(), signUp.getMobileNumber(),
+                        signUp.getEmailId(),
                         signUp.getAddress(), signUp.getPassword());
             } catch (Exception e) {
                 System.out.println(e.toString());
