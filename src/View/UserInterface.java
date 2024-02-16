@@ -30,11 +30,11 @@ public class UserInterface {
 						+ "\n+---------------------------------------+"
 						+ "\n+ Enter                                 +"
 						+ "\n+---------------------------------------+"
-						+ "\n+ D -> Display Watches                  +"
-						+ "\n+ O -> Place Order                      +"
-						+ "\n+ H -> History of Orders                +"
-						+ "\n+ C -> View Cart                        +"
-						+ "\n+ V -> View Profile                     +"
+						+ "\n+ --D -> Display Watches                +"
+						+ "\n+ --O -> Place Order                    +"
+						+ "\n+ --H -> History of Orders              +"
+						+ "\n+ --C -> View Cart                      +"
+						+ "\n+ --V -> View Profile                   +"
 						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
@@ -46,11 +46,11 @@ public class UserInterface {
 						+ "\n+---------------------------------------+"
 						+ "\n+ Enter                                 +"
 						+ "\n+---------------------------------------+"
-						+ "\n+ V -> View Profile                     +"
-						+ "\n+ E -> Edit Profile                     +"
-						+ "\n+ P -> Change Password                  +"
-						+ "\n+ B -> Back                             +"
-						+ "\n+ L -> Logout                           +"
+						+ "\n+ --V -> View Profile                   +"
+						+ "\n+ --E -> Edit Profile                   +"
+						+ "\n+ --P -> Change Password                +"
+						+ "\n+ --B -> Back                           +"
+						+ "\n+ --L -> Logout                         +"
 						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
@@ -62,9 +62,9 @@ public class UserInterface {
 						+ "\n+---------------------------------------+"
 						+ "\n+ Enter                                 +"
 						+ "\n+---------------------------------------+"
-						+ "\n+ N -> Buy Now                          +"
-						+ "\n+ A -> Add to Cart                      +"
-						+ "\n+ B -> Back                             +"
+						+ "\n+ --N -> Buy Now                        +"
+						+ "\n+ --A -> Add to Cart                    +"
+						+ "\n+ --B -> Back                           +"
 						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
@@ -101,10 +101,10 @@ public class UserInterface {
 		int quantity = Integer.parseInt(cart[3]);
 		System.out.println(
 				"+---------------------------------------+" +
-						"\nItem Id     : " + cart[0]
-						+ "\nSeries Name : " + cart[1]
-						+ "\nQuantity    : " + quantity
-						+ "\nPrice       : " + price);
+						"\n--Item Id     : " + cart[0]
+						+ "\n--Series Name : " + cart[1]
+						+ "\n--Quantity    : " + quantity
+						+ "\n--Price       : " + price);
 	}
 
 	public static void orderHistory(String order[]) {
@@ -112,13 +112,13 @@ public class UserInterface {
 		String t[] = order[2].split(" ");
 		System.out.println(
 				"+---------------------------------------+" +
-						"\nOrder Id       : " + order[0]
-						+ "\nItem Id        : " + order[1]
-						+ "\nOrdered Date   : " + t[0]
-						+ "\nExpected Date  : " + s[0]
-						+ "\nQuantity       : " + order[4]
-						+ "\nStatus         : " + order[5]
-						+ "\nPrice          : " + order[6]);
+						"\n--Order Id       : " + order[0]
+						+ "\n--Item Id        : " + order[1]
+						+ "\n--Ordered Date   : " + t[0]
+						+ "\n--Expected Date  : " + s[0]
+						+ "\n--Quantity       : " + order[4]
+						+ "\n--Status         : " + order[5]
+						+ "\n--Price          : " + order[6]);
 	}
 
 	public static void cartWork() {
@@ -126,9 +126,9 @@ public class UserInterface {
 				"+---------------------------------------+"
 						+ "\n+ Enter                                 +"
 						+ "\n+---------------------------------------+"
-						+ "\n+ R -> Remove an Item in Cart           +"
-						+ "\n+ D -> Delete all item in Cart          +"
-						+ "\n+ B -> Back                             +"
+						+ "\n+ --R -> Remove an Item in Cart           +"
+						+ "\n+ --D -> Delete all item in Cart          +"
+						+ "\n+ --B -> Back                             +"
 						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}

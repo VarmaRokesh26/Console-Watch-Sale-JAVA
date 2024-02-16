@@ -30,23 +30,22 @@ public class DealerModule {
 	private static int numberOfStocks;
 
 	private static String status;
+	private static String orderId;
+	private static char action;
 
 	public static char getWhatToDo(Scanner sc) {
 		return sc.next().charAt(0);
 	}
 
 	public static void dealerTask(Connection con, String[] args, Scanner sc, char operation) throws SQLException {
+
 		switch (operation) {
+
 			case 'D':
 			case 'd': {
 				showOrders(con, args, sc);
 				break;
 			}
-			// case 'U':
-			// case 'u': {
-			// showOrders(con, args, sc);
-			// break;
-			// }
 
 			case 'C':
 			case 'c': {
@@ -66,6 +65,11 @@ public class DealerModule {
 				break;
 			}
 
+			case 'W':
+			case 'w': {
+				displayOurWatch(con);
+				break;
+			}
 			case 'E':
 			case 'e': {
 				editDealerProfile(con, sc);
@@ -88,6 +92,15 @@ public class DealerModule {
 				logOut(con, args);
 				break;
 			}
+
+		}
+	}
+
+	public static void displayOurWatch(Connection connection) {
+		try {
+			FetchAndDisplayFromDB.displayDealersWatches(connection);
+		} catch (Exception e) {
+			System.out.println(e.toString());
 		}
 	}
 
@@ -97,29 +110,37 @@ public class DealerModule {
 
 	public static void optionsForOrders(Connection con, String[] args, Scanner sc) throws SQLException {
 		while (true) {
-			System.out.print("Enter the Orderid to Update the order Status : ");
-			String orderId = sc.next();
-			DealerInterface.orderActions();
-			System.out.print("\nEnter the valid option to update the Order status : ");
-			char ch = sc.next().charAt(0);
-			if (ch == '1') {
-				status = "Order Ready For Shipment";
-			} else if (ch == '2') {
-				status = "Your Order is Shipped";
-			} else if (ch == '3') {
-				status = "On Hold";
-			} else if (ch == 'B' || ch == 'b') {
-				DealerInterface.dealerInterface(con, args, sc, ch);
+			DealerInterface.updateStatus();
+			action = sc.next().charAt(0);
+
+			if (action == 'U' || action == 'u') {
+				updateStatusInDb(con, sc);
+			} else if (action == 'B' || action == 'b') {
+				DealerInterface.dealerInterface(con, args, sc, action);
 			} else
 				System.out.println("Enter a valid Option");
-			updateStatusInDb(con, status, orderId);
 		}
 	}
 
-	public static void updateStatusInDb(Connection con, String status, String orderId) {
+	public static void updateStatusInDb(Connection con, Scanner sc) {
+		System.out.print("Enter the Orderid to Update the order Status : ");
+		orderId = sc.next();
+		DealerInterface.orderActions();
+		System.out.print("\nEnter the valid option to update the Order status : ");
+		action = sc.next().charAt(0);
+
+		if (action == '1')
+			status = "Order is Ready for Shipment";
+		else if (action == '2')
+			status = "Order is Shipped";
+		else if (action == '3')
+			status = "On Hold";
+		else
+			System.out.println("Enter a Valid Option");
+
 		try {
 			UpdateInDB.updateOrderStatus(con, status, orderId);
-			FetchAndDisplayFromDB.viewOrders(con);
+			FetchAndDisplayFromDB.viewOrderForRespectiveDealer(con);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -127,7 +148,12 @@ public class DealerModule {
 
 	public static void showOrders(Connection con, String[] args, Scanner sc) {
 		try {
-			FetchAndDisplayFromDB.viewOrderForRespectiveDealer(con);
+			if (!FetchAndDisplayFromDB.viewOrderForRespectiveDealer(con)) {
+				DealerInterface.noItemStatement();
+			} else {
+				optionsForOrders(con, args, sc);
+			}
+
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -313,14 +339,7 @@ public class DealerModule {
 				break;
 		}
 
-		System.out.print("Enter the Dealer Id               :");
-		while (true) {
-			dealerId = sc.next();
-			if (!dealerId.isEmpty())
-				break;
-			else
-				System.out.println("Enter the Dealer ID for Inserting Watch");
-		}
+		dealerId = CheckFromDB.getDealerId(con);
 
 		return new Watch(watchId, seriesName, brand, price, description, numberOfStocks, dealerId);
 	}

@@ -36,12 +36,13 @@ public class UpdateInDB {
     }
 
     // Place Order By the User
-    public static void placeOrder(Connection connection, String orderId, String watchId, int quantity, double price, String paymentMode, String dealerId)
+    public static void placeOrder(Connection connection, String orderId, String watchId, int quantity, double price,
+            String paymentMode, String dealerId)
             throws SQLException {
         userIdString = CheckFromDB.userIdForCartOrOrder(connection);
         // System.out.println(userIdString);
         status = "Processed";
-        
+
         String orderQuery = "INSERT INTO orders(orderId, userId, dealerId, watchId, quantity, totalAmount, paymentMode, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         String deliveryDateQuery = "UPDATE orders SET deliveryDate = DATE_ADD(orderDate, INTERVAL 7 DAY) WHERE orderId = ?";
         String stockDecrease = "UPDATE watches SET numberOfStocks = numberOfStocks - ? WHERE watchId = ?";
@@ -69,7 +70,7 @@ public class UpdateInDB {
                 stockPreparedStatement.setString(2, watchId);
                 stockPreparedStatement.executeUpdate();
             }
-            if(rowsAffected>=0)
+            if (rowsAffected >= 0)
                 System.out.println("<----Order Placed Successfully---->");
         }
     }
@@ -213,22 +214,23 @@ public class UpdateInDB {
 
     public static void updateOrderStatus(Connection connection, String status, String orderId) throws SQLException {
         String query = "";
-    
-        if(status.equals("Delivered"))  {
+
+        orderId = orderId.toUpperCase();
+        if (status.equals("Delivered")) {
             query = "UPDATE orders SET deliveryDate = CURRENT_TIMESTAMP, status = ? WHERE orderId = ?";
         } else {
             query = "UPDATE orders SET status = ? WHERE orderId = ?";
         }
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, status);
             preparedStatement.setString(2, orderId);
 
             rowsAffected = preparedStatement.executeUpdate();
 
-            if(rowsAffected > 0) {
+            if (rowsAffected > 0) {
                 System.out.println("Updated Successfully");
-            } else 
+            } else
                 System.out.println("Updation failed");
-        } 
+        }
     }
 }

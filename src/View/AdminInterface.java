@@ -81,7 +81,7 @@ public class AdminInterface {
 						+ "\n--Price                          : " + price
 						+ "\n--Description                    : " + description
 						+ "\n--Number of Stocks available     : " + number_of_stocks
-						+ "\n--Id to Dealer                   : " + dealerId
+						+ "\n--Dealer Id                      : " + dealerId
 						+ "\n--Dealer of the Watch            : " + dealerName);
 	}
 

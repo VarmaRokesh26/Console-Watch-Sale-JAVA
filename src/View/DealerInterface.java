@@ -33,34 +33,35 @@ public class DealerInterface {
 						+ "\n+ --A -> Add New Watch                  +"
 						+ "\n+ --D -> Display Orders                 +"
 						+ "\n+ --C -> Completed Orders               +"
+						+ "\n+ --W -> Display Watches                +"
 						+ "\n+ --V -> View Profile                   +"
 						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
 
 	public static void showOrderDetails(String orders[]) {
-		System.out.println("-----------------------------------------------------------------");
-		System.out.println("--Order Id               : " + orders[0]);
-		System.out.println("--User Id                : " + orders[1]);
-		System.out.println("--Dealer Id              : " + orders[2]);
-		System.out.println("--Watch Id               : " + orders[3]);
-		System.out.println("--Order date             : " + orders[4]);
-		System.out.println("--Delivery Date          : " + orders[5]);
-		System.out.println("--Quantity               : " + orders[6]);
-		System.out.println("--Price                  : " + orders[7]);
-		System.out.println("--Payment Mode           : " + orders[8]);
-		System.out.println("--Status                 : " + orders[9]);
-		System.out.println("-----------------------------------------------------------------");
+		System.out.println("+----------------------------------------------------------------"
+				+ "\n+ --Order Id               : " + orders[0]
+				+ "\n+ --User Id                : " + orders[1]
+				+ "\n+ --Dealer Id              : " + orders[2]
+				+ "\n+ --Watch Id               : " + orders[3]
+				+ "\n+ --Order date             : " + orders[4]
+				+ "\n+ --Delivery Date          : " + orders[5]
+				+ "\n+ --Quantity               : " + orders[6]
+				+ "\n+ --Price                  : " + orders[7]
+				+ "\n+ --Payment Mode           : " + orders[8]
+				+ "\n+ --Status                 : " + orders[9]
+				+ "\n+----------------------------------------------------------------");
 	}
 
 	public static void profile(String[] profile) {
 		String s = "                      ";
-		System.out.println("-----------------------------------------------------------------");
-		System.out.println("--Name              : " + profile[0]);
-		System.out.println("--Mobile Number     : " + profile[1]);
-		System.out.println("--Email             : " + profile[2]);
+		System.out.println("+----------------------------------------------------------------");
+		System.out.println("+ --Name              : " + profile[0]);
+		System.out.println("+ --Mobile Number     : " + profile[1]);
+		System.out.println("+ --Email             : " + profile[2]);
 		displayAddress(profile[3], s);
-		System.out.println("-----------------------------------------------------------------");
+		System.out.println("+----------------------------------------------------------------");
 	}
 
 	public static void profileAction() {
@@ -92,7 +93,7 @@ public class DealerInterface {
 
 	public static void displayAddress(String s, String dec) {
 		String address[] = s.split(",");
-		System.out.print("--Location          : ");
+		System.out.print("+ --Location          : ");
 		for (int i = 0; i < address.length; i++) {
 			if (i != address.length - 1 && i != 0) {
 				System.out.print(dec + "" + address[i].trim() + ",\n");
@@ -118,5 +119,17 @@ public class DealerInterface {
 						+ "\n+ --B -> Back                           +"
 						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
+	}
+
+	public static void displayWatches(String id, String name, String brand, double price, String description,
+			int number_of_stocks) {
+		System.out.println("-------------------------------------------------------------------");
+		System.out.println(
+				"--ID                             : " + id
+						+ "\n--Name                           : " + name
+						+ "\n--Brand                          : " + brand
+						+ "\n--Price                          : " + price
+						+ "\n--Description                    : " + description
+						+ "\n--Number of Stocks available     : " + number_of_stocks);
 	}
 }
