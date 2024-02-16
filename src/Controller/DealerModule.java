@@ -30,22 +30,23 @@ public class DealerModule {
 	private static int numberOfStocks;
 
 	private static String status;
-    
-    public static char getWhatToDo(Scanner sc) {
-        return sc.next().charAt(0);
-    }
-    public static void dealerTask(Connection con, String[] args, Scanner sc, char operation) throws SQLException {
-        switch(operation) {
-            case 'D':
+
+	public static char getWhatToDo(Scanner sc) {
+		return sc.next().charAt(0);
+	}
+
+	public static void dealerTask(Connection con, String[] args, Scanner sc, char operation) throws SQLException {
+		switch (operation) {
+			case 'D':
 			case 'd': {
 				showOrders(con, args, sc);
 				break;
 			}
-            case 'U':
-			case 'u': {
-				showOrders(con, args, sc);
-				break;
-			}
+			// case 'U':
+			// case 'u': {
+			// showOrders(con, args, sc);
+			// break;
+			// }
 
 			case 'C':
 			case 'c': {
@@ -59,7 +60,7 @@ public class DealerModule {
 				break;
 			}
 
-            case 'V':
+			case 'V':
 			case 'v': {
 				viewDealerProfile(con, args, sc, operation);
 				break;
@@ -87,29 +88,25 @@ public class DealerModule {
 				logOut(con, args);
 				break;
 			}
-        }
-    }
+		}
+	}
 
-public static void showDeliveredOrders(Connection connection, Scanner sc) {
-
-}
+	public static void showDeliveredOrders(Connection connection, Scanner sc) {
+		System.out.println("Completed Orders");
+	}
 
 	public static void optionsForOrders(Connection con, String[] args, Scanner sc) throws SQLException {
-		while(true) {
-			System.out.print("Enter the Orderid to Update the order Status :");
+		while (true) {
+			System.out.print("Enter the Orderid to Update the order Status : ");
 			String orderId = sc.next();
 			DealerInterface.orderActions();
-			System.out.print("Enter the valid option to update the Order status : ");
+			System.out.print("\nEnter the valid option to update the Order status : ");
 			char ch = sc.next().charAt(0);
-			if(ch == '1') {
+			if (ch == '1') {
 				status = "Order Ready For Shipment";
-			} else if(ch == '2'){
+			} else if (ch == '2') {
 				status = "Your Order is Shipped";
-			} else if(ch == '3') {
-				status = "Your Order Reached Your region";
-			} else if(ch == '4') {
-				status = "Delivered";
-			} else if(ch == '5') {
+			} else if (ch == '3') {
 				status = "On Hold";
 			} else if (ch == 'B' || ch == 'b') {
 				DealerInterface.dealerInterface(con, args, sc, ch);
@@ -120,24 +117,23 @@ public static void showDeliveredOrders(Connection connection, Scanner sc) {
 	}
 
 	public static void updateStatusInDb(Connection con, String status, String orderId) {
-		try{
+		try {
 			UpdateInDB.updateOrderStatus(con, status, orderId);
 			FetchAndDisplayFromDB.viewOrders(con);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
 	}
-    public static void showOrders(Connection con, String[] args, Scanner sc) {
-        try {
-            FetchAndDisplayFromDB.viewOrderForRespectiveDealer(con);
-			// optionsForOrders(con, args, sc);
 
-        } catch(Exception e) {
-            System.out.println(e.toString());
-        }
-    }
+	public static void showOrders(Connection con, String[] args, Scanner sc) {
+		try {
+			FetchAndDisplayFromDB.viewOrderForRespectiveDealer(con);
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+	}
 
-    public static void viewDealerProfile(Connection con, String[] args, Scanner sc, char operation) {
+	public static void viewDealerProfile(Connection con, String[] args, Scanner sc, char operation) {
 		try {
 			String profileDealer[] = FetchAndDisplayFromDB.displayProfile(con).split("_");
 			DealerInterface.displayDealers(profileDealer);
@@ -176,12 +172,12 @@ public static void showDeliveredOrders(Connection connection, Scanner sc) {
 				System.out.println("Enter a Valid name");
 		}
 
-		while(true) {
+		while (true) {
 			System.out.print("Enter your Location   :");
 			dealerLocation = sc.nextLine();
-			if(!dealerLocation.isEmpty())
+			if (!dealerLocation.isEmpty())
 				break;
-			else	
+			else
 				System.out.println("Address cannot be empty");
 		}
 
@@ -207,10 +203,9 @@ public static void showDeliveredOrders(Connection connection, Scanner sc) {
 			System.out.print("Enter your Password   : ");
 			dealerPassword = sc.nextLine();
 			if (Validation.validatePassword(dealerPassword)) {
-				if(profile.get(1).equals(dealerPassword))
+				if (profile.get(1).equals(dealerPassword))
 					break;
-			}
-			else
+			} else
 				System.out.println("Password is Incorrect");
 		}
 
@@ -269,7 +264,8 @@ public static void showDeliveredOrders(Connection connection, Scanner sc) {
 		if (con != null) {
 			try {
 				InsertInDB.insertNewWatch(con, newWatch.getWatchId(), newWatch.getName(), newWatch.getBrand(),
-						newWatch.getPrice(), newWatch.getDescription(), newWatch.getNumberOfStocks(), newWatch.getDealerId());
+						newWatch.getPrice(), newWatch.getDescription(), newWatch.getNumberOfStocks(),
+						newWatch.getDealerId());
 			} catch (Exception e) {
 				System.out.println(e.toString());
 			}
@@ -318,11 +314,11 @@ public static void showDeliveredOrders(Connection connection, Scanner sc) {
 		}
 
 		System.out.print("Enter the Dealer Id               :");
-		while(true) {
+		while (true) {
 			dealerId = sc.next();
-			if(!dealerId.isEmpty())
+			if (!dealerId.isEmpty())
 				break;
-			else	
+			else
 				System.out.println("Enter the Dealer ID for Inserting Watch");
 		}
 

@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "MainModule",
+            "request": "launch",
+            "mainClass": "OnlineWatchSale/Main.MainModule",
+            "projectName": "OnlineWatchSale"
+        }
+    ]
+}

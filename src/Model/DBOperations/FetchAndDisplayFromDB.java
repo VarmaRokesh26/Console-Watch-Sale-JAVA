@@ -76,18 +76,20 @@ public class FetchAndDisplayFromDB {
         return res.split("_");
     }
 
-    public static void viewOrderForRespectiveDealer(Connection connection) throws SQLException {
+    public static boolean viewOrderForRespectiveDealer(Connection connection) throws SQLException {
         query = "SELECT * FROM orders WHERE status != ? AND dealerId = ?";
         String dealerIdForCheck = CheckFromDB.getDealerId(connection);
         String checkStatus = "Delivered";
-
+        boolean ordersFound = false;
+    
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, checkStatus);
             preparedStatement.setString(2, dealerIdForCheck);
-
+    
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-
+                    ordersFound = true;
+    
                     String orderId = resultSet.getString("orderId");
                     String userId = resultSet.getString("userId");
                     String dealerId = resultSet.getString("dealerId");
@@ -98,19 +100,18 @@ public class FetchAndDisplayFromDB {
                     double price = resultSet.getDouble("totalAmount");
                     String paymentMode = resultSet.getString("paymentMode");
                     String status = resultSet.getString("status");
-
-                    res = orderId + "_" + userId + "_" + dealerId + "_" + watchId + "_" + orderDate + "_" + deliveryDate
+    
+                    String res = orderId + "_" + userId + "_" + dealerId + "_" + watchId + "_" + orderDate + "_" + deliveryDate
                             + "_" + quantity
                             + "_" + price + "_" + paymentMode + "_" + status;
+    
                     DealerInterface.showOrderDetails(res.split("_"));
-                }
-                if (!resultSet.next()) {
-                    DealerInterface.noItemStatement();
-                    return;
                 }
             }
         }
+        return ordersFound;
     }
+    
 
     public static void displayAdminDealerCourierDB(Connection connection, int slNo) throws SQLException {
         if (slNo == 2)

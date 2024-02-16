@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.*;
 import Model.*;
 import View.AdminInterface;
-import View.DealerInterface;
 import Main.MainModule;
 import Model.DBOperations.*;
 

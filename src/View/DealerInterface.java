@@ -27,14 +27,13 @@ public class DealerInterface {
 
 	public static void actionMenu() {
 		System.out.print(
-				"+--------------------------------------+"
+				"+---------------------------------------+"
 						+ "\n+ Enter                                 +"
 						+ "\n+---------------------------------------+"
-						+ "\n+ --1 -> Add New Watch                  +"
-						+ "\n+ D -> Display Orders                   +"
-						+ "\n+ S -> Update Status of Order           +"
-						+ "\n+ C -> Completed Orders                 +"
-						+ "\n+ V -> View Profile                     +"
+						+ "\n+ --A -> Add New Watch                  +"
+						+ "\n+ --D -> Display Orders                 +"
+						+ "\n+ --C -> Completed Orders               +"
+						+ "\n+ --V -> View Profile                   +"
 						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
@@ -69,10 +68,10 @@ public class DealerInterface {
 				"+---------------------------------------+"
 						+ "\n+ Enter                                 +"
 						+ "\n+---------------------------------------+"
-						+ "\n+ V -> View Profile                     +"
-						+ "\n+ E -> Edit Profile                     +"
-						+ "\n+ P -> Change Password                  +"
-						+ "\n+ B -> Back                             +"
+						+ "\n+ --V -> View Profile                   +"
+						+ "\n+ --E -> Edit Profile                   +"
+						+ "\n+ --P -> Change Password                +"
+						+ "\n+ --B -> Back                           +"
 						+ "\n+ --L -> Logout                         +"
 						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
@@ -83,12 +82,10 @@ public class DealerInterface {
 				"+---------------------------------------+"
 						+ "\n+ Enter                                 +"
 						+ "\n+---------------------------------------+"
-						+ "\n+ 1 -> Order is Ready for Shippig       +"
-						+ "\n+ 2 -> Order is Shipped                 +"
-						+ "\n+ 3 -> Order Reached user's Region      +"
-						+ "\n+ 4 -> Deliverd                         +"
-						+ "\n+ 5 -> On Hold                          +"
-						+ "\n+ B -> Back                             +"
+						+ "\n+ --1 -> Order is Ready for Shippig     +"
+						+ "\n+ --2 -> Order is Shipped               +"
+						+ "\n+ --3 -> On Hold                        +"
+						+ "\n+ --B -> Back                           +"
 						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
@@ -110,5 +107,16 @@ public class DealerInterface {
 		System.out.println("+------------------------------------------+");
 		System.out.println("+          No Orders to Display            +");
 		System.out.println("+------------------------------------------+");
+	}
+
+	public static void updateStatus() {
+		System.out.print(
+				"+---------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ --U -> Update Status                  +"
+						+ "\n+ --B -> Back                           +"
+						+ "\n+---------------------------------------+"
+						+ "\n---------> ");
 	}
 }
