@@ -105,7 +105,11 @@ public class DealerModule {
 	}
 
 	public static void showDeliveredOrders(Connection connection, Scanner sc) {
-		System.out.println("Completed Orders");
+		try {
+			FetchAndDisplayFromDB.finishedOrder(connection, "Delivered");
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
 	}
 
 	public static void optionsForOrders(Connection con, String[] args, Scanner sc) throws SQLException {

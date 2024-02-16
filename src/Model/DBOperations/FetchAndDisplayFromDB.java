@@ -16,7 +16,7 @@ public class FetchAndDisplayFromDB {
     private static String query;
     private static String userIdString;
     private static List<String> profile = CheckFromDB.profileList();
-    
+
     private static String id;
     private static String name;
     private static String brand;
@@ -30,11 +30,12 @@ public class FetchAndDisplayFromDB {
     private static String watchId;
     private static String orderDate;
     private static String deliveryDate;
-    private static int quantity; 
+    private static int quantity;
     private static String paymentMode;
     private static String status;
 
     private static String dealerName;
+
     // Display Watches
     public static void selectAllWatches(Connection connection, String watchId) throws SQLException {
         String selectQuery = "SELECT * FROM watches";
@@ -336,6 +337,39 @@ public class FetchAndDisplayFromDB {
                     numberOfStocks = resultSet.getInt("numberOfStocks");
 
                     DealerInterface.displayWatches(id, name, brand, price, description, numberOfStocks);
+                }
+            }
+        }
+
+    }
+
+    public static void finishedOrder(Connection connection, String status) throws SQLException {
+        query = "SELECT * FROM orders WHERE status = ? AND dealerId = ?";
+        dealerId = CheckFromDB.getDealerId(connection);
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, status);
+            preparedStatement.setString(2, dealerId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    orderId = resultSet.getString("orderId");
+                    userId = resultSet.getString("userId");
+                    dealerId = resultSet.getString("dealerId");
+                    watchId = resultSet.getString("watchId");
+                    orderDate = resultSet.getString("orderDate");
+                    deliveryDate = resultSet.getString("deliveryDate");
+                    quantity = resultSet.getInt("quantity");
+                    price = resultSet.getDouble("totalAmount");
+                    paymentMode = resultSet.getString("paymentMode");
+                    status = resultSet.getString("status");
+
+                    res = orderId + "_" + userId + "_" + dealerId + "_" + watchId + "_" + orderDate + "_"
+                            + deliveryDate
+                            + "_" + quantity
+                            + "_" + price + "_" + paymentMode + "_" + status;
+
+                    DealerInterface.showOrderDetails(res.split("_"));
                 }
             }
         }
