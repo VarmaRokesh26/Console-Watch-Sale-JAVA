@@ -245,7 +245,7 @@ public class FetchAndDisplayFromDB {
                                 dealerName);
                         System.out.println("-------------------------------------------------------------------");
                     } else {
-                        res += watchId + "_" + name + "_" + price + "_" + dealerId;
+                        res = watchId + "_" + name + "_" + price + "_" + dealerId;
                     }
                 }
             }

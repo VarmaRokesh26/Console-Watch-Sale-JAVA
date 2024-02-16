@@ -164,4 +164,22 @@ public class CheckFromDB {
 		return reqId;
 	}
 
+	public static String checkWatchId(Connection connection) throws SQLException {
+		String query = "SELECT watchId FROM cart WHERE userId = ?";
+		String reqId = "";
+		boolean alreadyInCart = false;
+
+		try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+			preparedStatement.setString(1, profile.get(0));
+			preparedStatement.setString(2, profile.get(1));
+
+			try(ResultSet resultSet = preparedStatement.executeQuery()) {
+				while(resultSet.next()) {
+					reqId = resultSet.getString("dealerId");
+				}
+			}
+		}
+		return reqId;
+	}
+
 }

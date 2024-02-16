@@ -142,19 +142,7 @@ public class UserModule {
 
 			case 'N':
 			case 'n': {
-				try {
-					String wd = FetchAndDisplayFromDB.specificWatchDetail(connection, watchId, 1);
-					String wd1[] = wd.split("_");
-					price = Double.parseDouble(wd1[2]);
-					dealerId = wd1[wd1.length-1];
-					String orderId = UIDGenerator.IdGenerator(connection, "orders");
-					// System.out.println(orderId);
-					System.out.print("Payment Method Cash On Deliviry Or Online Payment : ");
-					payment = sc.next();
-					UpdateInDB.placeOrder(connection, orderId, watchId, quantity, price, payment, dealerId);
-				} catch (Exception e) {
-					System.out.println(e.toString());
-				}
+				orderNow(connection, sc);
 				break;
 			}
 
@@ -206,6 +194,22 @@ public class UserModule {
 		}
 	}
 
+	public static void orderNow(Connection connection, Scanner sc) {
+		try {
+			String wd = FetchAndDisplayFromDB.specificWatchDetail(connection, watchId, 1);
+			String wd1[] = wd.split("_");
+			price = Double.parseDouble(wd1[2]);
+			dealerId = wd1[wd1.length-1];
+			String orderId = UIDGenerator.IdGenerator(connection, "orders");
+			// System.out.println(orderId);
+			System.out.print("Payment Method Cash On Deliviry Or Online Payment : ");
+			payment = sc.next();
+			UpdateInDB.placeOrder(connection, orderId, watchId, quantity, price, payment, dealerId);
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+	}
+
 	// Method for Display Watches
 	public static void displayWatches(Connection connection) {
 		try {
@@ -245,12 +249,12 @@ public class UserModule {
 	public static void adddToCart(Connection connection) {
 		try {
 			String wd = FetchAndDisplayFromDB.specificWatchDetail(connection, watchId, 1);
-
 			String wd1[] = wd.split("_");
 			price = Double.parseDouble(wd1[2]);
 			wd = wd1[0] + "_" + wd1[1] + "_" + (price * quantity) + "_" + quantity;
 			wd1 = wd.split("_");
-			System.out.println(Arrays.toString(wd1));
+			// System.out.println(Arrays.toString(wd1));
+			
 			if (InsertInDB.insertInCart(connection, watchId, wd)) {
 				System.out.println("Item added to the cart Succesfully");
 				// UserInterface.shoppingCart(wd1);

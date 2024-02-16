@@ -10,7 +10,6 @@ import Model.DBOperations.*;
 import Model.*;
 
 import View.CourierServiceInterface;
-import View.DealerInterface;
 
 public class CourierServiceModule {
 
