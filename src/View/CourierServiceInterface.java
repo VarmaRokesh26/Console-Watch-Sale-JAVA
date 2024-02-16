@@ -30,7 +30,7 @@ public class CourierServiceInterface {
 				"+---------------------------------------+"
 						+ "\n+ Enter                                 +"
 						+ "\n+---------------------------------------+"
-						+ "\n+ U -> Update Delivery Status           +"
+						+ "\n+ C -> Orders Delivered                 +"
 						+ "\n+ S -> Show Orders To Deliver           +"
 						+ "\n+ V -> View Profile                     +"
 						+ "\n+---------------------------------------+"
@@ -52,16 +52,17 @@ public class CourierServiceInterface {
 	}
 
 	public static void showOrderDetails(String orders[]) {
-		System.out.println("-----------------------------------------------------------------");
-		System.out.println("--Order Id               : " + orders[0]);
-		System.out.println("--User Id                : " + orders[1]);
-		System.out.println("--Watch Id               : " + orders[2]);
-		System.out.println("--Order date             : " + orders[3]);
-		System.out.println("--Expected Date          : " + orders[4]);
-		System.out.println("--Quantity               : " + orders[5]);
-		System.out.println("--Price                  : " + orders[6]);
-		System.out.println("--Payment Mode           : " + orders[7]);
-		System.out.println("--Status                 : " + orders[8]);
-		System.out.println("-----------------------------------------------------------------");
+		System.out.println("+----------------------------------------------------------------"
+				+ "\n+ --Order Id               : " + orders[0]
+				+ "\n+ --User Id                : " + orders[1]
+				+ "\n+ --Dealer Id              : " + orders[2]
+				+ "\n+ --Watch Id               : " + orders[3]
+				+ "\n+ --Order date             : " + orders[4]
+				+ "\n+ --Delivery Date          : " + orders[5]
+				+ "\n+ --Quantity               : " + orders[6]
+				+ "\n+ --Price                  : " + orders[7]
+				+ "\n+ --Payment Mode           : " + orders[8]
+				+ "\n+ --Status                 : " + orders[9]
+				+ "\n+----------------------------------------------------------------");
 	}
 }

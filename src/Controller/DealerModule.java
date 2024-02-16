@@ -49,7 +49,7 @@ public class DealerModule {
 
 			case 'C':
 			case 'c': {
-				showDeliveredOrders(con, sc);
+				showDeliveredOrders(con);
 				break;
 			}
 
@@ -104,7 +104,7 @@ public class DealerModule {
 		}
 	}
 
-	public static void showDeliveredOrders(Connection connection, Scanner sc) {
+	public static void showDeliveredOrders(Connection connection) {
 		try {
 			FetchAndDisplayFromDB.finishedOrder(connection, "Delivered");
 		} catch (Exception e) {

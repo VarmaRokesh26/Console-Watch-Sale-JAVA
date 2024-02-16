@@ -20,25 +20,26 @@ public class CourierServiceModule {
 	private static String couriermailId;
 	private static String courierPasword;
 
-    public static char getWhatToDo(Scanner sc) {
-        return sc.next().charAt(0);
-    }
+	public static char getWhatToDo(Scanner sc) {
+		return sc.next().charAt(0);
+	}
 
-    public static void courierServiceTask(Connection con, String[] args, Scanner sc, char operation) throws SQLException {
-        switch(operation) {
-            case 'S':
-			case 's': {
+	public static void courierServiceTask(Connection con, String[] args, Scanner sc, char operation)
+			throws SQLException {
+		switch (operation) {
+			case 'D':
+			case 'd': {
 				showOrders(con);
 				break;
 			}
 
-			case 'U':
-			case 'u': {
-				// updateWatchDetails(con, sc);
+			case 'C':
+			case 'c': {
+				showDeliveredOrders(con);
 				break;
 			}
 
-            case 'V':
+			case 'V':
 			case 'v': {
 				viewCourierServiceProfile(con, args, sc, operation);
 				break;
@@ -61,24 +62,32 @@ public class CourierServiceModule {
 				CourierServiceInterface.courierServiceInterface(con, args, sc, 1);
 			}
 
-            case 'L':
+			case 'L':
 			case 'l': {
 				logOut(con, args);
 				break;
 			}
-        }
-    }
+		}
+	}
 
-    public static void showOrders(Connection con) {
+	public static void showDeliveredOrders(Connection connection) {
+		try {
+			FetchAndDisplayFromDB.finishedOrder(connection, "Delivered");
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+	}
 
-        try {
-            FetchAndDisplayFromDB.viewOrders(con); 
-        } catch(Exception e) {
-            System.out.println(e.toString());
-        }
-    }
+	public static void showOrders(Connection con) {
 
-    public static void viewCourierServiceProfile(Connection con, String[] args, Scanner sc, char operation) {
+		try {
+			FetchAndDisplayFromDB.viewOrders(con);
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+	}
+
+	public static void viewCourierServiceProfile(Connection con, String[] args, Scanner sc, char operation) {
 		try {
 			String profile[] = FetchAndDisplayFromDB.displayProfile(con).split("_");
 			CourierServiceInterface.courierDetailDisplay(profile);
@@ -126,10 +135,9 @@ public class CourierServiceModule {
 			System.out.print("Enter your Password : ");
 			courierPasword = sc.nextLine();
 			if (Validation.validatePassword(courierPasword)) {
-				if(profile.get(1).equals(courierPasword))
+				if (profile.get(1).equals(courierPasword))
 					break;
-			}
-			else
+			} else
 				System.out.println("Password is Incorrect");
 		}
 

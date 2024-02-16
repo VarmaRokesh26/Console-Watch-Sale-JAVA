@@ -344,12 +344,11 @@ public class FetchAndDisplayFromDB {
     }
 
     public static void finishedOrder(Connection connection, String status) throws SQLException {
-        query = "SELECT * FROM orders WHERE status = ? AND dealerId = ?";
-        dealerId = CheckFromDB.getDealerId(connection);
+        query = "SELECT * FROM orders WHERE status = ?";
+        String dealerIdCheck = CheckFromDB.getDealerId(connection);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, status);
-            preparedStatement.setString(2, dealerId);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -368,8 +367,12 @@ public class FetchAndDisplayFromDB {
                             + deliveryDate
                             + "_" + quantity
                             + "_" + price + "_" + paymentMode + "_" + status;
-
-                    DealerInterface.showOrderDetails(res.split("_"));
+                    if(dealerId.equals(dealerIdCheck)) {
+    
+                        DealerInterface.showOrderDetails(res.split("_"));
+                    } else {
+                        CourierServiceInterface.showOrderDetails(res.split("_"));
+                    }
                 }
             }
         }
