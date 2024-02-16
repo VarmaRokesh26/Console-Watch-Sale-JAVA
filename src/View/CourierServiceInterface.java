@@ -65,4 +65,33 @@ public class CourierServiceInterface {
 				+ "\n+ --Status                 : " + orders[9]
 				+ "\n+----------------------------------------------------------------");
 	}
+
+	public static void noItemStatement() {
+		System.out.println("+------------------------------------------+");
+		System.out.println("+          No Orders to Deliver            +");
+		System.out.println("+------------------------------------------+");
+	}
+
+	public static void updateStatus() {
+		System.out.print(
+				"+---------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ --U -> Update Status                  +"
+						+ "\n+ --B -> Back                           +"
+						+ "\n+---------------------------------------+"
+						+ "\n---------> ");
+	}
+
+	public static void orderActions() {
+		System.out.print(
+				"+---------------------------------------+"
+						+ "\n+ Enter                                 +"
+						+ "\n+---------------------------------------+"
+						+ "\n+ --1 -> Order Reached Your Region      +"
+						+ "\n+ --2 -> Delivered                      +"
+						+ "\n+ --B -> Back                           +"
+						+ "\n+---------------------------------------+"
+						+ "\n---------> ");
+	}
 }

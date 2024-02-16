@@ -10,6 +10,7 @@ import Model.DBOperations.*;
 import Model.*;
 
 import View.CourierServiceInterface;
+import View.DealerInterface;
 
 public class CourierServiceModule {
 
@@ -20,6 +21,10 @@ public class CourierServiceModule {
 	private static String couriermailId;
 	private static String courierPasword;
 
+	private static char action;
+	private static String orderId;
+	private static String status;
+
 	public static char getWhatToDo(Scanner sc) {
 		return sc.next().charAt(0);
 	}
@@ -27,9 +32,9 @@ public class CourierServiceModule {
 	public static void courierServiceTask(Connection con, String[] args, Scanner sc, char operation)
 			throws SQLException {
 		switch (operation) {
-			case 'D':
-			case 'd': {
-				showOrders(con);
+			case 'S':
+			case 's': {
+				showOrders(con, args, sc);
 				break;
 			}
 
@@ -70,6 +75,7 @@ public class CourierServiceModule {
 		}
 	}
 
+
 	public static void showDeliveredOrders(Connection connection) {
 		try {
 			FetchAndDisplayFromDB.finishedOrder(connection, "Delivered");
@@ -78,10 +84,51 @@ public class CourierServiceModule {
 		}
 	}
 
-	public static void showOrders(Connection con) {
+	public static void showOrders(Connection con, String[] args, Scanner sc) {
 
 		try {
-			FetchAndDisplayFromDB.viewOrders(con);
+			if(!FetchAndDisplayFromDB.viewOrderForRespectiveDealer(con)) {
+				CourierServiceInterface.noItemStatement();
+			} else {
+				optionsForOrders(con, args, sc);
+			}
+
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+	}
+
+	public static void optionsForOrders(Connection connection, String[] args, Scanner sc) throws SQLException {
+		while(true) {
+			CourierServiceInterface.updateStatus();
+			action = sc.next().charAt(0);
+
+			if (action == 'U' || action == 'u') {
+				updateStatusInDb(connection, sc);
+			} else if (action == 'B' || action == 'b') {
+				CourierServiceInterface.courierServiceInterface(connection, args, sc, action);
+			} else
+				System.out.println("Enter a valid Option");
+		}
+	}
+
+	public static void updateStatusInDb(Connection con, Scanner sc) {
+		System.out.print("Enter the Orderid to Update the order Status : ");
+		orderId = sc.next();
+		CourierServiceInterface.orderActions();
+		System.out.print("\nEnter the valid option to update the Order status : ");
+		action = sc.next().charAt(0);
+
+		if (action == '1')
+			status = "Order Reached Your Region";
+		else if (action == '2')
+			status = "Delivered";
+		else
+			System.out.println("Enter a Valid Option");
+
+		try {
+			UpdateInDB.updateOrderStatus(con, status, orderId);
+			FetchAndDisplayFromDB.viewOrderForRespectiveDealer(con);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}

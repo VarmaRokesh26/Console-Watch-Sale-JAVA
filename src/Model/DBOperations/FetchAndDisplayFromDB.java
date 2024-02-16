@@ -93,14 +93,13 @@ public class FetchAndDisplayFromDB {
     }
 
     public static boolean viewOrderForRespectiveDealer(Connection connection) throws SQLException {
-        query = "SELECT * FROM orders WHERE status != ? AND dealerId = ?";
+        query = "SELECT * FROM orders WHERE status != ?";
         String dealerIdForCheck = CheckFromDB.getDealerId(connection);
         String checkStatus = "Delivered";
         boolean ordersFound = false;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, checkStatus);
-            preparedStatement.setString(2, dealerIdForCheck);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -117,12 +116,14 @@ public class FetchAndDisplayFromDB {
                     paymentMode = resultSet.getString("paymentMode");
                     status = resultSet.getString("status");
 
-                    String res = orderId + "_" + userId + "_" + dealerId + "_" + watchId + "_" + orderDate + "_"
+                    res = orderId + "_" + userId + "_" + dealerId + "_" + watchId + "_" + orderDate + "_"
                             + deliveryDate
                             + "_" + quantity
                             + "_" + price + "_" + paymentMode + "_" + status;
-
-                    DealerInterface.showOrderDetails(res.split("_"));
+                    if(dealerIdForCheck.equals(dealerId))
+                        DealerInterface.showOrderDetails(res.split("_"));
+                    else 
+                        CourierServiceInterface.showOrderDetails(res.split("_"));
                 }
             }
         }
