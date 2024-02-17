@@ -167,7 +167,7 @@ public class CheckFromDB {
 	public static String checkWatchId(Connection connection) throws SQLException {
 		String query = "SELECT watchId FROM cart WHERE userId = ?";
 		String reqId = "";
-		boolean alreadyInCart = false;
+		// boolean alreadyInCart = false;
 
 		try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 			preparedStatement.setString(1, profile.get(0));

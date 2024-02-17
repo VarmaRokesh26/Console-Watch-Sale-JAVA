@@ -30,7 +30,7 @@ public class UserInterface {
 						+ "\n+---------------------------------------+"
 						+ "\n+ Enter                                 +"
 						+ "\n+---------------------------------------+"
-						+ "\n+ --D -> Display Watches                +"
+						+ "\n+ --S -> Display Watches                +"
 						+ "\n+ --O -> Place Order                    +"
 						+ "\n+ --H -> History of Orders              +"
 						+ "\n+ --C -> View Cart                      +"

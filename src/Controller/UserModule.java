@@ -128,8 +128,8 @@ public class UserModule {
 	// Perform User task
 	public static void performUserTask(Connection connection, String[] args, Scanner sc, char operation) throws SQLException {
 		switch (operation) {
-			case 'D':
-			case 'd': {
+			case 'S':
+			case 's': {
 				displayWatches(connection);
 				break;
 			}
@@ -159,7 +159,7 @@ public class UserModule {
 			}
 			case 'C':
 			case 'c': {
-				viewCart(connection);
+				viewCart(connection, args, sc, operation);
 				break;
 			}
 
@@ -286,9 +286,23 @@ public class UserModule {
 	}
 
 	// Method for View Cart
-	public static void viewCart(Connection connection) {
+	public static void viewCart(Connection connection, String[] args, Scanner sc, char action) {
 		try {
 			FetchAndDisplayFromDB.showMyCart(connection);
+			UserInterface.cartWork();
+
+			while(true) {	
+				action = sc.next().charAt(0);
+				if(action == 'R' || action == 'r') {
+					System.out.println("Enter the Watch Id to Remove Form Cart : ");
+					watchId = sc.next();
+					System.out.println("Item Remved");
+				} else if(action == 'D' || action == 'd'){
+					System.out.println("Remove All");
+				} else if(action == 'B' || action == 'b') {
+					UserInterface.userInterface(connection, null, sc, action);
+				}
+			}
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
