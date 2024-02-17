@@ -254,18 +254,21 @@ public class FetchAndDisplayFromDB {
     }
 
     // Display Cart
-    public static void showMyCart(Connection connection) throws SQLException {
+    public static boolean showMyCart(Connection connection) throws SQLException {
+        boolean cartNotEmpty = false;
         String cartViewQuery = "SELECT cartDetails FROM cart WHERE userId = ?";
         userIdString = CheckFromDB.userIdForCartOrOrder(connection);
         try (PreparedStatement cartViewPreparedStatement = connection.prepareStatement(cartViewQuery)) {
             cartViewPreparedStatement.setString(1, userIdString);
             try (ResultSet cartResultSet = cartViewPreparedStatement.executeQuery()) {
                 while (cartResultSet.next()) {
+                    cartNotEmpty = true;
                     UserInterface.shoppingCart(cartResultSet.getString("cartDetails"));
+                    System.out.println("-------------------------------------------------------------------");
                 }
-                System.out.println("-------------------------------------------------------------------");
             }
         }
+        return cartNotEmpty;
     }
 
     // Profile Display for Both Admin and User

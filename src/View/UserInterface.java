@@ -58,7 +58,7 @@ public class UserInterface {
 	public static void orderOrCart() {
 		System.out.print(
 				"+---------------------------------------+"
-						+ "\n+              Order Menu             +"
+						+ "\n+              Order Menu               +"
 						+ "\n+---------------------------------------+"
 						+ "\n+ Enter                                 +"
 						+ "\n+---------------------------------------+"
@@ -126,9 +126,9 @@ public class UserInterface {
 				"+---------------------------------------+"
 						+ "\n+ Enter                                 +"
 						+ "\n+---------------------------------------+"
-						+ "\n+ --R -> Remove an Item in Cart           +"
-						+ "\n+ --D -> Delete all item in Cart          +"
-						+ "\n+ --B -> Back                             +"
+						+ "\n+ --R -> Remove an Item in Cart         +"
+						+ "\n+ --D -> Delete all item in Cart        +"
+						+ "\n+ --B -> Back                           +"
 						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
@@ -146,4 +146,9 @@ public class UserInterface {
 						+ "\n--Dealer of the Watch            : " + dealerName);
 	}
 
+	public static void noItemStatement() {
+		System.out.println("+------------------------------------------+");
+		System.out.println("+          No Items to Display             +");
+		System.out.println("+------------------------------------------+");
+	}
 }

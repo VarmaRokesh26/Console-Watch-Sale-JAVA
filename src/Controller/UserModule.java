@@ -288,19 +288,27 @@ public class UserModule {
 	// Method for View Cart
 	public static void viewCart(Connection connection, String[] args, Scanner sc, char action) {
 		try {
-			FetchAndDisplayFromDB.showMyCart(connection);
-			UserInterface.cartWork();
-
-			while(true) {	
-				action = sc.next().charAt(0);
-				if(action == 'R' || action == 'r') {
-					System.out.println("Enter the Watch Id to Remove Form Cart : ");
-					watchId = sc.next();
-					System.out.println("Item Remved");
-				} else if(action == 'D' || action == 'd'){
-					System.out.println("Remove All");
-				} else if(action == 'B' || action == 'b') {
-					UserInterface.userInterface(connection, null, sc, action);
+			if(!FetchAndDisplayFromDB.showMyCart(connection)) {
+				UserInterface.noItemStatement();
+			} else {
+				while(true) {	
+					UserInterface.cartWork();
+					action = sc.next().charAt(0);
+					if(action == 'R' || action == 'r') {
+						System.out.println("Enter the Watch Id to Remove Form Cart : ");
+						watchId = sc.next();
+						DeleteFromDB.removeAnItemInCart(connection, watchId);
+						if(!FetchAndDisplayFromDB.showMyCart(connection)) {
+							UserInterface.noItemStatement();
+						}
+					} else if(action == 'D' || action == 'd'){
+						DeleteFromDB.removeAllItemsFromCart(connection);
+						if(!FetchAndDisplayFromDB.showMyCart(connection)) {
+							UserInterface.noItemStatement();
+						}
+					} else if(action == 'B' || action == 'b') {
+						UserInterface.userInterface(connection, null, sc, action);
+					}
 				}
 			}
 		} catch (Exception e) {

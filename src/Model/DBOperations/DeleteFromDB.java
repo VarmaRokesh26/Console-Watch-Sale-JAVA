@@ -8,6 +8,7 @@ import java.util.List;
 public class DeleteFromDB {
 
     private static int rowsAffected;
+    private static String userId;
     private static List<String> profile = CheckFromDB.profileList();
 
     // Delete Watch
@@ -41,4 +42,34 @@ public class DeleteFromDB {
         profile.clear();
     }
 
+    public static void removeAnItemInCart(Connection connection, String watchId) throws SQLException {
+        String query = "DELETE FROM cart WHERE watchId = ? AND userId = ?";
+        userId = CheckFromDB.userIdForCartOrOrder(connection);
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, watchId);
+            preparedStatement.setString(2, userId);
+
+            preparedStatement.executeUpdate();
+            if(rowsAffected > 0) {
+                System.out.println("Item Removed From Cart");
+            }
+        }
+    }
+
+    public static void removeAllItemsFromCart(Connection connection) throws SQLException {
+        String query = "DELETE FROM cart WHERE userId = ?";
+        userId = CheckFromDB.userIdForCartOrOrder(connection);
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, userId);
+            
+            preparedStatement.executeUpdate();
+
+            if(rowsAffected > 0)
+                System.out.println("Your Cart is Removed");
+        }
+    }
+
 }
+ 

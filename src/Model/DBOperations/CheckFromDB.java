@@ -182,4 +182,23 @@ public class CheckFromDB {
 		return reqId;
 	}
 
+	public static boolean checkIfAlreadyInCart(Connection connection, String watchId) throws SQLException {
+        boolean alreadyExists = false;
+        String userIdString = CheckFromDB.userIdForCartOrOrder(connection);
+
+        String query = "SELECT * FROM cart WHERE userId = ? AND watchId = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, userIdString);
+            preparedStatement.setString(2, watchId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                // If any rows are returned, it means the watch is already in the cart
+                if (resultSet.next()) {
+                    alreadyExists = true;
+                }
+            }
+        }
+
+        return alreadyExists;
+    }
 }
