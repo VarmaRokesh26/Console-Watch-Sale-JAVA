@@ -10,7 +10,7 @@ import Model.DBOperations.*;
 
 public class UserModule {
 
-	private static String dealerId; 
+	private static String dealerId;
 
 	private static String watchId;
 	private static int quantity;
@@ -126,7 +126,8 @@ public class UserModule {
 	}
 
 	// Perform User task
-	public static void performUserTask(Connection connection, String[] args, Scanner sc, char operation) throws SQLException {
+	public static void performUserTask(Connection connection, String[] args, Scanner sc, char operation)
+			throws SQLException {
 		switch (operation) {
 			case 'S':
 			case 's': {
@@ -199,7 +200,7 @@ public class UserModule {
 			String wd = FetchAndDisplayFromDB.specificWatchDetail(connection, watchId, 1);
 			String wd1[] = wd.split("_");
 			price = Double.parseDouble(wd1[2]);
-			dealerId = wd1[wd1.length-1];
+			dealerId = wd1[wd1.length - 1];
 			String orderId = UIDGenerator.IdGenerator(connection, "orders");
 			// System.out.println(orderId);
 			System.out.print("Payment Method Cash On Deliviry Or Online Payment : ");
@@ -253,11 +254,14 @@ public class UserModule {
 			price = Double.parseDouble(wd1[2]);
 			wd = wd1[0] + "_" + wd1[1] + "_" + (price * quantity) + "_" + quantity;
 			wd1 = wd.split("_");
-			// System.out.println(Arrays.toString(wd1));
-			
-			if (InsertInDB.insertInCart(connection, watchId, wd)) {
-				System.out.println("Item added to the cart Succesfully");
-				// UserInterface.shoppingCart(wd1);
+
+			boolean alreadyInCart = CheckFromDB.checkIfAlreadyInCart(connection, watchId);
+			if (!alreadyInCart) {
+				if (InsertInDB.insertInCart(connection, watchId, wd)) {
+					System.out.println("<----Item added to the cart Successfully---->");
+				}
+			} else {
+				System.out.println("<-----Item is already in the Cart----->");
 			}
 		} catch (Exception e) {
 			System.out.println(e.toString());
@@ -288,25 +292,25 @@ public class UserModule {
 	// Method for View Cart
 	public static void viewCart(Connection connection, String[] args, Scanner sc, char action) {
 		try {
-			if(!FetchAndDisplayFromDB.showMyCart(connection)) {
+			if (!FetchAndDisplayFromDB.showMyCart(connection)) {
 				UserInterface.noItemStatement();
 			} else {
-				while(true) {	
+				while (true) {
 					UserInterface.cartWork();
 					action = sc.next().charAt(0);
-					if(action == 'R' || action == 'r') {
-						System.out.println("Enter the Watch Id to Remove Form Cart : ");
+					if (action == 'R' || action == 'r') {
+						System.out.print("Enter the Watch Id to Remove Form Cart : ");
 						watchId = sc.next();
 						DeleteFromDB.removeAnItemInCart(connection, watchId);
-						if(!FetchAndDisplayFromDB.showMyCart(connection)) {
+						if (!FetchAndDisplayFromDB.showMyCart(connection)) {
 							UserInterface.noItemStatement();
 						}
-					} else if(action == 'D' || action == 'd'){
+					} else if (action == 'D' || action == 'd') {
 						DeleteFromDB.removeAllItemsFromCart(connection);
-						if(!FetchAndDisplayFromDB.showMyCart(connection)) {
+						if (!FetchAndDisplayFromDB.showMyCart(connection)) {
 							UserInterface.noItemStatement();
 						}
-					} else if(action == 'B' || action == 'b') {
+					} else if (action == 'B' || action == 'b') {
 						UserInterface.userInterface(connection, null, sc, action);
 					}
 				}

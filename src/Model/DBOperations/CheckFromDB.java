@@ -192,7 +192,6 @@ public class CheckFromDB {
             preparedStatement.setString(2, watchId);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                // If any rows are returned, it means the watch is already in the cart
                 if (resultSet.next()) {
                     alreadyExists = true;
                 }

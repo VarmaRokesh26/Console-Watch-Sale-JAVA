@@ -264,7 +264,7 @@ public class FetchAndDisplayFromDB {
                 while (cartResultSet.next()) {
                     cartNotEmpty = true;
                     UserInterface.shoppingCart(cartResultSet.getString("cartDetails"));
-                    System.out.println("-------------------------------------------------------------------");
+                    System.out.println("+---------------------------------------+");
                 }
             }
         }
