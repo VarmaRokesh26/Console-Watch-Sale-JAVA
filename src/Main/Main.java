@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import Model.*;
-// import Controller.*;
-import View.*;
+import Model.AdminFunction;
+import Model.Connectivity;
+import Model.User;
+import View.AdminView;
+import View.UserView;
 
 public class Main {
 
@@ -15,7 +17,7 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
 
-        Connection con = Connectivity.connectivity();
+        Connection con = Connectivity.getInstance().getConnection(); // Obtain the connection
 
         while (true) {
             System.out.println("-----------------------------------------------------------------");
@@ -43,15 +45,15 @@ public class Main {
 
     private static void performLogin(Connection con, User login, String[] args) {
         try {
-            if (CheckFromDB.checkAdminDetails(con, login.getEmailId(), login.getPassword()))
-                AdminInterface.adminInterface(con, args, sc, 0);
-            else if (CheckFromDB.checkUserDetails(con, login.getEmailId(), login.getPassword()))
-                UserInterface.userInterface(con, args, sc, 0);
-            else if (CheckFromDB.checkCourierServiceDetails(con, login.getEmailId(), login.getPassword()))
-                CourierServiceInterface.courierServiceInterface(con, args, sc, 0);
-            else if (CheckFromDB.checkDealerDetails(con, login.getEmailId(), login.getPassword()))
-                DealerInterface.dealerInterface(con, args, sc, 0);
-            else
+            if (AdminFunction.checkAdminDetails(con, login.getEmailId(), login.getPassword()))
+                AdminView.adminInterface(con, args, sc, 0);
+            // else if (CheckFromDB.checkUserDetails(con, login.getEmailId(), login.getPassword()))
+            //     UserInterface.userInterface(con, args, sc, 0);
+            // else if (CheckFromDB.checkCourierServiceDetails(con, login.getEmailId(), login.getPassword()))
+            //     CourierServiceInterface.courierServiceInterface(con, args, sc, 0);
+            // else if (CheckFromDB.checkDealerDetails(con, login.getEmailId(), login.getPassword()))
+            //     DealerInterface.dealerInterface(con, args, sc, 0);
+            // else
                 System.out.println("Invalid Combinations");
         } catch (SQLException e) {
             System.out.println("Error during login: " + e.toString());
