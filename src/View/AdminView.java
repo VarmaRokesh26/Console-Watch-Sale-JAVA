@@ -27,8 +27,8 @@ public class AdminView {
 				
                 case 'D':
                 case 'd': {
-					System.out.println("Delete");
-                    deleteWatch(con, sc);
+					String watchId = sc.next();
+					// AdminController.
                     break;
                 }
 				

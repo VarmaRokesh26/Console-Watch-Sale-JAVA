@@ -1,4 +1,4 @@
-package Model;
+package Model.DataAccessObject;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,16 +9,20 @@ public class WatchFunction {
     private static int rowsAffected;
 
     // Delete Watch
-    public static void deleteWatch(Connection connection, String wId) throws SQLException {
+    public static boolean deleteWatch(Connection connection, String wId) throws SQLException {
         String deleteQuery = "DELETE FROM watches WHERE watchId = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
             preparedStatement.setString(1, wId);
 
             rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected >= 1)
+            if (rowsAffected >= 1) {
                 System.out.println("--Data Deleted.--");
-            else
+                return true;
+            }
+            else {
                 System.out.println("Nothnig is there to delete");
+                return false;
+            }
         }
     }
 

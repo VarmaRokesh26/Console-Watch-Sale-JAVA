@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import Model.AdminFunction;
 import Model.Connectivity;
 import Model.User;
 import View.AdminView;
 import View.UserView;
+import Model.DataAccessObject.*;
 
 public class Main {
 
@@ -17,7 +17,7 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
 
-        Connection con = Connectivity.getInstance().getConnection(); // Obtain the connection
+        Connection con = Connectivity.getInstance().getConnection();
 
         while (true) {
             System.out.println("-----------------------------------------------------------------");
@@ -45,7 +45,7 @@ public class Main {
 
     private static void performLogin(Connection con, User login, String[] args) {
         try {
-            if (AdminFunction.checkAdminDetails(con, login.getEmailId(), login.getPassword()))
+            if (AdminFunction.checkAdminDetails(con, login))
                 AdminView.adminInterface(con, args, sc, 0);
             // else if (CheckFromDB.checkUserDetails(con, login.getEmailId(), login.getPassword()))
             //     UserInterface.userInterface(con, args, sc, 0);

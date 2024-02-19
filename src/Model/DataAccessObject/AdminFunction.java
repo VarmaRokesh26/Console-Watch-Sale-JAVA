@@ -1,4 +1,4 @@
-package Model;
+package Model.DataAccessObject;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,12 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.User;
+
 public class AdminFunction {
 
     private static List<String> profile = new ArrayList<>();
 
     // Check Admin Details for Login
-    public static boolean checkAdminDetails(Connection connection, String email, String password) throws SQLException {
+    public static boolean checkAdminDetails(Connection connection, User login) throws SQLException {
         boolean isAdmin = false;
         String checkQueryBySelect = "SELECT * FROM admin";
 
@@ -22,15 +24,15 @@ public class AdminFunction {
             while (resultSet.next()) {
                 String emailFromDB = resultSet.getString("mailId");
                 String passwordFromDB = resultSet.getString("password");
-                if (emailFromDB.equals(email) && passwordFromDB.equals(password)) {
+                if (emailFromDB.equals(login.getEmailId()) && passwordFromDB.equals(login.getPassword())) {
                     isAdmin = true;
                     break;
                 }
             }
         }
         if (isAdmin) {
-            profile.add(email);
-            profile.add(password);
+            profile.add(login.getEmailId());
+            profile.add(login.getPassword());
             profile.add("admin");
         }
         return isAdmin;

@@ -1,4 +1,4 @@
-package Model;
+package Model.DataAccessObject;
 
 public class CourierServiceFunction {
     

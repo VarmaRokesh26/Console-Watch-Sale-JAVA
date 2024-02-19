@@ -19,6 +19,11 @@ public class Watch {
         this.dealerId = dealerId;
     }
 
+    public Watch(String watchId) {
+        this.watchId = watchId;
+        
+    }
+
     public String getWatchId() {
         return watchId;
     }
