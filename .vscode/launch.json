@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "OnlineWatchSale/Main.Main",
+            "projectName": "OnlineWatchSale"
+        },
+        {
+            "type": "java",
             "name": "MainModule",
             "request": "launch",
             "mainClass": "OnlineWatchSale/Main.MainModule",
