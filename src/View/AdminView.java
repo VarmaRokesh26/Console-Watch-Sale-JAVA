@@ -4,11 +4,24 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import Controller.AdminController;
+import Model.Watch;
+
 // import Controller.AdminController;
 
 public class AdminView {
 
-    public static void adminInterface(Connection con, String[] args, Scanner sc, int entry) throws SQLException {
+	private static String watchId;
+	private static String seriesName;
+	private static String brand;
+	private static double price;
+	private static String description;
+	private static int numberOfStocks;
+	private static String dealerId;
+	
+	protected static  Watch watch;
+
+	public static void adminView(Connection con, String[] args, Scanner sc, int entry) throws SQLException {
 
 		if (entry == 0)
 			welcomeMsg();
@@ -18,87 +31,156 @@ public class AdminView {
 			char operation = sc.next().charAt(0);
 			switch (operation) {
 
-                case 'U':
-                case 'u': {
-					System.out.println("Update");
-                    // updateWatchDetails(con, sc);
-                    break;
-                }
-				
-                case 'D':
-                case 'd': {
-					String watchId = sc.next();
-					// AdminController.
-                    break;
-                }
-				
-                case 'C':
-                case 'c': {
+				case 'U':
+				case 'u': {
+					System.out.print("Enter the Watch Id to Update : ");
+					watchId = sc.next();
+					System.out.println("------Enter the watch details to be added:------");
+
+					while (true) {
+						System.out.print("Enter series Name                 : ");
+						seriesName = sc.next().trim() + sc.nextLine();
+						if (!seriesName.equals(""))
+							break;
+					}
+
+					while (true) {
+						System.out.print("Enter brand name                  : ");
+						brand = sc.next() + sc.nextLine();
+						if (!brand.trim().isEmpty()) {
+							break;
+						} else {
+							System.out.print("Enter a valid brand Name");
+						}
+					}
+
+					System.out.print("Enter price for the watches       : ");
+					price = sc.nextDouble();
+
+					System.out.print("'/' seperated description\n");
+					while (true) {
+						System.out.print("Enter description for the watches : ");
+						description = sc.next() + sc.nextLine();
+						if (!description.trim().isEmpty())
+							break;
+					}
+
+					System.out.print("Enter amount of stocks available  : ");
+					while (true) {
+						numberOfStocks = sc.nextInt();
+						sc.nextLine();
+						if (numberOfStocks >= 0)
+							break;
+					}
+
+					System.out.print("Enter the Dealer Id               : ");
+					while (true) {
+						dealerId = sc.next();
+						if (!dealerId.isEmpty())
+							break;
+						else
+							System.out.println("Enter a valid Dealer Id");
+					}
+
+					watch = new Watch(watchId, seriesName, brand, price, description, numberOfStocks, dealerId);
+					if(AdminController.updateWatch(con, watch))
+						System.out.println("<---Update successful--->");
+					else
+						System.out.println("<---Updation Unsuccessfull--->");
+					break;
+				}
+
+				case 'D':
+				case 'd': {
+					System.out.print("Enter the Watch Id to Delete : ");
+					watchId = sc.next();
+					watch = new Watch(watchId);
+					if (AdminController.deleteWatch(con, watch))
+						System.out.println("<---Item Deleted From Inventory--->");
+					else 
+						System.out.println("<---Deletion Failed--->");
+					break;
+				}
+
+				case 'C':
+				case 'c': {
 					System.out.println("Clear All");
-                    // deletemanyWatches(con);
-                    break;
-                }
-				
-                case 'S':
-                case 's': {
-					System.out.println("Show");
-                    // displayAsRequired(con, args, sc);
-                    break;
-                }
-				
-                case 'A':
-                case 'a': {
+					if(AdminController.deletemanyWatches(con))
+						System.out.println("<---Watches with Zero Stocks are Deleted--->");
+					else
+						System.out.println("<---All Stocks are more than Zero--->");
+					break;
+				}
+
+				case 'S':
+				case 's': {
+					while (true) {
+						displayOptionsForAdmin();
+						char sh = sc.next().charAt(0);
+						if (sh == '1') {
+							// AdminController. 
+						} else if (sh == '2') {
+							// displayAdminDealerCourier(con, Character.getNumericValue(sh));
+						} else if (sh == '3') {
+							// displayAdminDealerCourier(con, Character.getNumericValue(sh));
+						} else if (sh == '4') {
+							// displayAdminDealerCourier(con, Character.getNumericValue(sh));
+						} else if (sh == 'B' || sh == 'b') {
+							// AdminInterface.adminInterface(con, args, sc, sh);
+						} else
+							System.out.println("Enter a valid Option");
+						break;
+					}
+					break;
+				}
+
+				case 'A':
+				case 'a': {
 					System.out.println("Add ");
-                    // addRespectiveDetails(con, args, sc, operation);
-                    break;
-                }
-				
-                case 'V':
-                case 'v': {
+					// addRespectiveDetails(con, args, sc, operation);
+					break;
+				}
+
+				case 'V':
+				case 'v': {
 					System.out.println("View Profile");
-                    // viewAdminProfile(con, args, sc, operation);
-                    break;
-                }
-				
-                case 'E':
-                case 'e': {
+					// viewAdminProfile(con, args, sc, operation);
+					break;
+				}
+
+				case 'E':
+				case 'e': {
 					System.out.println("Edit Profile");
 					// editAdminProfile(con, sc);
-                    break;
-                }
-				
-                case 'P':
-                case 'p': {
+					break;
+				}
+
+				case 'P':
+				case 'p': {
 					System.out.println("Pass");
 					// changePassword(con, sc);
-                    break;
-                }
-				
-                case 'B':
-                case 'b': {
-					adminInterface(con, args, sc, operation);
-                }
-                
-                case 'L':
-                case 'l': {
+					break;
+				}
+
+				case 'B':
+				case 'b': {
+					adminView(con, args, sc, entry);
+				}
+
+				case 'L':
+				case 'l': {
 					System.out.println("Logout");
 					// logOut(con, args);
-                    break;
-                }
-				
-            }
+					break;
+				}
+			}
 		}
-	}
-	
-	public static void deleteWatch(Connection con, Scanner sc) {
-		String watchId = sc.next();
-
 	}
 
 	public static void welcomeMsg() {
 		System.out.print("\n+-------------------------------------------------------+\n"
-		+ "+                 Welcome back admin                    +");
-			}
+				+ "+                 Welcome back admin                    +");
+	}
 
 	public static void actionDisply() {
 		System.out.print("\n+-------------------------------------------------------+"
@@ -148,17 +230,16 @@ public class AdminView {
 				+ "\n+---------------------------------------------------------------+");
 	}
 
-	public static void displayWatches(String id, String name, String brand, double price, String description,
-			int number_of_stocks, String dealerId, String dealerName) {
+	public static void displayWatches(Watch watches, String dealerName) {
 		System.out.println("-------------------------------------------------------------------");
 		System.out.println(
-				"--ID                             : " + id
-						+ "\n--Name                           : " + name
-						+ "\n--Brand                          : " + brand
-						+ "\n--Price                          : " + price
-						+ "\n--Description                    : " + description
-						+ "\n--Number of Stocks available     : " + number_of_stocks
-						+ "\n--Dealer Id                      : " + dealerId
+				"--ID                             : " + watches.getWatchId()
+						+ "\n--Name                           : " + watches.getName()
+						+ "\n--Brand                          : " + watches.getBrand()
+						+ "\n--Price                          : " + watches.getPrice()
+						+ "\n--Description                    : " + watches.getDescription()
+						+ "\n--Number of Stocks available     : " + watches.getNumberOfStocks()
+						+ "\n--Dealer Id                      : " + watches.getDealerId()
 						+ "\n--Dealer of the Watch            : " + dealerName);
 	}
 

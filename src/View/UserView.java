@@ -114,6 +114,91 @@ public class UserView {
 		return new User(userId, name, mobileNumber, email, address, confirmPassword);
 	}
 
+	public static void userView(Connection connection, String[] args, Scanner sc, int entry) throws SQLException {
+		if (entry == 0)
+			welcomeMsg();
+
+		while (true) {
+			actionMenu();
+			char userOperation = sc.next().charAt(0);
+			switch (userOperation) {
+				case 'S':
+				case 's': {
+					// displayWatches(connection);
+					System.out.println("Show");
+					break;
+				}
+	
+				case 'O':
+				case 'o': {
+					// buyItem(connection, args, sc, operation);
+					System.out.println("Order");
+					break;
+				}
+	
+				case 'N':
+				case 'n': {
+					// orderNow(connection, sc);
+					System.out.println("Now");
+					break;
+				}
+	
+				case 'A':
+				case 'a': {
+					// adddToCart(connection);
+					System.out.println("Add to Cart");
+					break;
+				}
+	
+				case 'H':
+				case 'h': {
+					// history(connection);
+					System.out.println("History");
+					break;
+				}
+				case 'C':
+				case 'c': {
+					// viewCart(connection, args, sc, operation);
+					System.out.println("Cart");
+					break;
+				}
+	
+				case 'V':
+				case 'v': {
+					// profileView(connection, args, sc, operation);
+					System.out.println("Loggout");
+					break;
+				}
+	
+				case 'E':
+				case 'e': {
+					// editProfile(connection, sc);
+					System.out.println("Edit");
+					break;
+				}
+	
+				case 'P':
+				case 'p': {
+					// passwordChange(connection, sc);
+					System.out.println("Password");
+					break;
+				}
+	
+				case 'B':
+				case 'b': {
+					userView(connection, args, sc, 1);
+				}
+	
+				case 'L':
+				case 'l': {
+					// logOut(connection, args);
+					System.out.println("Loggout");
+					break;
+				}
+			}
+		}
+	}
+
     public static void welcomeMsg() {
 		System.out.println("Welcome TO Watch World!!");
 	}

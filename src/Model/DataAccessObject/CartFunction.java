@@ -1,5 +1,5 @@
 package Model.DataAccessObject;
 
-public class CourierServiceFunction {
+public class CartFunction {
     
 }

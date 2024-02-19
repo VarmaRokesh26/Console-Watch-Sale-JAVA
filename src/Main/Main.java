@@ -46,9 +46,9 @@ public class Main {
     private static void performLogin(Connection con, User login, String[] args) {
         try {
             if (AdminFunction.checkAdminDetails(con, login))
-                AdminView.adminInterface(con, args, sc, 0);
-            // else if (CheckFromDB.checkUserDetails(con, login.getEmailId(), login.getPassword()))
-            //     UserInterface.userInterface(con, args, sc, 0);
+                AdminView.adminView(con, args, sc, 0);
+            else if (UserFunction.checkUserDetails(con, login))
+                UserView.userView(con, args, sc, 0);
             // else if (CheckFromDB.checkCourierServiceDetails(con, login.getEmailId(), login.getPassword()))
             //     CourierServiceInterface.courierServiceInterface(con, args, sc, 0);
             // else if (CheckFromDB.checkDealerDetails(con, login.getEmailId(), login.getPassword()))
