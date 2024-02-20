@@ -7,15 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import DAO.User;
+import DAO.UserDAO;
 
-public class UserDAO {
+public class UserDAOImpl {
     
     private static List<String> profile = new ArrayList<>();
 	// private static int rowsAffected;
 
     // Check User details for LogIn
-	public static boolean checkUserDetails(Connection connection, User login) throws SQLException {
+	public static boolean checkUserDetails(Connection connection, UserDAO login) throws SQLException {
 		boolean isUser = false;
 		String checkQueryBySelect = "SELECT * FROM user";
 
@@ -39,7 +39,7 @@ public class UserDAO {
 	}
 
 	// Inserting Logic for New User
-    public static boolean insertUserDetails(Connection connection, User signUp) throws SQLException {
+    public static boolean insertUserDetails(Connection connection, UserDAO signUp) throws SQLException {
 
         String insertQuery = "INSERT INTO user (userId, userName, mobileNumber, emailId, address, password) VALUES (?, ?, ?, ?, ?, ?)";
 

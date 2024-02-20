@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import Controller.UserController;
-import DAO.User;
+import DAO.UserDAO;
 import Model.Connectivity;
 import View.UserView;
 
@@ -26,12 +26,12 @@ public class Main {
 
             if (loginOrSignUp == 1) {
                 // Login logic
-                User login = UserView.getLoginDetails(sc);
+                UserDAO login = UserView.getLoginDetails(sc);
                 System.out.println("-----------------------------------------------------------------");
                 UserController.performLogin(con, login, args, sc);
             } else if (loginOrSignUp == 0) {
                 // Sign-up logic
-                User signUp = UserView.getSignUpDetails(con, sc);
+                UserDAO signUp = UserView.getSignUpDetails(con, sc);
                 System.out.println("-----------------------------------------------------------------");
                 UserController.performSignUp(con, signUp);
 

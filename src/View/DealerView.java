@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
-import DAO.Dealer;
+import DAO.DealerDAO;
 
 public class DealerView {
 
@@ -197,10 +197,10 @@ public class DealerView {
 						+ "\n--Number of Stocks available     : " + number_of_stocks);
 	}
 
-	public static void displayDealer(List<Dealer> list) {
-		Iterator<Dealer> itr = list.iterator();
+	public static void displayDealer(List<DealerDAO> list) {
+		Iterator<DealerDAO> itr = list.iterator();
 		while (itr.hasNext()) {
-			Dealer dealer = itr.next();
+			DealerDAO dealer = itr.next();
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println(
 					"--Dealer ID                      : " + dealer.getDealerId()

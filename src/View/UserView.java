@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import DAO.User;
+import DAO.*;
 import Model.Validation;
 import Model.UIDGenerator;
 
@@ -19,7 +19,7 @@ public class UserView {
 	private static String address;
 	private static String confirmPassword;
 
-	public static User getLoginDetails(Scanner sc) {
+	public static UserDAO getLoginDetails(Scanner sc) {
 
 		while (true) {
 			System.out.println("-----------------------------------------------------------------");
@@ -31,7 +31,7 @@ public class UserView {
 					System.out.print("Enter password     : ");
 					password = sc.nextLine();
 					if (Validation.validatePassword(password))
-						return new User(email, password);
+						return new UserDAO(email, password);
 					else
 						System.out.println("\nEnter a Valid Password");
 				}
@@ -41,7 +41,7 @@ public class UserView {
 	}
 
 	// Sign Up logic
-	public static User getSignUpDetails(Connection con, Scanner sc) throws SQLException {
+	public static UserDAO getSignUpDetails(Connection con, Scanner sc) throws SQLException {
 
 		userId = UIDGenerator.IdGenerator(con, "user");
 		// System.out.println(userId);
@@ -106,7 +106,7 @@ public class UserView {
 				System.out.println("<---Password should contains atleast \n8 characters, \n1 UpperCase, "
 						+ "\n1 LowerCase, \n1 Numbers, \n1 SpecialCharacters--->");
 		}
-		return new User(userId, name, mobileNumber, email, address, confirmPassword);
+		return new UserDAO(userId, name, mobileNumber, email, address, confirmPassword);
 	}
 
 	public static void userView(Connection connection, String[] args, Scanner sc, int entry) throws SQLException {
@@ -161,7 +161,7 @@ public class UserView {
 				case 'V':
 				case 'v': {
 					// profileView(connection, args, sc, operation);
-					System.out.println("Loggout");
+					System.out.println("Profile");
 					break;
 				}
 

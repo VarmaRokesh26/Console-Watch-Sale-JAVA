@@ -1,6 +1,6 @@
 package DAO;
 
-public class Admin {
+public class AdminDAO {
     
     private String adminId;
     private String adminName;
@@ -9,7 +9,7 @@ public class Admin {
     private String adminRole;
     private String password;
     
-    public Admin(String adminId, String adminName, String adminMobileNumber, String adminMailid, String adminRole, String password) {
+    public AdminDAO(String adminId, String adminName, String adminMobileNumber, String adminMailid, String adminRole, String password) {
         this.adminId = adminId;
         this.adminName = adminName;
         this.adminMobileNumber = adminMobileNumber;
@@ -18,15 +18,15 @@ public class Admin {
         this.password = password;
     }
 
-    public Admin(){}
+    public AdminDAO(){}
 
-    public Admin(String adminName, String adminMobileNumber, String adminMailid) {
+    public AdminDAO(String adminName, String adminMobileNumber, String adminMailid) {
         this.adminName = adminName;
         this.adminMobileNumber = adminMobileNumber;
         this.adminMailid = adminMailid;
     }
 
-    public Admin(String password) {
+    public AdminDAO(String password) {
         this.password = password;
     }
 

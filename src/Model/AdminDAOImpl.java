@@ -7,16 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import DAO.Admin;
-import DAO.User;
+import DAO.AdminDAO;
+import DAO.UserDAO;
 
-public class AdminDAO {
+public class AdminDAOImpl {
 
     public static List<String> profile = new ArrayList<>();
     private static String query;
 
     // Check Admin Details for Login
-    public static boolean checkAdminDetails(Connection connection, User login) throws SQLException {
+    public static boolean checkAdminDetails(Connection connection, UserDAO login) throws SQLException {
         boolean isAdmin = false;
         query = "SELECT * FROM admin";
 
@@ -41,7 +41,7 @@ public class AdminDAO {
     }
 
     // Inserting Logic for new Admin
-    public static boolean insertAdminDetails(Connection connection, Admin admin) throws SQLException {
+    public static boolean insertAdminDetails(Connection connection, AdminDAO admin) throws SQLException {
         String insertQuery = "INSERT INTO admin (adminId, adminName, mobileNumber, mailId, role, password) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
@@ -57,7 +57,7 @@ public class AdminDAO {
         }
     }
 
-    public static Admin getProfile(Connection connection, Admin admin) throws SQLException {
+    public static AdminDAO getProfile(Connection connection, AdminDAO admin) throws SQLException {
         String profEmail = profile.get(0);
         String profPass = profile.get(1);
 
@@ -78,7 +78,7 @@ public class AdminDAO {
         return admin;
     }
 
-    public static boolean updateProfile(Connection connection, Admin admin) throws SQLException {
+    public static boolean updateProfile(Connection connection, AdminDAO admin) throws SQLException {
         String profileUpdateQueryAdmin = "UPDATE admin SET adminName = ?, mobileNumber = ?, mailId = ? WHERE mailId = ? AND password = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(profileUpdateQueryAdmin);
         preparedStatement.setString(1, admin.getAdminName());
@@ -90,11 +90,11 @@ public class AdminDAO {
         return preparedStatement.executeUpdate() > 0;
     }
 
-    public static boolean checkPassword(Admin admin) {
+    public static boolean checkPassword(AdminDAO admin) {
         return admin.getPassword().equals(profile.get(1));
     }
 
-    public static boolean changePassword(Connection connection, Admin admin) throws SQLException {
+    public static boolean changePassword(Connection connection, AdminDAO admin) throws SQLException {
         String passwordChangeQuery = "UPDATE admin SET password = ? WHERE password = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(passwordChangeQuery)) {
             preparedStatement.setString(1, admin.getPassword());
@@ -109,9 +109,9 @@ public class AdminDAO {
         profile.clear();
     }
 
-    public static List<Admin> displayAdmin(Connection connection, Admin admin) throws SQLException {
+    public static List<AdminDAO> displayAdmin(Connection connection, AdminDAO admin) throws SQLException {
         String query = "SELECT * FROM admin";
-        List<Admin> list = new ArrayList<>();
+        List<AdminDAO> list = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();
 

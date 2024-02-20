@@ -1,6 +1,6 @@
 package DAO;
 
-public class User {
+public class UserDAO {
     private String userId;
     private String userName;
     private String mobileNumber;
@@ -8,7 +8,7 @@ public class User {
     private String address;
     private String password;
 
-    public User(String userId, String userName, String mobileNumber, String emailId, String address, String password) {
+    public UserDAO(String userId, String userName, String mobileNumber, String emailId, String address, String password) {
         this.userId = userId;
         this.userName = userName;
         this.mobileNumber = mobileNumber;
@@ -17,7 +17,7 @@ public class User {
         this.password = password;
     }
 
-    public User(String loginEmail, String loginPassword) {
+    public UserDAO(String loginEmail, String loginPassword) {
         emailId = loginEmail;
         password = loginPassword; 
     }

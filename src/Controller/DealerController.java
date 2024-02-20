@@ -4,13 +4,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import DAO.Dealer;
-import Model.DealerDAO;
+import DAO.DealerDAO;
+import Model.DealerDAOImpl;
 
 public class DealerController {
     
-    public static List<Dealer> displayDealer(Connection conenction, Dealer dealer) throws SQLException {
-        return DealerDAO.displayDealer(conenction, dealer);
+    public static List<DealerDAO> displayDealer(Connection conenction, DealerDAO dealer) throws SQLException {
+        return DealerDAOImpl.displayDealer(conenction, dealer);
     }
 
 }

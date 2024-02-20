@@ -9,12 +9,12 @@ import java.util.List;
 
 import DAO.*;
 
-public class DealerDAO {
+public class DealerDAOImpl {
     
     private static List<String> profile = new ArrayList<>();
 	private static String query;
 
-    public static boolean checkDealerDetails(Connection connection, User login) throws SQLException {
+    public static boolean checkDealerDetails(Connection connection, UserDAO login) throws SQLException {
 		boolean isDealer = false;
 		query = "SELECT * FROM dealer";
 
@@ -38,7 +38,7 @@ public class DealerDAO {
 	}
 
 	// Insert Logic for New Dealer
-    public static boolean insertNewDealerDetails(Connection connection, Dealer dealer) throws SQLException {
+    public static boolean insertNewDealerDetails(Connection connection, DealerDAO dealer) throws SQLException {
         String insertQuery = "INSERT INTO dealer (dealerId, dealerName, location, contactNumber, dealerMailId, dealerPassword) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
@@ -54,7 +54,7 @@ public class DealerDAO {
         }
     }
 
-	public static Dealer getProfile(Connection connection, Dealer dealer) throws SQLException {
+	public static DealerDAO getProfile(Connection connection, DealerDAO dealer) throws SQLException {
         String profEmail = profile.get(0);
         String profPass = profile.get(1);
 
@@ -75,9 +75,9 @@ public class DealerDAO {
         return dealer;
     }
 
-    public static List<Dealer> displayDealer(Connection connection, Dealer dealer) throws SQLException {
+    public static List<DealerDAO> displayDealer(Connection connection, DealerDAO dealer) throws SQLException {
         String query = "SELECT * FROM dealer";
-        List<Dealer> list = new ArrayList<>();
+        List<DealerDAO> list = new ArrayList<>();
         
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();

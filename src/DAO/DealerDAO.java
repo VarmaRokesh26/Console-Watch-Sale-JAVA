@@ -1,6 +1,6 @@
 package DAO;
 
-public class Dealer {
+public class DealerDAO {
     
     private String dealerId;
     private String dealerName;
@@ -9,7 +9,7 @@ public class Dealer {
     private String contactNumer;
     private String password;
 
-    public Dealer(String dealerId, String dealerName, String dealerMailId, String dealerLocation, String contactNumber, String password) {
+    public DealerDAO(String dealerId, String dealerName, String dealerMailId, String dealerLocation, String contactNumber, String password) {
         
         this.dealerId = dealerId;
         this.dealerName = dealerName;
@@ -19,7 +19,7 @@ public class Dealer {
         this.password = password;
     }
 
-    public Dealer() {}
+    public DealerDAO() {}
 
     public String getDealerId() {
         return dealerId;

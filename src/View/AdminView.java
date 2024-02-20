@@ -39,9 +39,9 @@ public class AdminView {
 	private static String dealerMailId;
 	private static String dealerPassword;
 
-	private static Watch watch;
-	private static Admin admin;
-	private static Dealer dealer;
+	private static WatchDAO watch;
+	private static AdminDAO admin;
+	private static DealerDAO dealer;
 
 	public static void adminView(Connection connection, String[] args, Scanner sc, int entry) throws SQLException {
 
@@ -104,7 +104,7 @@ public class AdminView {
 							System.out.println("Enter a valid Dealer Id");
 					}
 
-					watch = new Watch(watchId, seriesName, brand, price, description, numberOfStocks, dealerId);
+					watch = new WatchDAO(watchId, seriesName, brand, price, description, numberOfStocks, dealerId);
 					if (AdminController.updateWatch(connection, watch))
 						System.out.println("<---Update successful--->");
 					else
@@ -116,7 +116,7 @@ public class AdminView {
 				case 'd': {
 					System.out.print("Enter the Watch Id to Delete : ");
 					watchId = sc.next();
-					watch = new Watch(watchId);
+					watch = new WatchDAO(watchId);
 					if (AdminController.deleteWatch(connection, watch))
 						System.out.println("<---Item Deleted From Inventory--->");
 					else
@@ -140,15 +140,15 @@ public class AdminView {
 						displayOptionsForAdmin();
 						char sh = sc.next().charAt(0);
 						if (sh == '1') {
-							watch = new Watch();
+							watch = new WatchDAO();
 							displayWatches(AdminController.displayWatches(connection, watch));
 							System.out.println("-------------------------------------------------------------------");
 						} else if (sh == '2') {
-							admin = new Admin();
+							admin = new AdminDAO();
 							displayAdmin(AdminController.displayAdmin(connection, admin));
 							System.out.println("-------------------------------------------------------------------");
 						} else if (sh == '3') {
-							dealer = new Dealer();
+							dealer = new DealerDAO();
 							DealerView.displayDealer(DealerController.displayDealer(connection, dealer));
 							System.out.println("-------------------------------------------------------------------");
 						} else if (sh == 'B' || sh == 'b') {
@@ -271,7 +271,7 @@ public class AdminView {
 						+ "\n---------> ");
 	}
 
-	public static void viewProfile(Admin admin) {
+	public static void viewProfile(AdminDAO admin) {
 		System.out.println("+---------------------------------------------------------------+"
 				+ "\n+                             Profile                           +"
 				+ "\n+---------------------------------------------------------------+"
@@ -283,10 +283,10 @@ public class AdminView {
 				+ "\n+---------------------------------------------------------------+");
 	}
 
-	public static void displayAdmin(List<Admin> list) {
-		Iterator<Admin> itr = list.iterator();
+	public static void displayAdmin(List<AdminDAO> list) {
+		Iterator<AdminDAO> itr = list.iterator();
 		while (itr.hasNext()) {
-			Admin admin = itr.next();
+			AdminDAO admin = itr.next();
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println(
 							    "--Admin ID                       : " + admin.getAdminId()
@@ -297,10 +297,10 @@ public class AdminView {
 		}
 	}
 
-	public static void displayWatches(List<Watch> list) {
-		Iterator<Watch> itr = list.iterator();
+	public static void displayWatches(List<WatchDAO> list) {
+		Iterator<WatchDAO> itr = list.iterator();
 		while (itr.hasNext()) {
-			Watch watch = itr.next();
+			WatchDAO watch = itr.next();
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println(
 					"--ID                             : " + watch.getWatchId()
@@ -343,7 +343,7 @@ public class AdminView {
 						+ "\n---------> ");
 	}
 
-	public static Admin getAdminDetails(Connection connection, Scanner sc) throws SQLException {
+	public static AdminDAO getAdminDetails(Connection connection, Scanner sc) throws SQLException {
 		System.out.println("<---Enter the Details of the Employee to Add as Admin--->");
 
 		adminId = UIDGenerator.IdGenerator(connection, "admin");
@@ -402,10 +402,10 @@ public class AdminView {
 						"<---Password should contain at least 8 characters, 1 UpperCase, 1 LowerCase, 1 Numbers, 1 SpecialCharacters--->");
 
 		}
-		return new Admin(adminId, name, mobileNumber, mailId, adminRole, confirmPassword);
+		return new AdminDAO(adminId, name, mobileNumber, mailId, adminRole, confirmPassword);
 	}
 
-	public static Watch getWatchDeatils(Connection connection, Scanner sc) throws SQLException {
+	public static WatchDAO getWatchDeatils(Connection connection, Scanner sc) throws SQLException {
 		System.out.println("------Enter the watch details to be added:------");
 
 		watchId = UIDGenerator.IdGenerator(connection, "watches");
@@ -455,10 +455,10 @@ public class AdminView {
 				System.out.println("Enter the Dealer ID for Inserting Watch");
 		}
 
-		return new Watch(watchId, seriesName, brand, price, description, numberOfStocks, dealerId);
+		return new WatchDAO(watchId, seriesName, brand, price, description, numberOfStocks, dealerId);
 	}
 
-	public static Dealer getdealerDetails(Connection connection, Scanner sc) throws SQLException {
+	public static DealerDAO getdealerDetails(Connection connection, Scanner sc) throws SQLException {
 		System.out.println("------Enter the dealer details to be added:------");
 		dealerId = UIDGenerator.IdGenerator(connection, "dealer");
 		while (true) {
@@ -514,11 +514,11 @@ public class AdminView {
 						"<---Password should contain at least 8 characters, 1 UpperCase, 1 LowerCase, 1 Numbers, 1 SpecialCharacters--->");
 		}
 
-		return new Dealer(dealerId, dealerName, dealerMailId, dealerLocation,
+		return new DealerDAO(dealerId, dealerName, dealerMailId, dealerLocation,
 				contactNumber, dealerPassword);
 	}
 
-	public static Admin editAdminProfile(Connection connection, Scanner sc) {
+	public static AdminDAO editAdminProfile(Connection connection, Scanner sc) {
 		System.out.println("<---- Enter your Details to Edit Profile --->");
 		while (true) {
 			System.out.print("Enter Your Name     : ");
@@ -545,7 +545,7 @@ public class AdminView {
 			else
 				System.out.println("Enter a valid emailId");
 		}
-		return new Admin(adminId, mobileNumber, mailId);
+		return new AdminDAO(adminId, mobileNumber, mailId);
 	}
 
 	public static void changePassword(Connection connection, Scanner sc) {
@@ -555,7 +555,7 @@ public class AdminView {
 			String currentPassword = sc.next().trim();
 			sc.nextLine();
 			try {
-				admin = new Admin(currentPassword);
+				admin = new AdminDAO(currentPassword);
 				if (AdminController.checkPassword(admin)) {
 					while (true) {
 						System.out.print("Enter new Password           : ");
@@ -566,7 +566,7 @@ public class AdminView {
 								System.out.print("Re-enter new Password        : ");
 								String reenterPassword = sc.nextLine();
 								if (newPassword.equals(reenterPassword)) {
-									admin = new Admin(newPassword);
+									admin = new AdminDAO(newPassword);
 									if (AdminController.updatePassword(connection, admin)) {
 										System.out.println("<---Password changed Successfully--->");
 										break;

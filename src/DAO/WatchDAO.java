@@ -1,6 +1,6 @@
 package DAO;
 
-public class Watch {
+public class WatchDAO {
     private String watchId;
     private String name;
     private String brand;
@@ -9,7 +9,7 @@ public class Watch {
     private int number_of_stocks;
     private String dealerId;
 
-    public Watch(String watchId, String name, String brand, double price, String description, int number_of_stocks, String dealerId) {
+    public WatchDAO(String watchId, String name, String brand, double price, String description, int number_of_stocks, String dealerId) {
         this.watchId = watchId;
         this.name = name;
         this.brand = brand;
@@ -19,7 +19,7 @@ public class Watch {
         this.dealerId = dealerId;
     }
 
-    public Watch() {}
+    public WatchDAO() {}
 
     public void setWatchId(String watchId) {
         this.watchId = watchId;
@@ -49,7 +49,7 @@ public class Watch {
         this.dealerId = dealerId;
     }
 
-    public Watch(String watchId) {
+    public WatchDAO(String watchId) {
         this.watchId = watchId;
         
     }

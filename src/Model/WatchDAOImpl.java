@@ -5,14 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import DAO.Watch;
+import DAO.WatchDAO;
 
-public class WatchDAO {
+public class WatchDAOImpl {
 
     private static int rowsAffected;
 
     // Insert Watches
-    public static boolean insertNewWatch(Connection connection, Watch watch) throws SQLException {
+    public static boolean insertNewWatch(Connection connection, WatchDAO watch) throws SQLException {
         String insertQuery = "INSERT INTO watches (watchId, seriesName, brand, price, description, numberOfStocks, dealerId) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
@@ -29,7 +29,7 @@ public class WatchDAO {
     }
 
     // Update Watches
-    public static boolean updateWatch(Connection connection, Watch watch) throws SQLException {
+    public static boolean updateWatch(Connection connection, WatchDAO watch) throws SQLException {
         String updateQuery = "UPDATE watches SET seriesName=?, brand=?, price=?, description=?, numberOfStocks=?, dealerId = ? WHERE watchId=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
             preparedStatement.setString(1, watch.getName());
@@ -49,7 +49,7 @@ public class WatchDAO {
     }
 
     // Delete Watch
-    public static boolean deleteWatch(Connection connection, Watch watch) throws SQLException {
+    public static boolean deleteWatch(Connection connection, WatchDAO watch) throws SQLException {
         String deleteQuery = "DELETE FROM watches WHERE watchId = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
             preparedStatement.setString(1, watch.getWatchId());
@@ -77,10 +77,10 @@ public class WatchDAO {
     }
 
     //display Watches From DB
-    public static List<Watch> displayWatches(Connection connecction, Watch watch) throws SQLException {
+    public static List<WatchDAO> displayWatches(Connection connecction, WatchDAO watch) throws SQLException {
         String query = "SELECT * FROM watches";
 
-        List<Watch> list = new ArrayList<>();
+        List<WatchDAO> list = new ArrayList<>();
 
         PreparedStatement preparedStatement = connecction.prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();
