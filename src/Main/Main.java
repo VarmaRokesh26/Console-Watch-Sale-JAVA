@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import Controller.UserController;
-import DAO.UserDAO;
+import DAO.*;
 import Model.Connectivity;
 import View.UserView;
 
