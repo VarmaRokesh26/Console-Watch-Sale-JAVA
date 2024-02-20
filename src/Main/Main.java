@@ -5,8 +5,11 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import Controller.UserController;
+import DAO.User;
+import Model.AdminDAO;
 import Model.Connectivity;
-import Model.User;
+import Model.DealerDAO;
+import Model.UserDAO;
 import View.AdminView;
 import View.DealerView;
 import View.UserView;

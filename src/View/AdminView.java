@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import Controller.AdminController;
-import Model.Watch;
+import DAO.Watch;
 
 // import Controller.AdminController;
 
@@ -118,7 +118,7 @@ public class AdminView {
 						displayOptionsForAdmin();
 						char sh = sc.next().charAt(0);
 						if (sh == '1') {
-							AdminController.displayWatches(connection); 
+							// AdminController.displayWatches(connection); 
 						} else if (sh == '2') {
 							// displayAdminDealerCourier(con, Character.getNumericValue(sh));
 						} else if (sh == '3') {
@@ -164,7 +164,7 @@ public class AdminView {
 
 				case 'B':
 				case 'b': {
-					adminView(con, args, sc, entry);
+					adminView(connection, args, sc, entry);
 				}
 
 				case 'L':

@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import DAO.User;
 import Model.Validation;
 import Model.UIDGenerator;
-import Model.User;
 
 public class UserView {
 

@@ -1,10 +1,10 @@
-package Model.DataAccessObject;
+package Model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import Model.Watch;
+import DAO.Watch;
 
 public class WatchDAO {
 

@@ -1,4 +1,4 @@
-package Model.DataAccessObject;
+package Model;
 
 public class OrderDAO {
     

@@ -1,4 +1,4 @@
-package Model.DataAccessObject;
+package Model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.User;
+import DAO.User;
 
 public class AdminDAO {
 

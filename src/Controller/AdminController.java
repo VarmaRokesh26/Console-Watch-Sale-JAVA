@@ -3,8 +3,8 @@ package Controller;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import Model.Watch;
-import Model.DataAccessObject.WatchDAO;
+import DAO.Watch;
+import Model.WatchDAO;
 
 public class AdminController {
 

@@ -1,4 +1,4 @@
-package Model;
+package DAO;
 
 public class User {
     private String userId;

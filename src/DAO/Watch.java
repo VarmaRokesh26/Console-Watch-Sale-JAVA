@@ -1,4 +1,4 @@
-package Model;
+package DAO;
 
 public class Watch {
     private String watchId;

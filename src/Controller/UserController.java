@@ -3,8 +3,8 @@ package Controller;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import Model.User;
-import Model.DataAccessObject.UserDAO;
+import DAO.User;
+import Model.UserDAO;
 
 public class UserController {
     
