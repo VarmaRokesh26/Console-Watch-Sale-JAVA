@@ -18,12 +18,38 @@ public class Admin {
         this.password = password;
     }
 
+    public Admin(){}
+
     public String getAdminId() {
         return adminId;
     }    
 
     public String getAdminName() {
         return adminName;
+    }
+
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
+    }
+
+    public void setAdminName(String adminName) {
+        this.adminName = adminName;
+    }
+
+    public void setAdminMobileNumber(String adminMobileNumber) {
+        this.adminMobileNumber = adminMobileNumber;
+    }
+
+    public void setAdminMailid(String adminMailid) {
+        this.adminMailid = adminMailid;
+    }
+
+    public void setAdminRole(String adminRole) {
+        this.adminRole = adminRole;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getAdminMobileNumber() {

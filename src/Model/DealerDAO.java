@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import DAO.User;
+import DAO.*;
 
 public class DealerDAO {
     
@@ -36,5 +36,22 @@ public class DealerDAO {
 		}
 		return isDealer;
 	}
+
+	// Insert Logic for New Dealer
+    public static boolean insertNewDealerDetails(Connection connection, Dealer dealer) throws SQLException {
+        String insertQuery = "INSERT INTO dealer (dealerId, dealerName, location, contactNumber, dealerMailId, dealerPassword) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+           
+            preparedStatement.setString(1, dealer.getDealerId());
+            preparedStatement.setString(2, dealer.getDealerName());
+            preparedStatement.setString(3, dealer.getDealerLocation());
+            preparedStatement.setString(4, dealer.getContactNumer());
+            preparedStatement.setString(5, dealer.getDealerMailid());
+            preparedStatement.setString(6, dealer.getPassword());
+
+            return preparedStatement.executeUpdate() > 0;
+        }
+    }
 
 }

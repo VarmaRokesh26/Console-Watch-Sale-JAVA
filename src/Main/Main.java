@@ -6,14 +6,8 @@ import java.util.Scanner;
 
 import Controller.UserController;
 import DAO.User;
-import Model.AdminDAO;
 import Model.Connectivity;
-import Model.DealerDAO;
-import Model.UserDAO;
-import View.AdminView;
-import View.DealerView;
 import View.UserView;
-import Model.DataAccessObject.*;
 
 public class Main {
 
@@ -34,12 +28,12 @@ public class Main {
                 // Login logic
                 User login = UserView.getLoginDetails(sc);
                 System.out.println("-----------------------------------------------------------------");
-                performLogin(con, login, args);
+                UserController.performLogin(con, login, args, sc);
             } else if (loginOrSignUp == 0) {
                 // Sign-up logic
                 User signUp = UserView.getSignUpDetails(con, sc);
                 System.out.println("-----------------------------------------------------------------");
-                performSignUp(con, signUp);
+                UserController.performSignUp(con, signUp);
 
                 loginOrSignUp = 1;
             } else {
@@ -48,19 +42,5 @@ public class Main {
         }
     }
 
-    private static void performLogin(Connection con, User login, String[] args) throws SQLException {
-        if (AdminDAO.checkAdminDetails(con, login))
-            AdminView.adminView(con, args, sc, 0);
-        else if (UserDAO.checkUserDetails(con, login))
-            UserView.userView(con, args, sc, 0);
-        else if (DealerDAO.checkDealerDetails(con, login))
-            DealerView.dealerView(con, args, sc, 0);
-        else
-            System.out.println("Invalid Combinations");
-    }
-
-    private static void performSignUp(Connection con, User signUp) throws SQLException{
-        UserController.insertInuser(con, signUp);
-        System.out.println("Signed Success");
-    }
+    
 }

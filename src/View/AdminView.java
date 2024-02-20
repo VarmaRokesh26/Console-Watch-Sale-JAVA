@@ -5,7 +5,11 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import Controller.AdminController;
+import DAO.Admin;
+import DAO.Dealer;
 import DAO.Watch;
+import Model.UIDGenerator;
+import Model.Validation;
 
 // import Controller.AdminController;
 
@@ -18,8 +22,26 @@ public class AdminView {
 	private static String description;
 	private static int numberOfStocks;
 	private static String dealerId;
-	
-	protected static  Watch watch;
+
+	// Variables for Admin Details
+	private static String adminId;
+	private static String name;
+	private static String mobileNumber;
+	private static String mailId;
+	private static String password;
+	private static String confirmPassword;
+	private static String adminRole;
+
+	// Variables for Dealer Details
+	private static String dealerName;
+	private static String dealerLocation;
+	private static String contactNumber;
+	private static String dealerMailId;
+	private static String dealerPassword;
+
+	private static Watch watch;
+	private static Admin admin;
+	private static Dealer dealer;
 
 	public static void adminView(Connection connection, String[] args, Scanner sc, int entry) throws SQLException {
 
@@ -83,7 +105,7 @@ public class AdminView {
 					}
 
 					watch = new Watch(watchId, seriesName, brand, price, description, numberOfStocks, dealerId);
-					if(AdminController.updateWatch(connection, watch))
+					if (AdminController.updateWatch(connection, watch))
 						System.out.println("<---Update successful--->");
 					else
 						System.out.println("<---Updation Unsuccessfull--->");
@@ -97,7 +119,7 @@ public class AdminView {
 					watch = new Watch(watchId);
 					if (AdminController.deleteWatch(connection, watch))
 						System.out.println("<---Item Deleted From Inventory--->");
-					else 
+					else
 						System.out.println("<---Deletion Failed--->");
 					break;
 				}
@@ -105,7 +127,7 @@ public class AdminView {
 				case 'C':
 				case 'c': {
 					System.out.println("Clear All");
-					if(AdminController.deletemanyWatches(connection))
+					if (AdminController.deletemanyWatches(connection))
 						System.out.println("<---Watches with Zero Stocks are Deleted--->");
 					else
 						System.out.println("<---All Stocks are more than Zero--->");
@@ -118,7 +140,7 @@ public class AdminView {
 						displayOptionsForAdmin();
 						char sh = sc.next().charAt(0);
 						if (sh == '1') {
-							// AdminController.displayWatches(connection); 
+							// AdminController.displayWatches(connection);
 						} else if (sh == '2') {
 							// displayAdminDealerCourier(con, Character.getNumericValue(sh));
 						} else if (sh == '3') {
@@ -136,15 +158,47 @@ public class AdminView {
 
 				case 'A':
 				case 'a': {
-					System.out.println("Add ");
-					// addRespectiveDetails(con, args, sc, operation);
+					while (true) {
+						insertOption();
+						char add = sc.next().charAt(0);
+						if (add == '1') {
+							watch = getWatchDeatils(connection, sc);
+							if (AdminController.insertWatch(connection, watch)) {
+								System.out.println("<---Data Inserted--->");
+								break;
+							} else {
+								System.out.println("<---Data Insertion failed--->");
+							}
+						} else if (add == '2') {
+							admin = getAdminDetails(connection, sc);
+							if (AdminController.insertAdmin(connection, admin)) {
+								System.out.println("Admin Added succesfully!!");
+								break;
+							} else {
+								System.out.println("Inserting Admin is Failed");
+							}
+						} else if (add == '3') {
+							dealer = getdealerDetails(connection, sc);
+							if (AdminController.insertDealer(connection, dealer)) {
+								System.out.println("Dealer Added succesfully!!");
+								break;
+							} else {
+								System.out.println("Inserting Dealer is Failed");
+							}
+							break;
+						} else if (add == 'B' || add == 'b') {
+							adminView(connection, args, sc, add);
+						} else
+							System.out.println("Enter a valid Option");
+					}
 					break;
 				}
 
 				case 'V':
 				case 'v': {
 					System.out.println("View Profile");
-					// viewAdminProfile(con, args, sc, operation);
+					admin = AdminController.adminProfile(connection, admin);
+					viewProfile(admin);
 					break;
 				}
 
@@ -218,15 +272,15 @@ public class AdminView {
 						+ "\n---------> ");
 	}
 
-	public static void viewProfile(String[] profile) {
+	public static void viewProfile(Admin admin) {
 		System.out.println("+---------------------------------------------------------------+"
 				+ "\n+                             Profile                           +"
 				+ "\n+---------------------------------------------------------------+"
-				+ "\n--Admin UID         : " + profile[0]
-				+ "\n--Name              : " + profile[1]
-				+ "\n--Mobile Number     : " + profile[2]
-				+ "\n--Email             : " + profile[3]
-				+ "\n--Role              : " + profile[4]
+				+ "\n--Admin UID         : " + admin.getAdminId()
+				+ "\n--Name              : " + admin.getAdminName()
+				+ "\n--Mobile Number     : " + admin.getAdminMobileNumber()
+				+ "\n--Email             : " + admin.getAdminMailid()
+				+ "\n--Role              : " + admin.getAdminRole()
 				+ "\n+---------------------------------------------------------------+");
 	}
 
@@ -275,4 +329,178 @@ public class AdminView {
 						+ "\n---------> ");
 	}
 
+	public static Admin getAdminDetails(Connection connection, Scanner sc) throws SQLException {
+		System.out.println("<---Enter the Details of the Employee to Add as Admin--->");
+
+		adminId = UIDGenerator.IdGenerator(connection, "admin");
+
+		while (true) {
+			System.out.print("Name                 : ");
+			name = sc.next() + sc.nextLine();
+			if (Validation.validateName(name))
+				break;
+			else
+				System.out.println("Enter a valid Name");
+		}
+
+		while (true) {
+			System.out.print("Enter Mobile Number  : ");
+			mobileNumber = sc.nextLine();
+			if (Validation.validateMobileNumber(mobileNumber))
+				break;
+			else
+				System.out.println("<---Enter a valid mobile Number--->");
+		}
+
+		while (true) {
+			System.out.print("Enter Email Address  : ");
+			mailId = sc.nextLine();
+			if (Validation.validateEmail(mailId))
+				break;
+			else
+				System.out.println("<---Enter a valid Email--->");
+		}
+
+		while (true) {
+			System.out.println("||Role should only be \"Executive\" and \"Manager\"||");
+			System.out.print("Enter the Admin Role : ");
+			adminRole = sc.nextLine().toLowerCase();
+			if (adminRole.equals("executive") || adminRole.equals("manager"))
+				break;
+			else
+				System.out.println("Other emplyees cannoot have account in admin Dashboard");
+		}
+
+		while (true) {
+			System.out.print("Enter Password       : ");
+			password = sc.nextLine();
+			if (Validation.validatePassword(password)) {
+				while (true) {
+					System.out.print("Re-enter Password    : ");
+					confirmPassword = sc.nextLine();
+					if (password.equals(confirmPassword)) {
+						break;
+					}
+				}
+				break;
+			} else
+				System.out.println(
+						"<---Password should contain at least 8 characters, 1 UpperCase, 1 LowerCase, 1 Numbers, 1 SpecialCharacters--->");
+
+		}
+		return new Admin(name, adminId, mobileNumber, mailId, adminRole, confirmPassword);
+	}
+
+	public static Watch getWatchDeatils(Connection connection, Scanner sc) throws SQLException {
+		System.out.println("------Enter the watch details to be added:------");
+
+		watchId = UIDGenerator.IdGenerator(connection, "watches");
+
+		while (true) {
+			System.out.print("Enter series Name                 :");
+			seriesName = sc.next() + sc.nextLine();
+			if (!seriesName.equals(""))
+				break;
+		}
+
+		while (true) {
+			System.out.print("Enter brand name                  :");
+			brand = sc.next() + sc.nextLine();
+			if (!brand.trim().isEmpty()) {
+				break;
+			} else {
+				System.out.print("Enter a valid brand Name");
+			}
+		}
+
+		System.out.print("Enter price for the watches       :");
+		price = sc.nextDouble();
+
+		System.out.print("'/' seperated description\n");
+		while (true) {
+			System.out.print("Enter description for the watches :");
+			description = sc.next() + sc.nextLine();
+			if (!description.trim().isEmpty())
+				break;
+		}
+
+		System.out.print("Enter amount of stocks available  :");
+		while (true) {
+			numberOfStocks = sc.nextInt();
+			sc.nextLine();
+			if (numberOfStocks >= 0)
+				break;
+		}
+
+		System.out.print("Enter the Dealer Id               :");
+		while (true) {
+			dealerId = sc.next();
+			if (!dealerId.isEmpty())
+				break;
+			else
+				System.out.println("Enter the Dealer ID for Inserting Watch");
+		}
+
+		return new Watch(watchId, seriesName, brand, price, description, numberOfStocks, dealerId);
+	}
+
+	public static Dealer getdealerDetails(Connection connection, Scanner sc) throws SQLException {
+		System.out.println("------Enter the dealer details to be added:------");
+		dealerId = UIDGenerator.IdGenerator(connection, "dealer");
+		while (true) {
+			System.out.print("Enter Dealer Name           : ");
+			dealerName = sc.next() + sc.nextLine();
+			if (Validation.validateName(dealerName))
+				break;
+			else
+				System.out.println("Enter a valid Dealer Name");
+		}
+
+		while (true) {
+			System.out.print("Enter Dealer Contact Number : ");
+			contactNumber = sc.nextLine();
+			if (Validation.validateMobileNumber(contactNumber))
+				break;
+			else
+				System.out.println("<---Enter a valid mobile Number--->");
+		}
+
+		while (true) {
+			System.out.print("Enter Dealer Location       : ");
+			dealerLocation = sc.nextLine();
+			if (!dealerLocation.isEmpty())
+				break;
+			else
+				System.out.println("<---Enter a Location--->");
+		}
+
+		while (true) {
+			System.out.print("Enter the Dealer MailId     : ");
+			dealerMailId = sc.nextLine();
+			if (Validation.validateEmail(dealerMailId))
+				break;
+			else
+				System.out.println("<---Enter a valid Email--->");
+		}
+
+		while (true) {
+			System.out.print("Enter Password              : ");
+			dealerPassword = sc.nextLine();
+			if (Validation.validatePassword(dealerPassword)) {
+				while (true) {
+					System.out.print("Re-enter Password           : ");
+					confirmPassword = sc.nextLine();
+					if (dealerPassword.equals(confirmPassword)) {
+						break;
+					}
+				}
+				break;
+			} else
+				System.out.println(
+						"<---Password should contain at least 8 characters, 1 UpperCase, 1 LowerCase, 1 Numbers, 1 SpecialCharacters--->");
+		}
+
+		return new Dealer(dealerId, dealerName, dealerMailId, dealerLocation,
+				contactNumber, dealerPassword);
+	}
 }

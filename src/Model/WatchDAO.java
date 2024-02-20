@@ -10,10 +10,26 @@ public class WatchDAO {
 
     private static int rowsAffected;
 
+    // Insert Watches
+    public static boolean insertNewWatch(Connection connection, Watch watch) throws SQLException {
+        String insertQuery = "INSERT INTO watches (watchId, seriesName, brand, price, description, numberOfStocks, dealerId) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+
+            preparedStatement.setString(1, watch.getWatchId());
+            preparedStatement.setString(2, watch.getName());
+            preparedStatement.setString(3, watch.getBrand());
+            preparedStatement.setDouble(4, watch.getPrice());
+            preparedStatement.setString(5, watch.getDescription());
+            preparedStatement.setInt(6, watch.getNumberOfStocks());
+            preparedStatement.setString(7, watch.getDealerId());
+
+            return preparedStatement.executeUpdate() > 0;
+        }
+    }
+
     // Update Watches
     public static boolean updateWatch(Connection connection, Watch watch) throws SQLException {
         String updateQuery = "UPDATE watches SET seriesName=?, brand=?, price=?, description=?, numberOfStocks=?, dealerId = ? WHERE watchId=?";
-
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
             preparedStatement.setString(1, watch.getName());
             preparedStatement.setString(2, watch.getBrand());
@@ -58,7 +74,5 @@ public class WatchDAO {
                 return false;
         }
     }
-
-    
 
 }
