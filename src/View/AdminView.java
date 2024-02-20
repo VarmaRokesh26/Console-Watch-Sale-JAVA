@@ -144,10 +144,14 @@ public class AdminView {
 							displayWatches(AdminController.displayWatches(connection, watch));
 							System.out.println("-------------------------------------------------------------------");
 						} else if (sh == '2') {
-							displayAdmin(DealerController.displayDealer(connection, dealer));
+							admin = new Admin();
+							displayAdmin(AdminController.displayAdmin(connection, admin));
+							System.out.println("-------------------------------------------------------------------");
 						} else if (sh == '3') {
-							// displayAdminDealerCourier(con, Character.getNumericValue(sh));
-						}else if (sh == 'B' || sh == 'b') {
+							dealer = new Dealer();
+							DealerView.displayDealer(DealerController.displayDealer(connection, dealer));
+							System.out.println("-------------------------------------------------------------------");
+						} else if (sh == 'B' || sh == 'b') {
 							adminView(connection, args, sc, sh);
 						} else
 							System.out.println("Enter a valid Option");
@@ -163,7 +167,6 @@ public class AdminView {
 							watch = getWatchDeatils(connection, sc);
 							if (AdminController.insertWatch(connection, watch)) {
 								System.out.println("<---Data Inserted--->");
-								break;
 							} else {
 								System.out.println("<---Data Insertion failed--->");
 							}
@@ -171,7 +174,6 @@ public class AdminView {
 							admin = getAdminDetails(connection, sc);
 							if (AdminController.insertAdmin(connection, admin)) {
 								System.out.println("Admin Added succesfully!!");
-								break;
 							} else {
 								System.out.println("Inserting Admin is Failed");
 							}
@@ -179,17 +181,14 @@ public class AdminView {
 							dealer = getdealerDetails(connection, sc);
 							if (AdminController.insertDealer(connection, dealer)) {
 								System.out.println("Dealer Added succesfully!!");
-								break;
 							} else {
 								System.out.println("Inserting Dealer is Failed");
 							}
-							break;
 						} else if (add == 'B' || add == 'b') {
-							adminView(connection, args, sc, add);
+							adminView(connection, args, sc, 1);
 						} else
 							System.out.println("Enter a valid Option");
 					}
-					break;
 				}
 
 				case 'V':
@@ -217,20 +216,18 @@ public class AdminView {
 						} else if (operation == 'V' || operation == 'v') {
 							admin = AdminController.adminProfile(connection, admin);
 							viewProfile(admin);
+						} else if (operation == 'B' || operation == 'b') {
+							adminView(connection, args, sc, 1);
 						}
 					}
 				}
 
 				case 'B':
 				case 'b': {
-					adminView(connection, args, sc, entry);
+					adminView(connection, args, sc, 1);
 				}
 			}
 		}
-	}
-
-	private static void displayAdmin(List<Dealer> displayDealer) {
-		
 	}
 
 	public static void welcomeMsg() {
@@ -286,9 +283,23 @@ public class AdminView {
 				+ "\n+---------------------------------------------------------------+");
 	}
 
+	public static void displayAdmin(List<Admin> list) {
+		Iterator<Admin> itr = list.iterator();
+		while (itr.hasNext()) {
+			Admin admin = itr.next();
+			System.out.println("-------------------------------------------------------------------");
+			System.out.println(
+							    "--Admin ID                       : " + admin.getAdminId()
+							+ "\n--Admin Name                     : " + admin.getAdminName()
+							+ "\n--Mobile Number                  : " + admin.getAdminMobileNumber()
+							+ "\n--Email                          : " + admin.getAdminMailid()
+							+ "\n--Role                           : " + admin.getAdminRole());
+		}
+	}
+
 	public static void displayWatches(List<Watch> list) {
 		Iterator<Watch> itr = list.iterator();
-		while(itr.hasNext()) {
+		while (itr.hasNext()) {
 			Watch watch = itr.next();
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println(
@@ -325,7 +336,7 @@ public class AdminView {
 						+ "\n+ Enter                                 +"
 						+ "\n+---------------------------------------+"
 						+ "\n+ --1 -> Display Watches                +"
-						+ "\n+ --2 -> Display Admin                  +"
+						+ "\n+ --2 -> Display Admin List             +"
 						+ "\n+ --3 -> Display Dealer List            +"
 						+ "\n+ --B -> Back                           +"
 						+ "\n+---------------------------------------+"

@@ -25,6 +25,10 @@ public class AdminController {
         return WatchDAO.displayWatches(connection, watch);
     }
 
+    public static List<Admin> displayAdmin(Connection connection, Admin admin) throws SQLException {
+        return AdminDAO.displayAdmin(connection, admin);
+    }
+
     public static boolean insertAdmin(Connection connection, Admin admin) throws SQLException {
         return AdminDAO.insertAdminDetails(connection, admin);
     }

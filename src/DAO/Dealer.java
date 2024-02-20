@@ -19,6 +19,8 @@ public class Dealer {
         this.password = password;
     }
 
+    public Dealer() {}
+
     public String getDealerId() {
         return dealerId;
     }

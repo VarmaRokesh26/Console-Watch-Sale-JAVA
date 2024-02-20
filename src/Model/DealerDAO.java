@@ -75,4 +75,24 @@ public class DealerDAO {
         return dealer;
     }
 
+    public static List<Dealer> displayDealer(Connection connection, Dealer dealer) throws SQLException {
+        String query = "SELECT * FROM dealer";
+        List<Dealer> list = new ArrayList<>();
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while(resultSet.next()) {
+            dealer.setDealerId(resultSet.getString(1));
+            dealer.setDealerName(resultSet.getString(2));
+            dealer.setDealerLocation(resultSet.getString(3));
+            dealer.setContactNumer(resultSet.getString(4));
+            dealer.setDealerMailid(resultSet.getString(5));
+            dealer.setPassword(resultSet.getString(6));
+
+            list.add(dealer);
+        }
+        return list;
+    }
+
 }

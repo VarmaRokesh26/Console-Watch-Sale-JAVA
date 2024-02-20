@@ -47,8 +47,6 @@ public class AdminDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
             preparedStatement.setString(1, admin.getAdminId());
-            System.out.println(admin.getAdminId());
-            System.out.println(admin.getAdminName());
             preparedStatement.setString(2, admin.getAdminName());
             preparedStatement.setString(3, admin.getAdminMobileNumber());
             preparedStatement.setString(4, admin.getAdminMailid());
@@ -110,4 +108,22 @@ public class AdminDAO {
     public static void clearProfile() {
         profile.clear();
     }
+
+    public static List<Admin> displayAdmin(Connection connection, Admin admin) throws SQLException {
+        String query = "SELECT * FROM admin";
+        List<Admin> list = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while(resultSet.next()) {
+            admin.setAdminId(resultSet.getString(1));
+            admin.setAdminName(resultSet.getString(2));
+            admin.setAdminMobileNumber(resultSet.getString(3));
+            admin.setAdminMailid(resultSet.getString(4));
+            admin.setAdminRole(resultSet.getString(5));
+
+            list.add(admin);
+        }
+        return list;
+    } 
 }

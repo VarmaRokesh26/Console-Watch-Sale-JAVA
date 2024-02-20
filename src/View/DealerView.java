@@ -2,7 +2,9 @@ package View;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Scanner;
+import java.util.*;
+
+import DAO.Dealer;
 
 public class DealerView {
 
@@ -12,68 +14,68 @@ public class DealerView {
 			char operation = sc.next().charAt(0);
 			switch (operation) {
 
-                case 'D':
-                case 'd': {
-                    System.out.println("Display");
-                    // showOrders(con, args, sc);
-                    break;
-                }
-                
-                case 'C':
-                case 'c': {
-                    System.out.println("Completed");
-                    // showDeliveredOrders(con);
-                    break;
-                }
-                
-                case 'A':
-                case 'a': {
-                    System.out.println("Add");
-                    // insertWatches(con, args, sc, operation);
-                    break;
-                }
-                
-                case 'V':
-                case 'v': {
-                    System.out.println("View Profile");
-                    // viewDealerProfile(con, args, sc, operation);
-                    break;
-                }
-                
-                case 'W':
-                case 'w': {
-                    System.out.println("Display Watches");
-                    // displayOurWatch(con);
-                    break;
-                }
-                case 'E':
-                case 'e': {
-                    // editDealerProfile(con, sc);
-                    System.out.println("Edit");
-                    break;
-                }
-                
-                case 'P':
-                case 'p': {
-                    System.out.println("Edit Pass");
-                    // changePassword(con, sc);
-                    break;
-                }
-                
-                case 'B':
-                case 'b': {
-                    System.out.println("Back");
-                    // DealerInterface.dealerInterface(con, args, sc, operation);
-                }
-    
-                case 'L':
-                case 'l': {
-                    System.out.println("Loggout");
-                    // logOut(con, args);
-                    break;
-                }
-    
-            }
+				case 'D':
+				case 'd': {
+					System.out.println("Display");
+					// showOrders(con, args, sc);
+					break;
+				}
+
+				case 'C':
+				case 'c': {
+					System.out.println("Completed");
+					// showDeliveredOrders(con);
+					break;
+				}
+
+				case 'A':
+				case 'a': {
+					System.out.println("Add");
+					// insertWatches(con, args, sc, operation);
+					break;
+				}
+
+				case 'V':
+				case 'v': {
+					System.out.println("View Profile");
+					// viewDealerProfile(con, args, sc, operation);
+					break;
+				}
+
+				case 'W':
+				case 'w': {
+					System.out.println("Display Watches");
+					// displayOurWatch(con);
+					break;
+				}
+				case 'E':
+				case 'e': {
+					// editDealerProfile(con, sc);
+					System.out.println("Edit");
+					break;
+				}
+
+				case 'P':
+				case 'p': {
+					System.out.println("Edit Pass");
+					// changePassword(con, sc);
+					break;
+				}
+
+				case 'B':
+				case 'b': {
+					System.out.println("Back");
+					// DealerInterface.dealerInterface(con, args, sc, operation);
+				}
+
+				case 'L':
+				case 'l': {
+					System.out.println("Loggout");
+					// logOut(con, args);
+					break;
+				}
+
+			}
 		}
 	}
 
@@ -193,5 +195,19 @@ public class DealerView {
 						+ "\n--Price                          : " + price
 						+ "\n--Description                    : " + description
 						+ "\n--Number of Stocks available     : " + number_of_stocks);
+	}
+
+	public static void displayDealer(List<Dealer> list) {
+		Iterator<Dealer> itr = list.iterator();
+		while (itr.hasNext()) {
+			Dealer dealer = itr.next();
+			System.out.println("-------------------------------------------------------------------");
+			System.out.println(
+					"--Dealer ID                      : " + dealer.getDealerId()
+							+ "\n--Name                           : " + dealer.getDealerName()
+							+ "\n--Dealer Location                : " + dealer.getDealerLocation()
+							+ "\n--Contact Number                 : " + dealer.getContactNumer()
+							+ "\n--Mail Id                        : " + dealer.getDealerMailid());
+		}
 	}
 }
