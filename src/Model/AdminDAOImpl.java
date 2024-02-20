@@ -109,20 +109,21 @@ public class AdminDAOImpl {
         profile.clear();
     }
 
-    public static List<AdminDAO> displayAdmin(Connection connection, AdminDAO admin) throws SQLException {
+    public static List<AdminDAO> displayAdmin(Connection connection) throws SQLException {
         String query = "SELECT * FROM admin";
         List<AdminDAO> list = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while(resultSet.next()) {
-            admin.setAdminId(resultSet.getString(1));
-            admin.setAdminName(resultSet.getString(2));
-            admin.setAdminMobileNumber(resultSet.getString(3));
-            admin.setAdminMailid(resultSet.getString(4));
-            admin.setAdminRole(resultSet.getString(5));
+            AdminDAO adminList = new AdminDAO();
+            adminList.setAdminId(resultSet.getString(1));
+            adminList.setAdminName(resultSet.getString(2));
+            adminList.setAdminMobileNumber(resultSet.getString(3));
+            adminList.setAdminMailid(resultSet.getString(4));
+            adminList.setAdminRole(resultSet.getString(5));
 
-            list.add(admin);
+            list.add(adminList);
         }
         return list;
     } 

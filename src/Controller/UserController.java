@@ -2,12 +2,13 @@ package Controller;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Scanner;
+import java.util.*;
 
-import DAO.UserDAO;
+import DAO.*;
 import Model.AdminDAOImpl;
 import Model.DealerDAOImpl;
 import Model.UserDAOImpl;
+import Model.WatchDAOImpl;
 import View.AdminView;
 import View.DealerView;
 import View.UserView;
@@ -33,5 +34,9 @@ public class UserController {
         UserController.insertInuser(con, signUp);
         System.out.println("Signed Success");
     }
+
+    public static List<WatchDAO> displayWatches(Connection connection, WatchDAO watch) throws SQLException {
+        return WatchDAOImpl.displayWatches(connection, 1);
+    } 
 
 }

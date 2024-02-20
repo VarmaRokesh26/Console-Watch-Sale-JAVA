@@ -2,8 +2,9 @@ package View;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Scanner;
+import java.util.*;
 
+import Controller.UserController;
 import DAO.*;
 import Model.Validation;
 import Model.UIDGenerator;
@@ -18,6 +19,8 @@ public class UserView {
 	private static String mobileNumber;
 	private static String address;
 	private static String confirmPassword;
+
+	static WatchDAO watch;
 
 	public static UserDAO getLoginDetails(Scanner sc) {
 
@@ -119,7 +122,9 @@ public class UserView {
 			switch (userOperation) {
 				case 'S':
 				case 's': {
-					// displayWatches(connection);
+					watch = new WatchDAO();
+					displayWatches(UserController.displayWatches(connection, watch));
+					System.out.println("-------------------------------------------------------------------");
 					System.out.println("Show");
 					break;
 				}
@@ -308,17 +313,20 @@ public class UserView {
 						+ "\n---------> ");
 	}
 
-	public static void displayWatches(String id, String name, String brand, double price, String description,
-			int number_of_stocks, String dealerName) {
-		System.out.println("-------------------------------------------------------------------");
-		System.out.println(
-				"--ID                             : " + id
-						+ "\n--Name                           : " + name
-						+ "\n--Brand                          : " + brand
-						+ "\n--Price                          : " + price
-						+ "\n--Description                    : " + description
-						+ "\n--Number of Stocks available     : " + number_of_stocks
-						+ "\n--Dealer of the Watch            : " + dealerName);
+	public static void displayWatches(List<WatchDAO> list) {
+		Iterator<WatchDAO> itr = list.iterator();
+		while (itr.hasNext()) {
+			WatchDAO watch = itr.next();
+			System.out.println("-------------------------------------------------------------------");
+			System.out.println(
+					"--ID                             : " + watch.getWatchId()
+							+ "\n--Name                           : " + watch.getName()
+							+ "\n--Brand                          : " + watch.getBrand()
+							+ "\n--Price                          : " + watch.getPrice()
+							+ "\n--Description                    : " + watch.getDescription()
+							+ "\n--Number of Stocks available     : " + watch.getNumberOfStocks()
+							+ "\n--Dealer Id                      : " + watch.getDealerId());
+		}
 	}
 
 	public static void noItemStatement() {

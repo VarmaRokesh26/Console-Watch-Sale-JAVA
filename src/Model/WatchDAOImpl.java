@@ -77,25 +77,30 @@ public class WatchDAOImpl {
     }
 
     //display Watches From DB
-    public static List<WatchDAO> displayWatches(Connection connecction, WatchDAO watch) throws SQLException {
-        String query = "SELECT * FROM watches";
-
+    public static List<WatchDAO> displayWatches(Connection connecction, int entry) throws SQLException {
+        String query;
+        if(entry == 0) {
+            query = "SELECT * FROM watches";
+        } else {
+            query = "SELECT * FROM watches WHERE numberOfStocks > 0";
+        }
+            
         List<WatchDAO> list = new ArrayList<>();
 
         PreparedStatement preparedStatement = connecction.prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while(resultSet.next()) {
-            watch.setWatchId(resultSet.getString(1));
-            watch.setName(resultSet.getString(2));
-            watch.setBrand(resultSet.getString(3));
-            watch.setPrice(resultSet.getDouble(4));
-            watch.setDescription(resultSet.getString(5));
-            watch.setNumber_of_stocks(resultSet.getInt(6));
+            WatchDAO watchItem = new WatchDAO();
+            watchItem.setWatchId(resultSet.getString(1));
+            watchItem.setName(resultSet.getString(2));
+            watchItem.setBrand(resultSet.getString(3));
+            watchItem.setPrice(resultSet.getDouble(4));
+            watchItem.setDescription(resultSet.getString(5));
+            watchItem.setNumber_of_stocks(resultSet.getInt(6));
 
-            list.add(watch);
+            list.add(watchItem);
         }
         return list;
-    } 
-
+    }
 }

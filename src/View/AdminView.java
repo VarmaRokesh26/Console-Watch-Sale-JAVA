@@ -140,16 +140,14 @@ public class AdminView {
 						displayOptionsForAdmin();
 						char sh = sc.next().charAt(0);
 						if (sh == '1') {
-							watch = new WatchDAO();
-							displayWatches(AdminController.displayWatches(connection, watch));
+							displayWatches(AdminController.displayWatches(connection));
 							System.out.println("-------------------------------------------------------------------");
 						} else if (sh == '2') {
 							admin = new AdminDAO();
-							displayAdmin(AdminController.displayAdmin(connection, admin));
+							displayAdmin(AdminController.displayAdmin(connection));
 							System.out.println("-------------------------------------------------------------------");
 						} else if (sh == '3') {
-							dealer = new DealerDAO();
-							DealerView.displayDealer(DealerController.displayDealer(connection, dealer));
+							DealerView.displayDealer(DealerController.displayDealer(connection));
 							System.out.println("-------------------------------------------------------------------");
 						} else if (sh == 'B' || sh == 'b') {
 							adminView(connection, args, sc, sh);
