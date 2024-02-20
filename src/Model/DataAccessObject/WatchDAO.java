@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import Model.Watch;
 
-public class WatchFunction {
+public class WatchDAO {
 
     private static int rowsAffected;
 
@@ -58,5 +58,7 @@ public class WatchFunction {
                 return false;
         }
     }
+
+    
 
 }

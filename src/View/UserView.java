@@ -10,37 +10,37 @@ import Model.User;
 
 public class UserView {
 
-    private static String email;
-    private static String password;
+	private static String email;
+	private static String password;
 
-    private static String userId;
-    private static String name;
-    private static String mobileNumber;
-    private static String address;
-    private static String confirmPassword;
+	private static String userId;
+	private static String name;
+	private static String mobileNumber;
+	private static String address;
+	private static String confirmPassword;
 
-    public static User getLoginDetails(Scanner sc) {
+	public static User getLoginDetails(Scanner sc) {
 
-        while (true) {
-            System.out.println("-----------------------------------------------------------------");
-            System.out.print("Enter your EmailID : ");
+		while (true) {
+			System.out.println("-----------------------------------------------------------------");
+			System.out.print("Enter your EmailID : ");
 
-            email = sc.nextLine();
-            if (Validation.validateEmail(email)) {
-                while (true) {
-                    System.out.print("Enter password     : ");
-                    password = sc.nextLine();
-                    if (Validation.validatePassword(password))
-                        return new User(email, password);
-                    else
-                        System.out.println("\nEnter a Valid Password");
-                }
-            } else
-                System.out.println("\nEnter a proper Email Address");
-        }
-    }
+			email = sc.nextLine();
+			if (Validation.validateEmail(email)) {
+				while (true) {
+					System.out.print("Enter password     : ");
+					password = sc.nextLine();
+					if (Validation.validatePassword(password))
+						return new User(email, password);
+					else
+						System.out.println("\nEnter a Valid Password");
+				}
+			} else
+				System.out.println("\nEnter a proper Email Address");
+		}
+	}
 
-    // Sign Up logic
+	// Sign Up logic
 	public static User getSignUpDetails(Connection con, Scanner sc) throws SQLException {
 
 		userId = UIDGenerator.IdGenerator(con, "user");
@@ -49,9 +49,9 @@ public class UserView {
 		while (true) {
 			// userName
 			System.out.println("-----------------------------------------------------------");
-			System.out.print("Enter Your Name : ");
-
+			System.out.print("Enter Your Name              : ");
 			name = sc.nextLine();
+
 			if (Validation.validateName(name))
 				break;
 			else
@@ -60,8 +60,7 @@ public class UserView {
 
 		while (true) {
 			// Mobile Number
-			System.out.print("Enter Your Mobile Number : ");
-
+			System.out.print("Enter Your Mobile Number     : ");
 			mobileNumber = sc.nextLine();
 			if (Validation.validateMobileNumber(mobileNumber))
 				break;
@@ -71,8 +70,7 @@ public class UserView {
 
 		while (true) {
 			// Email Address
-			System.out.print("Enter Your Email Address : ");
-
+			System.out.print("Enter Your Email Address     : ");
 			email = sc.nextLine();
 			if (Validation.validateEmail(email))
 				break;
@@ -83,7 +81,6 @@ public class UserView {
 		while (true) {
 			// Home Address to Delivery
 			System.out.print("Enter Your Location(Address) : ");
-
 			address = sc.nextLine();
 			if (!address.toString().isEmpty())
 				break;
@@ -92,14 +89,12 @@ public class UserView {
 
 		}
 		while (true) {
-
 			// Password
-			System.out.print("Password : ");
+			System.out.print("Password                     : ");
 			password = sc.nextLine();
-
 			if (Validation.validatePassword(password)) {
 				while (true) {
-					System.out.print("Re-enter Password : ");
+					System.out.print("Re-enter Password            : ");
 					confirmPassword = sc.nextLine();
 					if (password.equals(confirmPassword))
 						break;
@@ -128,28 +123,28 @@ public class UserView {
 					System.out.println("Show");
 					break;
 				}
-	
+
 				case 'O':
 				case 'o': {
 					// buyItem(connection, args, sc, operation);
 					System.out.println("Order");
 					break;
 				}
-	
+
 				case 'N':
 				case 'n': {
 					// orderNow(connection, sc);
 					System.out.println("Now");
 					break;
 				}
-	
+
 				case 'A':
 				case 'a': {
 					// adddToCart(connection);
 					System.out.println("Add to Cart");
 					break;
 				}
-	
+
 				case 'H':
 				case 'h': {
 					// history(connection);
@@ -162,33 +157,33 @@ public class UserView {
 					System.out.println("Cart");
 					break;
 				}
-	
+
 				case 'V':
 				case 'v': {
 					// profileView(connection, args, sc, operation);
 					System.out.println("Loggout");
 					break;
 				}
-	
+
 				case 'E':
 				case 'e': {
 					// editProfile(connection, sc);
 					System.out.println("Edit");
 					break;
 				}
-	
+
 				case 'P':
 				case 'p': {
 					// passwordChange(connection, sc);
 					System.out.println("Password");
 					break;
 				}
-	
+
 				case 'B':
 				case 'b': {
 					userView(connection, args, sc, 1);
 				}
-	
+
 				case 'L':
 				case 'l': {
 					// logOut(connection, args);
@@ -199,7 +194,7 @@ public class UserView {
 		}
 	}
 
-    public static void welcomeMsg() {
+	public static void welcomeMsg() {
 		System.out.println("Welcome TO Watch World!!");
 	}
 

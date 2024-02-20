@@ -9,16 +9,17 @@ import java.util.List;
 
 import Model.User;
 
-public class AdminFunction {
+public class AdminDAO {
 
     private static List<String> profile = new ArrayList<>();
+    private static String query;
 
     // Check Admin Details for Login
     public static boolean checkAdminDetails(Connection connection, User login) throws SQLException {
         boolean isAdmin = false;
-        String checkQueryBySelect = "SELECT * FROM admin";
+        query = "SELECT * FROM admin";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(checkQueryBySelect);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
                 ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {

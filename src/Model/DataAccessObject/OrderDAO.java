@@ -1,5 +1,5 @@
 package Model.DataAccessObject;
 
-public class DealerFunction {
+public class OrderDAO {
     
 }

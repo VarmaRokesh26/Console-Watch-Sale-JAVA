@@ -9,9 +9,10 @@ import java.util.List;
 
 import Model.User;
 
-public class UserFunction {
+public class UserDAO {
     
     private static List<String> profile = new ArrayList<>();
+	// private static int rowsAffected;
 
     // Check User details for LogIn
 	public static boolean checkUserDetails(Connection connection, User login) throws SQLException {
@@ -36,5 +37,23 @@ public class UserFunction {
 		}
 		return isUser;
 	}
+
+	// Inserting Logic for New User
+    public static boolean insertUserDetails(Connection connection, User signUp) throws SQLException {
+
+        String insertQuery = "INSERT INTO user (userId, userName, mobileNumber, emailId, address, password) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+
+            preparedStatement.setString(1, signUp.getUserId());
+            preparedStatement.setString(2, signUp.getUserName());
+            preparedStatement.setString(3, signUp.getMobileNumber());
+            preparedStatement.setString(4, signUp.getEmailId());
+            preparedStatement.setString(5, signUp.getAddress());
+            preparedStatement.setString(6, signUp.getPassword());
+            
+			return preparedStatement.executeUpdate() > 0;
+        }
+    }
 
 }

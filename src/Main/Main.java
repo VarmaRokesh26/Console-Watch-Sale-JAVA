@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import Controller.UserController;
 import Model.Connectivity;
 import Model.User;
 import View.AdminView;
+import View.DealerView;
 import View.UserView;
 import Model.DataAccessObject.*;
 
@@ -43,35 +45,19 @@ public class Main {
         }
     }
 
-    private static void performLogin(Connection con, User login, String[] args) {
-        try {
-            if (AdminFunction.checkAdminDetails(con, login))
-                AdminView.adminView(con, args, sc, 0);
-            else if (UserFunction.checkUserDetails(con, login))
-                UserView.userView(con, args, sc, 0);
-            // else if (CheckFromDB.checkCourierServiceDetails(con, login.getEmailId(), login.getPassword()))
-            //     CourierServiceInterface.courierServiceInterface(con, args, sc, 0);
-            // else if (CheckFromDB.checkDealerDetails(con, login.getEmailId(), login.getPassword()))
-            //     DealerInterface.dealerInterface(con, args, sc, 0);
-            // else
-                System.out.println("Invalid Combinations");
-        } catch (SQLException e) {
-            System.out.println("Error during login: " + e.toString());
-        }
-        // System.out.println("Hi");
+    private static void performLogin(Connection con, User login, String[] args) throws SQLException {
+        if (AdminDAO.checkAdminDetails(con, login))
+            AdminView.adminView(con, args, sc, 0);
+        else if (UserDAO.checkUserDetails(con, login))
+            UserView.userView(con, args, sc, 0);
+        else if (DealerDAO.checkDealerDetails(con, login))
+            DealerView.dealerView(con, args, sc, 0);
+        else
+            System.out.println("Invalid Combinations");
     }
 
-    private static void performSignUp(Connection con, User signUp) {
-
-        // if (con != null) {
-        //     try {
-        //         InsertInDB.insertUserDetails(con, signUp.getUserId(), signUp.getUserName(), signUp.getMobileNumber(),
-        //                 signUp.getEmailId(),
-        //                 signUp.getAddress(), signUp.getPassword());
-        //     } catch (Exception e) {
-        //         System.out.println(e.toString());
-        //     }
-        // }
+    private static void performSignUp(Connection con, User signUp) throws SQLException{
+        UserController.insertInuser(con, signUp);
         System.out.println("Signed Success");
     }
 }

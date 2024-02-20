@@ -13,7 +13,6 @@ public class UIDGenerator {
     private static String courierServiceId = "CUID";
     private static String orderId = "OID";
     private static String cartId = "CID";
-    private static String historyId = "HID";
 
     private static String query;
     private static String prefix = "";
@@ -35,8 +34,6 @@ public class UIDGenerator {
             prefix = orderId;
         } else if(role.equals("cart")) {
             prefix = cartId;
-        } else if(role.equals("history")) {
-            prefix = historyId;
         }
 
         String prevId = lastInsertedId(connection, role);
@@ -73,9 +70,6 @@ public class UIDGenerator {
         } else if(role.equals("cart")) {
             tableName = "cart";
             colName = "cartId";
-        } else if(role.equals("history")) {
-            tableName = "purchaseHistory";
-            colName = "historyId";
         }
 
         query = "SELECT " + colName + " FROM " + tableName + " ORDER BY " + colName + " DESC LIMIT 1";

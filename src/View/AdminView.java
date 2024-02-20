@@ -21,7 +21,7 @@ public class AdminView {
 	
 	protected static  Watch watch;
 
-	public static void adminView(Connection con, String[] args, Scanner sc, int entry) throws SQLException {
+	public static void adminView(Connection connection, String[] args, Scanner sc, int entry) throws SQLException {
 
 		if (entry == 0)
 			welcomeMsg();
@@ -83,7 +83,7 @@ public class AdminView {
 					}
 
 					watch = new Watch(watchId, seriesName, brand, price, description, numberOfStocks, dealerId);
-					if(AdminController.updateWatch(con, watch))
+					if(AdminController.updateWatch(connection, watch))
 						System.out.println("<---Update successful--->");
 					else
 						System.out.println("<---Updation Unsuccessfull--->");
@@ -95,7 +95,7 @@ public class AdminView {
 					System.out.print("Enter the Watch Id to Delete : ");
 					watchId = sc.next();
 					watch = new Watch(watchId);
-					if (AdminController.deleteWatch(con, watch))
+					if (AdminController.deleteWatch(connection, watch))
 						System.out.println("<---Item Deleted From Inventory--->");
 					else 
 						System.out.println("<---Deletion Failed--->");
@@ -105,7 +105,7 @@ public class AdminView {
 				case 'C':
 				case 'c': {
 					System.out.println("Clear All");
-					if(AdminController.deletemanyWatches(con))
+					if(AdminController.deletemanyWatches(connection))
 						System.out.println("<---Watches with Zero Stocks are Deleted--->");
 					else
 						System.out.println("<---All Stocks are more than Zero--->");
@@ -118,7 +118,7 @@ public class AdminView {
 						displayOptionsForAdmin();
 						char sh = sc.next().charAt(0);
 						if (sh == '1') {
-							// AdminController. 
+							AdminController.displayWatches(connection); 
 						} else if (sh == '2') {
 							// displayAdminDealerCourier(con, Character.getNumericValue(sh));
 						} else if (sh == '3') {
