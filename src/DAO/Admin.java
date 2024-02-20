@@ -20,6 +20,16 @@ public class Admin {
 
     public Admin(){}
 
+    public Admin(String adminName, String adminMobileNumber, String adminMailid) {
+        this.adminName = adminName;
+        this.adminMobileNumber = adminMobileNumber;
+        this.adminMailid = adminMailid;
+    }
+
+    public Admin(String password) {
+        this.password = password;
+    }
+
     public String getAdminId() {
         return adminId;
     }    

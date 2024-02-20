@@ -23,6 +23,30 @@ public class Dealer {
         return dealerId;
     }
 
+    public void setDealerId(String dealerId) {
+        this.dealerId = dealerId;
+    }
+
+    public void setDealerName(String dealerName) {
+        this.dealerName = dealerName;
+    }
+
+    public void setDealerMailid(String dealerMailid) {
+        this.dealerMailid = dealerMailid;
+    }
+
+    public void setDealerLocation(String dealerLocation) {
+        this.dealerLocation = dealerLocation;
+    }
+
+    public void setContactNumer(String contactNumer) {
+        this.contactNumer = contactNumer;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getDealerName() {
         return dealerName;
     }

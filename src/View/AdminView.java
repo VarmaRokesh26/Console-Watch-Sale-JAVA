@@ -2,12 +2,12 @@ package View;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Scanner;
+import java.util.*;
 
 import Controller.AdminController;
-import DAO.Admin;
-import DAO.Dealer;
-import DAO.Watch;
+import Controller.DealerController;
+import DAO.*;
+import Main.Main;
 import Model.UIDGenerator;
 import Model.Validation;
 
@@ -140,20 +140,18 @@ public class AdminView {
 						displayOptionsForAdmin();
 						char sh = sc.next().charAt(0);
 						if (sh == '1') {
-							// AdminController.displayWatches(connection);
+							watch = new Watch();
+							displayWatches(AdminController.displayWatches(connection, watch));
+							System.out.println("-------------------------------------------------------------------");
 						} else if (sh == '2') {
-							// displayAdminDealerCourier(con, Character.getNumericValue(sh));
+							displayAdmin(DealerController.displayDealer(connection, dealer));
 						} else if (sh == '3') {
 							// displayAdminDealerCourier(con, Character.getNumericValue(sh));
-						} else if (sh == '4') {
-							// displayAdminDealerCourier(con, Character.getNumericValue(sh));
-						} else if (sh == 'B' || sh == 'b') {
-							// AdminInterface.adminInterface(con, args, sc, sh);
+						}else if (sh == 'B' || sh == 'b') {
+							adminView(connection, args, sc, sh);
 						} else
 							System.out.println("Enter a valid Option");
-						break;
 					}
-					break;
 				}
 
 				case 'A':
@@ -199,36 +197,40 @@ public class AdminView {
 					System.out.println("View Profile");
 					admin = AdminController.adminProfile(connection, admin);
 					viewProfile(admin);
-					break;
-				}
-
-				case 'E':
-				case 'e': {
-					System.out.println("Edit Profile");
-					// editAdminProfile(con, sc);
-					break;
-				}
-
-				case 'P':
-				case 'p': {
-					System.out.println("Pass");
-					// changePassword(con, sc);
-					break;
+					while (true) {
+						profileAction();
+						operation = sc.next().charAt(0);
+						if (operation == 'E' || operation == 'e') {
+							admin = editAdminProfile(connection, sc);
+							if (AdminController.updateProfile(connection, admin))
+								System.out.println("<---Your Profile is Updated--->");
+							else
+								System.out.println("<--- Profile Updation Failed --->");
+							break;
+						} else if (operation == 'P' || operation == 'p') {
+							changePassword(connection, sc);
+						} else if (operation == 'L' || operation == 'l') {
+							AdminController.logOut(args);
+							System.out.println("Logging out. GoodBye!");
+							System.out.println("-----------------------------------------------------------------");
+							Main.main(args);
+						} else if (operation == 'V' || operation == 'v') {
+							admin = AdminController.adminProfile(connection, admin);
+							viewProfile(admin);
+						}
+					}
 				}
 
 				case 'B':
 				case 'b': {
 					adminView(connection, args, sc, entry);
 				}
-
-				case 'L':
-				case 'l': {
-					System.out.println("Logout");
-					// logOut(con, args);
-					break;
-				}
 			}
 		}
+	}
+
+	private static void displayAdmin(List<Dealer> displayDealer) {
+		
 	}
 
 	public static void welcomeMsg() {
@@ -246,10 +248,10 @@ public class AdminView {
 				"\n+-------------------------------------------------------+"
 						+ "\n+ Enter                                                 +"
 						+ "\n+-------------------------------------------------------+"
-						+ "\n+ --A -> Add new Watch/ Admin/ Dealer/ CourierServices  +"
+						+ "\n+ --A -> Add new Watch/ Admin/ Dealer                   +"
 						+ "\n+ --C -> Delete Watch with 0 stocks                     +"
 						+ "\n+ --D -> Delete watch                                   +"
-						+ "\n+ --S -> Display Watch/ Admin/ Dealer/ CourierServices  +"
+						+ "\n+ --S -> Display Watch/ Admin/ Dealer                   +"
 						+ "\n+ --U -> Update details of watches                      +"
 						+ "\n+ --V -> View Profile                                   +"
 						+ "\n+-------------------------------------------------------+"
@@ -284,17 +286,20 @@ public class AdminView {
 				+ "\n+---------------------------------------------------------------+");
 	}
 
-	public static void displayWatches(Watch watches, String dealerName) {
-		System.out.println("-------------------------------------------------------------------");
-		System.out.println(
-				"--ID                             : " + watches.getWatchId()
-						+ "\n--Name                           : " + watches.getName()
-						+ "\n--Brand                          : " + watches.getBrand()
-						+ "\n--Price                          : " + watches.getPrice()
-						+ "\n--Description                    : " + watches.getDescription()
-						+ "\n--Number of Stocks available     : " + watches.getNumberOfStocks()
-						+ "\n--Dealer Id                      : " + watches.getDealerId()
-						+ "\n--Dealer of the Watch            : " + dealerName);
+	public static void displayWatches(List<Watch> list) {
+		Iterator<Watch> itr = list.iterator();
+		while(itr.hasNext()) {
+			Watch watch = itr.next();
+			System.out.println("-------------------------------------------------------------------");
+			System.out.println(
+					"--ID                             : " + watch.getWatchId()
+							+ "\n--Name                           : " + watch.getName()
+							+ "\n--Brand                          : " + watch.getBrand()
+							+ "\n--Price                          : " + watch.getPrice()
+							+ "\n--Description                    : " + watch.getDescription()
+							+ "\n--Number of Stocks available     : " + watch.getNumberOfStocks()
+							+ "\n--Dealer Id                      : " + watch.getDealerId());
+		}
 	}
 
 	public static void insertOption() {
@@ -307,7 +312,6 @@ public class AdminView {
 						+ "\n+ --1 -> Add New Watch                  +"
 						+ "\n+ --2 -> Add New Admin                  +"
 						+ "\n+ --3 -> Add New Dealer Details         +"
-						+ "\n+ --4 -> Add NEw Courier Service        +"
 						+ "\n+ --B -> Back                           +"
 						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
@@ -323,7 +327,6 @@ public class AdminView {
 						+ "\n+ --1 -> Display Watches                +"
 						+ "\n+ --2 -> Display Admin                  +"
 						+ "\n+ --3 -> Display Dealer List            +"
-						+ "\n+ --4 -> Display Courier List           +"
 						+ "\n+ --B -> Back                           +"
 						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
@@ -388,7 +391,7 @@ public class AdminView {
 						"<---Password should contain at least 8 characters, 1 UpperCase, 1 LowerCase, 1 Numbers, 1 SpecialCharacters--->");
 
 		}
-		return new Admin(name, adminId, mobileNumber, mailId, adminRole, confirmPassword);
+		return new Admin(adminId, name, mobileNumber, mailId, adminRole, confirmPassword);
 	}
 
 	public static Watch getWatchDeatils(Connection connection, Scanner sc) throws SQLException {
@@ -502,5 +505,78 @@ public class AdminView {
 
 		return new Dealer(dealerId, dealerName, dealerMailId, dealerLocation,
 				contactNumber, dealerPassword);
+	}
+
+	public static Admin editAdminProfile(Connection connection, Scanner sc) {
+		System.out.println("<---- Enter your Details to Edit Profile --->");
+		while (true) {
+			System.out.print("Enter Your Name     : ");
+			name = sc.next().trim() + sc.nextLine();
+			if (Validation.validateName(name))
+				break;
+			else
+				System.out.println("Enter a Valid name");
+		}
+		while (true) {
+			System.out.print("Enter mobile Number : ");
+			mobileNumber = sc.nextLine();
+			if (Validation.validateMobileNumber(mobileNumber))
+				break;
+			else
+				System.out.println("Enter a valid Mobile Numebr");
+		}
+
+		while (true) {
+			System.out.print("Enter your Email Id : ");
+			mailId = sc.nextLine();
+			if (Validation.validateEmail(mailId))
+				break;
+			else
+				System.out.println("Enter a valid emailId");
+		}
+		return new Admin(adminId, mobileNumber, mailId);
+	}
+
+	public static void changePassword(Connection connection, Scanner sc) {
+
+		while (true) {
+			System.out.print("Enter your currrent password : ");
+			String currentPassword = sc.next().trim();
+			sc.nextLine();
+			try {
+				admin = new Admin(currentPassword);
+				if (AdminController.checkPassword(admin)) {
+					while (true) {
+						System.out.print("Enter new Password           : ");
+						String newPassword = sc.next();
+						sc.nextLine();
+						if (!newPassword.equals(currentPassword) && Validation.validatePassword(newPassword)) {
+							while (true) {
+								System.out.print("Re-enter new Password        : ");
+								String reenterPassword = sc.nextLine();
+								if (newPassword.equals(reenterPassword)) {
+									admin = new Admin(newPassword);
+									if (AdminController.updatePassword(connection, admin)) {
+										System.out.println("<---Password changed Successfully--->");
+										break;
+									} else
+										System.out.println("<---Password is Not changed--->");
+								} else {
+									System.out.println("New Password and Confirm Password whuld be same!");
+								}
+							}
+							break;
+						} else {
+							System.out.println("Current Password should not equal to New Password");
+						}
+					}
+					break;
+				} else {
+					System.out.println("Enter correct password");
+				}
+			} catch (Exception e) {
+				System.out.println(e.toString());
+			}
+		}
 	}
 }

@@ -2,8 +2,9 @@ package Model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.*;
 import DAO.Watch;
 
 public class WatchDAO {
@@ -74,5 +75,27 @@ public class WatchDAO {
                 return false;
         }
     }
+
+    //display Watches From DB
+    public static List<Watch> displayWatches(Connection connecction, Watch watch) throws SQLException {
+        String query = "SELECT * FROM watches";
+
+        List<Watch> list = new ArrayList<>();
+
+        PreparedStatement preparedStatement = connecction.prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while(resultSet.next()) {
+            watch.setWatchId(resultSet.getString(1));
+            watch.setName(resultSet.getString(2));
+            watch.setBrand(resultSet.getString(3));
+            watch.setPrice(resultSet.getDouble(4));
+            watch.setDescription(resultSet.getString(5));
+            watch.setNumber_of_stocks(resultSet.getInt(6));
+
+            list.add(watch);
+        }
+        return list;
+    } 
 
 }

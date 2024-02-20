@@ -19,6 +19,36 @@ public class Watch {
         this.dealerId = dealerId;
     }
 
+    public Watch() {}
+
+    public void setWatchId(String watchId) {
+        this.watchId = watchId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setNumber_of_stocks(int number_of_stocks) {
+        this.number_of_stocks = number_of_stocks;
+    }
+
+    public void setDealerId(String dealerId) {
+        this.dealerId = dealerId;
+    }
+
     public Watch(String watchId) {
         this.watchId = watchId;
         

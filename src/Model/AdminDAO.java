@@ -47,6 +47,8 @@ public class AdminDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
             preparedStatement.setString(1, admin.getAdminId());
+            System.out.println(admin.getAdminId());
+            System.out.println(admin.getAdminName());
             preparedStatement.setString(2, admin.getAdminName());
             preparedStatement.setString(3, admin.getAdminMobileNumber());
             preparedStatement.setString(4, admin.getAdminMailid());
@@ -67,7 +69,7 @@ public class AdminDAO {
         preparedStatement.setString(2, profPass);
 
         ResultSet resultSet = preparedStatement.executeQuery();
-        if(resultSet.next()) {
+        if (resultSet.next()) {
             admin.setAdminId(resultSet.getString("adminId"));
             admin.setAdminName(resultSet.getString("adminName"));
             admin.setAdminMobileNumber(resultSet.getString("mobileNumber"));
@@ -76,5 +78,36 @@ public class AdminDAO {
             admin.setPassword(profPass);
         }
         return admin;
+    }
+
+    public static boolean updateProfile(Connection connection, Admin admin) throws SQLException {
+        String profileUpdateQueryAdmin = "UPDATE admin SET adminName = ?, mobileNumber = ?, mailId = ? WHERE mailId = ? AND password = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(profileUpdateQueryAdmin);
+        preparedStatement.setString(1, admin.getAdminName());
+        preparedStatement.setString(2, admin.getAdminMobileNumber());
+        preparedStatement.setString(3, admin.getAdminMailid());
+        preparedStatement.setString(4, profile.get(0));
+        preparedStatement.setString(5, profile.get(1));
+
+        return preparedStatement.executeUpdate() > 0;
+    }
+
+    public static boolean checkPassword(Admin admin) {
+        return admin.getPassword().equals(profile.get(1));
+    }
+
+    public static boolean changePassword(Connection connection, Admin admin) throws SQLException {
+        String passwordChangeQuery = "UPDATE admin SET password = ? WHERE password = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(passwordChangeQuery)) {
+            preparedStatement.setString(1, admin.getPassword());
+            preparedStatement.setString(2, profile.get(1));
+
+            profile.set(1, admin.getPassword());
+            return preparedStatement.executeUpdate() > 0;
+        }
+    }
+
+    public static void clearProfile() {
+        profile.clear();
     }
 }

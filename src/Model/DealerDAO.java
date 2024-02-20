@@ -54,4 +54,25 @@ public class DealerDAO {
         }
     }
 
+	public static Dealer getProfile(Connection connection, Dealer dealer) throws SQLException {
+        String profEmail = profile.get(0);
+        String profPass = profile.get(1);
+
+        query = "SELECT * FROM dealer WHERE mailId = ? AND password = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, profEmail);
+        preparedStatement.setString(2, profPass);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            dealer.setDealerId(resultSet.getString(1));
+            dealer.setDealerName(resultSet.getString(2));
+            dealer.setDealerLocation(resultSet.getString(3));
+            dealer.setContactNumer(resultSet.getString(4));
+            dealer.setDealerMailid(profEmail);
+            dealer.setPassword(profPass);
+        }
+        return dealer;
+    }
+
 }
