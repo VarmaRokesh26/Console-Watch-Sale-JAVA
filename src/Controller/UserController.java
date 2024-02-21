@@ -36,7 +36,11 @@ public class UserController {
     }
 
     public static List<WatchDAO> displayWatches(Connection connection, WatchDAO watch) throws SQLException {
-        return WatchDAOImpl.displayWatches(connection, 1);
+        return WatchDAOImpl.displayWatches(connection, watch, 2);
     } 
+
+    // public static boolean placeorder(Conection connection) throws SQLException {
+
+    // }
 
 }

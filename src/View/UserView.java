@@ -20,6 +20,8 @@ public class UserView {
 	private static String address;
 	private static String confirmPassword;
 
+	private static String watchId;
+
 	static WatchDAO watch;
 
 	public static UserDAO getLoginDetails(Scanner sc) {
@@ -122,32 +124,31 @@ public class UserView {
 			switch (userOperation) {
 				case 'S':
 				case 's': {
-					watch = new WatchDAO();
 					displayWatches(UserController.displayWatches(connection, watch));
 					System.out.println("-------------------------------------------------------------------");
-					System.out.println("Show");
 					break;
 				}
-
+				
 				case 'O':
 				case 'o': {
-					// buyItem(connection, args, sc, operation);
-					System.out.println("Order");
-					break;
-				}
-
-				case 'N':
-				case 'n': {
-					// orderNow(connection, sc);
-					System.out.println("Now");
-					break;
-				}
-
-				case 'A':
-				case 'a': {
-					// adddToCart(connection);
-					System.out.println("Add to Cart");
-					break;
+					while (true) {
+						System.out.print("Enter WatchId to Display Seperately : ");
+						watchId = sc.next();
+						watch = new WatchDAO(watchId);
+						displayWatches(UserController.displayWatches(connection, watch));
+						System.out.println("-------------------------------------------------------------------");
+						System.out.print("Enter the quantity required         : ");
+						// int quantity = sc.nextInt();
+						orderOrCart();
+						char operation = sc.next().charAt(0);
+						if(operation == 'N' || operation == 'n') {
+							// UserController.orderWatch(connection, quantity);
+						} else if(operation == 'A' || operation == 'a') {
+							
+						} else if(operation == 'B' || operation == 'b') {
+							userView(connection, args, sc, 1);
+						}
+					}
 				}
 
 				case 'H':

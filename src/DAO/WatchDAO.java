@@ -9,6 +9,8 @@ public class WatchDAO {
     private int number_of_stocks;
     private String dealerId;
 
+    public WatchDAO() {}
+
     public WatchDAO(String watchId, String name, String brand, double price, String description, int number_of_stocks, String dealerId) {
         this.watchId = watchId;
         this.name = name;
@@ -18,8 +20,10 @@ public class WatchDAO {
         this.number_of_stocks = number_of_stocks;
         this.dealerId = dealerId;
     }
-
-    public WatchDAO() {}
+    
+    public WatchDAO(String watchId) {
+        this.watchId = watchId;
+    }
 
     public void setWatchId(String watchId) {
         this.watchId = watchId;
@@ -49,10 +53,6 @@ public class WatchDAO {
         this.dealerId = dealerId;
     }
 
-    public WatchDAO(String watchId) {
-        this.watchId = watchId;
-        
-    }
 
     public String getWatchId() {
         return watchId;

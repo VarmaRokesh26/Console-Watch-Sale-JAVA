@@ -140,7 +140,7 @@ public class AdminView {
 						displayOptionsForAdmin();
 						char sh = sc.next().charAt(0);
 						if (sh == '1') {
-							displayWatches(AdminController.displayWatches(connection));
+							displayWatches(AdminController.displayWatches(connection, watch));
 							System.out.println("-------------------------------------------------------------------");
 						} else if (sh == '2') {
 							admin = new AdminDAO();

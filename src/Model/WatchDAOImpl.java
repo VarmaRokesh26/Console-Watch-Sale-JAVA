@@ -77,17 +77,21 @@ public class WatchDAOImpl {
     }
 
     //display Watches From DB
-    public static List<WatchDAO> displayWatches(Connection connecction, int entry) throws SQLException {
+    public static List<WatchDAO> displayWatches(Connection connecction, WatchDAO watch, int entry) throws SQLException {
         String query;
         if(entry == 0) {
             query = "SELECT * FROM watches";
-        } else {
+        } else if(entry == 1){
             query = "SELECT * FROM watches WHERE numberOfStocks > 0";
+        } else {
+            query = "SELECT * FROM watches WHERE watchId = ?";
         }
             
         List<WatchDAO> list = new ArrayList<>();
 
         PreparedStatement preparedStatement = connecction.prepareStatement(query);
+        if(entry != 1 && entry != 0)
+            preparedStatement.setString(1, watch.getWatchId()); 
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while(resultSet.next()) {

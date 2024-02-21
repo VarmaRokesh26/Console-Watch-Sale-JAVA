@@ -21,8 +21,8 @@ public class AdminController {
         return WatchDAOImpl.deleteWatchByNOS(con);
     }
 
-    public static List<WatchDAO> displayWatches(Connection connection) throws SQLException{
-        return WatchDAOImpl.displayWatches(connection, 0);
+    public static List<WatchDAO> displayWatches(Connection connection, WatchDAO watch) throws SQLException{
+        return WatchDAOImpl.displayWatches(connection, watch, 0);
     }
 
     public static List<AdminDAO> displayAdmin(Connection connection) throws SQLException {
