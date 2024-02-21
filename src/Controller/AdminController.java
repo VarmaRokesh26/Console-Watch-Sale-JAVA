@@ -29,6 +29,10 @@ public class AdminController {
         return AdminDAOImpl.displayAdmin(connection);
     }
 
+    public static String generateAdminId(Connection connection) throws SQLException {
+        return UIDGenerator.IdGenerator(connection, "admin");
+    }
+
     public static boolean insertAdmin(Connection connection, AdminDAO admin) throws SQLException {
         return AdminDAOImpl.insertAdminDetails(connection, admin);
     }

@@ -56,4 +56,20 @@ public class UserDAOImpl {
         }
     }
 
+	public static UserDAO userIdForCartOrOrder(Connection connection) throws SQLException {
+		String mailIdForCart = profile.get(0);
+		String query = "SELECT userId FROM user WHERE emailId = ?";
+		UserDAO user = new UserDAO();
+		
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+			preparedStatement.setString(1, mailIdForCart);
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				if (resultSet.next()) {
+					user.setUserId(resultSet.getString(1));
+				}
+			}
+		}
+		return user;
+	}
+
 }

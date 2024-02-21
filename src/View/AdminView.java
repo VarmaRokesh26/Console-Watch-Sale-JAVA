@@ -344,7 +344,7 @@ public class AdminView {
 	public static AdminDAO getAdminDetails(Connection connection, Scanner sc) throws SQLException {
 		System.out.println("<---Enter the Details of the Employee to Add as Admin--->");
 
-		adminId = UIDGenerator.IdGenerator(connection, "admin");
+		adminId = AdminController.generateAdminId(connection);
 
 		while (true) {
 			System.out.print("Name                 : ");

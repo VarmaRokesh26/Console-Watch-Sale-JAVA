@@ -7,6 +7,7 @@ import java.util.*;
 import DAO.*;
 import Model.AdminDAOImpl;
 import Model.DealerDAOImpl;
+import Model.UIDGenerator;
 import Model.UserDAOImpl;
 import Model.WatchDAOImpl;
 import View.AdminView;
@@ -39,8 +40,16 @@ public class UserController {
         return WatchDAOImpl.displayWatches(connection, watch, 2);
     } 
 
-    // public static boolean placeorder(Conection connection) throws SQLException {
+    public static boolean placeOrder(Connection connection, OrderDAO order) throws SQLException {
+        return WatchDAOImpl.placeOrder(connection, order);
+    }
 
-    // }
+    public static String generateOrderId(Connection connection) throws SQLException {
+        return UIDGenerator.IdGenerator(connection, "orders");
+    }
+
+    public static UserDAO getUserId(Connection connection) throws SQLException {
+        return UserDAOImpl.userIdForCartOrOrder(connection);
+    }
 
 }

@@ -8,6 +8,8 @@ public class UserDAO {
     private String address;
     private String password;
 
+    public UserDAO() {}
+
     public UserDAO(String userId, String userName, String mobileNumber, String emailId, String address, String password) {
         this.userId = userId;
         this.userName = userName;
@@ -17,9 +19,37 @@ public class UserDAO {
         this.password = password;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public UserDAO(String loginEmail, String loginPassword) {
         emailId = loginEmail;
         password = loginPassword; 
+    }
+
+    public UserDAO(String userId) {
+        this.userId = userId;
     }
     
     public String getUserId() {

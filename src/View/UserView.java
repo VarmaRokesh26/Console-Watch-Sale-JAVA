@@ -23,6 +23,8 @@ public class UserView {
 	private static String watchId;
 
 	static WatchDAO watch;
+	static OrderDAO order;
+	static UserDAO user;
 
 	public static UserDAO getLoginDetails(Scanner sc) {
 
@@ -128,7 +130,7 @@ public class UserView {
 					System.out.println("-------------------------------------------------------------------");
 					break;
 				}
-				
+
 				case 'O':
 				case 'o': {
 					while (true) {
@@ -137,15 +139,22 @@ public class UserView {
 						watch = new WatchDAO(watchId);
 						displayWatches(UserController.displayWatches(connection, watch));
 						System.out.println("-------------------------------------------------------------------");
-						System.out.print("Enter the quantity required         : ");
-						// int quantity = sc.nextInt();
 						orderOrCart();
 						char operation = sc.next().charAt(0);
-						if(operation == 'N' || operation == 'n') {
-							// UserController.orderWatch(connection, quantity);
-						} else if(operation == 'A' || operation == 'a') {
-							
-						} else if(operation == 'B' || operation == 'b') {
+						if (operation == 'N' || operation == 'n') {
+							System.out.print("Enter the quantity required         : ");
+							int quantity = sc.nextInt();
+							System.out.print("Payment Method Cash On Deliviry Or Online Payment : ");
+							String payment = sc.next();
+							if(UserController.placeOrder(connection, orderRequirements(connection, UserController.displayWatches(connection, watch), quantity,
+								payment)))
+								System.out.println("<----Order Placed Successfully---->");
+							else 
+								System.out.println("<--Something Went Wrong-->");
+								
+						} else if (operation == 'A' || operation == 'a') {
+
+						} else if (operation == 'B' || operation == 'b') {
 							userView(connection, args, sc, 1);
 						}
 					}
@@ -274,6 +283,20 @@ public class UserView {
 			else
 				System.out.print(dec + "" + address[i].trim() + ".\n");
 		}
+	}
+
+	public static OrderDAO orderRequirements(Connection connection, List<WatchDAO> list, int quantity, String payment)
+			throws SQLException {
+		Iterator<WatchDAO> itr = list.iterator();
+		String orderId = UserController.generateOrderId(connection);
+		user = UserController.getUserId(connection);
+
+		while (itr.hasNext()) {
+			WatchDAO watch = itr.next();
+			order = new OrderDAO(orderId, user.getUserId(), watch.getDealerId(), watch.getWatchId(), quantity,
+					watch.getPrice() * quantity, payment, "Processed");
+		}
+		return order;
 	}
 
 	public static void shoppingCart(String cartDetails) {
