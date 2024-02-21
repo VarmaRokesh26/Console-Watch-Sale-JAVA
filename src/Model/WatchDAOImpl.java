@@ -136,7 +136,18 @@ public class WatchDAOImpl {
             stockPreparedStatement.setString(2, order.getWatchId());
             stockPreparedStatement.executeUpdate();
         }
-           
+
         return rowsAffected > 0;
     }
+
+    public static boolean checkWatchId(Connection connection, WatchDAO watch) throws SQLException {
+        String checkIdQuery = "SELECT watchId FROM watches WHERE watchId = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(checkIdQuery);
+        preparedStatement.setString(1, watch.getWatchId());
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return resultSet.next();
+    }
+
 }

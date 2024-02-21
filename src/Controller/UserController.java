@@ -36,8 +36,8 @@ public class UserController {
         System.out.println("Signed Success");
     }
 
-    public static List<WatchDAO> displayWatches(Connection connection, WatchDAO watch) throws SQLException {
-        return WatchDAOImpl.displayWatches(connection, watch, 2);
+    public static List<WatchDAO> displayWatches(Connection connection, WatchDAO watch, int entry) throws SQLException {
+        return WatchDAOImpl.displayWatches(connection, watch, entry);
     } 
 
     public static boolean placeOrder(Connection connection, OrderDAO order) throws SQLException {
@@ -50,6 +50,10 @@ public class UserController {
 
     public static UserDAO getUserId(Connection connection) throws SQLException {
         return UserDAOImpl.userIdForCartOrOrder(connection);
+    }
+
+    public static boolean checkWatchId(Connection connection, WatchDAO watch) throws SQLException {
+        return WatchDAOImpl.checkWatchId(connection, watch);
     }
 
 }

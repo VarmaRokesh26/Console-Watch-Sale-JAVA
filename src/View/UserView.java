@@ -126,7 +126,7 @@ public class UserView {
 			switch (userOperation) {
 				case 'S':
 				case 's': {
-					displayWatches(UserController.displayWatches(connection, watch));
+					displayWatches(UserController.displayWatches(connection, watch, 1));
 					System.out.println("-------------------------------------------------------------------");
 					break;
 				}
@@ -137,25 +137,31 @@ public class UserView {
 						System.out.print("Enter WatchId to Display Seperately : ");
 						watchId = sc.next();
 						watch = new WatchDAO(watchId);
-						displayWatches(UserController.displayWatches(connection, watch));
-						System.out.println("-------------------------------------------------------------------");
-						orderOrCart();
-						char operation = sc.next().charAt(0);
-						if (operation == 'N' || operation == 'n') {
-							System.out.print("Enter the quantity required         : ");
-							int quantity = sc.nextInt();
-							System.out.print("Payment Method Cash On Deliviry Or Online Payment : ");
-							String payment = sc.next();
-							if(UserController.placeOrder(connection, orderRequirements(connection, UserController.displayWatches(connection, watch), quantity,
-								payment)))
-								System.out.println("<----Order Placed Successfully---->");
-							else 
-								System.out.println("<--Something Went Wrong-->");
-								
-						} else if (operation == 'A' || operation == 'a') {
+						if (UserController.checkWatchId(connection, watch)) {
+							displayWatches(UserController.displayWatches(connection, watch, 2));
+							System.out.println("-------------------------------------------------------------------");
+							orderOrCart();
+							char operation = sc.next().charAt(0);
+							if (operation == 'N' || operation == 'n') {
+								System.out.print("Enter the quantity required         : ");
+								int quantity = sc.nextInt();
+								System.out.print("Payment Method Cash On Deliviry Or Online Payment : ");
+								String payment = sc.next();
+								if (UserController.placeOrder(connection,
+										orderRequirements(connection,
+												UserController.displayWatches(connection, watch, 2), quantity,
+												payment)))
+									System.out.println("<----Order Placed Successfully---->");
+								else
+									System.out.println("<--Something Went Wrong-->");
 
-						} else if (operation == 'B' || operation == 'b') {
-							userView(connection, args, sc, 1);
+							} else if (operation == 'A' || operation == 'a') {
+
+							} else if (operation == 'B' || operation == 'b') {
+								userView(connection, args, sc, 1);
+							}
+						} else {
+							System.out.println("<---Enterd item is not in the inventory-->");
 						}
 					}
 				}
