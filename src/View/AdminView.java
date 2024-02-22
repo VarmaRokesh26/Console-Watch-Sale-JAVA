@@ -6,6 +6,7 @@ import java.util.*;
 
 import Controller.AdminController;
 import Controller.DealerController;
+import Controller.UserController;
 import DAO.*;
 import Main.Main;
 import Model.UIDGenerator;
@@ -42,6 +43,7 @@ public class AdminView {
 	private static WatchDAO watch;
 	private static AdminDAO admin;
 	private static DealerDAO dealer;
+	private static UserDAO user;
 
 	public static void adminView(Connection connection, String[] args, Scanner sc, int entry) throws SQLException {
 
@@ -149,11 +151,13 @@ public class AdminView {
 						} else if (sh == '3') {
 							DealerView.displayDealer(DealerController.displayDealer(connection));
 							System.out.println("-------------------------------------------------------------------");
+						} else if (sh == '4') {
+							displayOrdersOfUsers(UserController.historyOfOrders(connection, user, dealer, 4));
 						} else if (sh == 'B' || sh == 'b') {
 							adminView(connection, args, sc, sh);
 						} else
 							System.out.println("Enter a valid Option");
-					}
+						}
 				}
 
 				case 'A':
@@ -224,6 +228,23 @@ public class AdminView {
 					adminView(connection, args, sc, 1);
 				}
 			}
+		}
+	}
+
+	public static void displayOrdersOfUsers(List<OrderDAO> orders) {
+		for (OrderDAO order : orders) {
+			System.out.println(
+					"+---------------------------------------+" +
+							"\n--Order Id       : " + order.getOrderId() +
+							"\n--User Id        : " + order.getUserId() +
+							"\n--Dealer Id      : " + order.getDealerId() +
+							"\n--Watch Id       : " + order.getWatchId() +
+							"\n--Quantity       : " + order.getQuantity() +
+							"\n--Ordered Date   : " + order.getOrderDate() +
+							"\n--Delivery Date  : " + order.getDeliveryDate() +
+							"\n--Total Amount   : " + order.getTotalAmount() +
+							"\n--Payment Mode   : " + order.getPaymentMode() +
+							"\n--Status         : " + order.getStatus());
 		}
 	}
 

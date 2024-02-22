@@ -38,6 +38,11 @@ public class OrderDAO {
         this.status = status;
     }
 
+    public OrderDAO(String orderId, String status) {
+        this.orderId = orderId;
+        this.status = status;
+    }
+
     public String getOrderDate() {
         return orderDate;
     }

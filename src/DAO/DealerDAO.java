@@ -21,6 +21,17 @@ public class DealerDAO {
 
     public DealerDAO() {}
 
+    public DealerDAO(String dealerName, String dealerLocation, String contactNumer, String dealerMailid) {
+        this.dealerName = dealerName;
+        this.dealerLocation = dealerLocation;
+        this.contactNumer = contactNumer;
+        this.dealerMailid = dealerMailid;
+    }
+
+    public DealerDAO(String password) {
+        this.password = password;
+    }
+
     public String getDealerId() {
         return dealerId;
     }

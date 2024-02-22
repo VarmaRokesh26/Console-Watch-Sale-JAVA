@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
-import Controller.AdminController;
 import Controller.UserController;
 import DAO.*;
 import Main.Main;
@@ -210,7 +209,7 @@ public class UserView {
 						} else if (operation == 'P' || operation == 'p') {
 							changePassword(connection, sc);
 						} else if (operation == 'L' || operation == 'l') {
-							AdminController.logOut(args);
+							UserController.logOut(args);
 							System.out.println("Logging out. GoodBye!");
 							System.out.println("-----------------------------------------------------------------");
 							Main.main(args);
@@ -226,13 +225,6 @@ public class UserView {
 				case 'B':
 				case 'b': {
 					userView(connection, args, sc, 1);
-				}
-
-				case 'L':
-				case 'l': {
-					// logOut(connection, args);
-					System.out.println("Loggout");
-					break;
 				}
 			}
 		}

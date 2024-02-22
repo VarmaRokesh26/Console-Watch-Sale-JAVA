@@ -69,4 +69,9 @@ public class AdminController {
     public static void logOut(String[] args) throws SQLException {
 		AdminDAOImpl.clearProfile();
 	}
+
+    public static List<OrderDAO> historyOfOrders(Connection connection, UserDAO user, DealerDAO dealer , int entry) throws SQLException {
+        return OrderDAOImpl.listOfOrders(connection, user, dealer, entry);
+    } 
+
 } 

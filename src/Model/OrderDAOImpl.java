@@ -9,27 +9,35 @@ import java.util.*;
 import DAO.*;
 
 public class OrderDAOImpl {
-    
-    private static String query;
 
     public static List<OrderDAO> listOfOrders(Connection connection, UserDAO user, DealerDAO dealer, int entry) throws SQLException {
-        List<OrderDAO> list= new ArrayList<>();
-        if(entry == 0) {
-            query = "SELECT * FROM orders WHERE userId = ?";
-        } else if(entry == 1) {
-            query = "SELECT * FROM orders WHERE dealerId = ? AND status != Delivered";
-        } else if(entry == 2) {
-            query = "SELECT * FROM orders WHERE dealerId = ? AND status = Delivered";
+        List<OrderDAO> list = new ArrayList<>();
+        String query;
+        
+        switch (entry) {
+            case 0:
+                query = "SELECT * FROM orders WHERE userId = ?";
+                break;
+            case 1:
+                query = "SELECT * FROM orders WHERE dealerId = ? AND status != 'Delivered'";
+                break;
+            case 2:
+                query = "SELECT * FROM orders WHERE dealerId = ? AND status = 'Delivered'";
+                break;
+            default:
+                query = "SELECT * FROM orders";
+                break;
         }
-
+    
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        if(entry == 0) 
+        if (entry == 0)
             preparedStatement.setString(1, user.getUserId());
-        else if(entry == 1 || entry == 2) 
+        else if (entry == 1 || entry == 2)
             preparedStatement.setString(1, dealer.getDealerId());
+    
         ResultSet resultSet = preparedStatement.executeQuery();
-
-        while(resultSet.next()) {
+    
+        while (resultSet.next()) {
             OrderDAO order = new OrderDAO();
             order.setOrderId(resultSet.getString(1));
             order.setUserId(resultSet.getString(2));
@@ -46,5 +54,20 @@ public class OrderDAOImpl {
         return list;
     }
     
+    
+    public static boolean updateOrderStatus(Connection connection, OrderDAO order) throws SQLException {
+        String query = "";
+        if (order.getStatus().equals("Delivered")) {
+            query = "UPDATE orders SET deliveryDate = CURRENT_TIMESTAMP, status = ? WHERE orderId = ?";
+        } else {
+            query = "UPDATE orders SET status = ? WHERE orderId = ?";
+        }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, order.getStatus());
+            preparedStatement.setString(2, order.getOrderId());
+
+            return preparedStatement.executeUpdate() > 0;
+        }
+    }
 
 }
