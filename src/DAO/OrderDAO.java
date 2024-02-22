@@ -6,6 +6,8 @@ public class OrderDAO {
     private String dealerId;
     private String watchId;
     private int quantity;
+    private String orderDate;
+    private String deliveryDate;
     private double totalAmount;
     private String paymentMode;
     private String status;
@@ -21,6 +23,35 @@ public class OrderDAO {
         this.totalAmount = totalAmount;
         this.paymentMode = paymentMode;
         this.status = status;
+    }
+
+    public OrderDAO(String orderId, String userId, String dealerId, String watchId, String orderDate, String deliveryDate, int quantity, double totalAmount, String paymentMode, String status) {
+        this.orderId = orderId;
+        this.userId = userId;
+        this.dealerId = dealerId;
+        this.watchId = watchId;
+        this.orderDate = orderDate;
+        this.deliveryDate = deliveryDate;
+        this.quantity = quantity;
+        this.totalAmount = totalAmount;
+        this.paymentMode = paymentMode;
+        this.status = status;
+    }
+
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public String getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public void setDeliveryDate(String deliveryDate) {
+        this.deliveryDate = deliveryDate;
     }
 
     public String getOrderId() {

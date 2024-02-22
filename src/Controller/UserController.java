@@ -58,4 +58,45 @@ public class UserController {
         return CartDAOImpl.insertInCart(connection, cart);
     }
 
+    public static List<CartDAO> viewCart(Connection connection, UserDAO user) throws SQLException {
+        return CartDAOImpl.showMyCart(connection, user);
+    }
+
+    public static boolean removeItemFromCart(Connection connection, CartDAO cart) throws SQLException {
+        return CartDAOImpl.removeItemFromCart(connection, cart);
+    }
+
+    public static boolean removeAllItemFromCart(Connection connection, CartDAO cart) throws SQLException {
+        return CartDAOImpl.removeAllItemFromCart(connection, cart);
+    }
+
+    public static List<OrderDAO> historyOfOrders(Connection connection, UserDAO user, DealerDAO dealer , int entry) throws SQLException {
+        return OrderDAOImpl.listOfOrders(connection, user, dealer, entry);
+    } 
+
+    public static UserDAO userProfile(Connection connection, UserDAO user) throws SQLException {
+        if (user == null) {
+            user = new UserDAO(); 
+        }
+        return UserDAOImpl.getProfile(connection, user);
+    }
+
+    public static boolean updateProfile(Connection connection, UserDAO user) throws SQLException {
+        if(user == null)
+            user = new UserDAO();
+        return UserDAOImpl.updateProfile(connection, user);
+    }
+
+    public static boolean checkPassword(UserDAO user) {
+        return UserDAOImpl.checkPassword(user);
+    }
+
+    public static boolean updatePassword(Connection coneection, UserDAO user)  throws SQLException {
+        return UserDAOImpl.changePassword(coneection, user);
+    }
+
+    public static void logOut(String[] args) throws SQLException {
+		UserDAOImpl.clearProfile();
+	}
+
 }

@@ -19,6 +19,17 @@ public class UserDAO {
         this.password = password;
     }
 
+    public UserDAO(String userName, String mobileNumber, String emailId, String address) {
+        this.userName = userName;
+        this.mobileNumber = mobileNumber;
+        this.emailId = emailId;
+        this.address = address;
+    }
+
+    public UserDAO(int entry, String password) {
+        this.password = password;
+    }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }

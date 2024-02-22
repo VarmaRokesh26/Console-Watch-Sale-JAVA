@@ -14,6 +14,15 @@ public class CartDAO {
         this.cartDetails = cartDetails;
     }
 
+    public CartDAO(String watchId, String userId) {
+        this.watchId = watchId;
+        this.userId = userId;
+    }
+
+    public CartDAO(String userId) {
+        this.userId = userId;
+    }
+
     public String getCartId() {
         return cartId;
     }

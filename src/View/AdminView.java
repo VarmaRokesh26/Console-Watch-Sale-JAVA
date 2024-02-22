@@ -191,7 +191,6 @@ public class AdminView {
 
 				case 'V':
 				case 'v': {
-					System.out.println("View Profile");
 					admin = AdminController.adminProfile(connection, admin);
 					viewProfile(admin);
 					while (true) {
@@ -543,7 +542,7 @@ public class AdminView {
 			else
 				System.out.println("Enter a valid emailId");
 		}
-		return new AdminDAO(adminId, mobileNumber, mailId);
+		return new AdminDAO(name, mobileNumber, mailId);
 	}
 
 	public static void changePassword(Connection connection, Scanner sc) {

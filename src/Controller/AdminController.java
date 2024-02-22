@@ -47,7 +47,7 @@ public class AdminController {
 
     public static AdminDAO adminProfile(Connection connection, AdminDAO admin) throws SQLException {
         if (admin == null) {
-            admin = new AdminDAO(); // Instantiate admin if null
+            admin = new AdminDAO();
         }
         return AdminDAOImpl.getProfile(connection, admin);
     }
