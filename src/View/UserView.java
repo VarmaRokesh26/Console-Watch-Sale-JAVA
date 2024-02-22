@@ -21,10 +21,15 @@ public class UserView {
 	private static String confirmPassword;
 
 	private static String watchId;
+	private static int quantity;
+	private static String payment;
 
 	static WatchDAO watch;
 	static OrderDAO order;
 	static UserDAO user;
+	static CartDAO cart;
+
+	private static char operation;
 
 	public static UserDAO getLoginDetails(Scanner sc) {
 
@@ -122,8 +127,8 @@ public class UserView {
 
 		while (true) {
 			actionMenu();
-			char userOperation = sc.next().charAt(0);
-			switch (userOperation) {
+			operation = sc.next().charAt(0);
+			switch (operation) {
 				case 'S':
 				case 's': {
 					displayWatches(UserController.displayWatches(connection, watch, 1));
@@ -133,30 +138,42 @@ public class UserView {
 
 				case 'O':
 				case 'o': {
+					System.out.print("Enter WatchId to Display Seperately : ");
+					watchId = sc.next();
+					watch = new WatchDAO(watchId);
 					while (true) {
-						System.out.print("Enter WatchId to Display Seperately : ");
-						watchId = sc.next();
-						watch = new WatchDAO(watchId);
 						if (UserController.checkWatchId(connection, watch)) {
 							displayWatches(UserController.displayWatches(connection, watch, 2));
 							System.out.println("-------------------------------------------------------------------");
+
 							orderOrCart();
-							char operation = sc.next().charAt(0);
+							operation = sc.next().charAt(0);
+
 							if (operation == 'N' || operation == 'n') {
+
 								System.out.print("Enter the quantity required         : ");
-								int quantity = sc.nextInt();
+								quantity = sc.nextInt();
 								System.out.print("Payment Method Cash On Deliviry Or Online Payment : ");
-								String payment = sc.next();
-								if (UserController.placeOrder(connection,
-										orderRequirements(connection,
-												UserController.displayWatches(connection, watch, 2), quantity,
-												payment)))
+								payment = sc.next();
+
+								if (UserController.placeOrder(connection, orderRequirements(connection,
+										UserController.displayWatches(connection, watch, 2), quantity,
+										payment))) {
 									System.out.println("<----Order Placed Successfully---->");
+									break;
+								}
+
 								else
 									System.out.println("<--Something Went Wrong-->");
-
 							} else if (operation == 'A' || operation == 'a') {
 
+								System.out.print("Enter the quantity required         : ");
+								quantity = sc.nextInt();
+
+								if (UserController.addToCart(connection, cartRequitrements(connection,
+										UserController.displayWatches(connection, watch, 2), quantity))) {
+									System.out.println("<--- Item Added to Cart--->");
+								}
 							} else if (operation == 'B' || operation == 'b') {
 								userView(connection, args, sc, 1);
 							}
@@ -165,6 +182,7 @@ public class UserView {
 						}
 					}
 				}
+					break;
 
 				case 'H':
 				case 'h': {
@@ -305,6 +323,24 @@ public class UserView {
 		return order;
 	}
 
+	public static CartDAO cartRequitrements(Connection connection, List<WatchDAO> list, int quantity)
+			throws SQLException {
+		String cartId = UserController.generateCartID(connection);
+		user = UserController.getUserId(connection);
+		Iterator<WatchDAO> itr = list.iterator();
+		while (itr.hasNext()) {
+
+			WatchDAO watch = itr.next();
+			String cartDetail = watch.getName() + "_" + (watch.getPrice() * quantity) + "_" + quantity;
+			System.out.println(cartId);
+			System.out.println(user.getUserId());
+			System.out.println(watch.getWatchId());
+			System.out.println(cartDetail);
+			cart = new CartDAO(cartId, user.getUserId(), watch.getWatchId(), cartDetail);
+		}
+		return cart;
+	}
+
 	public static void shoppingCart(String cartDetails) {
 		String[] cart = cartDetails.split("_");
 		double price = Double.parseDouble(cart[2]);
@@ -342,6 +378,37 @@ public class UserView {
 						+ "\n+---------------------------------------+"
 						+ "\n---------> ");
 	}
+
+	// // Method for View Cart
+	// public static void viewCart(Connection connection, String[] args, Scanner sc, char action) {
+	// 	try {
+	// 		if (!FetchAndDisplayFromDB.showMyCart(connection)) {
+	// 			UserInterface.noItemStatement();
+	// 		} else {
+	// 			while (true) {
+	// 				UserInterface.cartWork();
+	// 				action = sc.next().charAt(0);
+	// 				if (action == 'R' || action == 'r') {
+	// 					System.out.print("Enter the Watch Id to Remove Form Cart : ");
+	// 					watchId = sc.next();
+	// 					DeleteFromDB.removeAnItemInCart(connection, watchId);
+	// 					if (!FetchAndDisplayFromDB.showMyCart(connection)) {
+	// 						UserInterface.noItemStatement();
+	// 					}
+	// 				} else if (action == 'D' || action == 'd') {
+	// 					DeleteFromDB.removeAllItemsFromCart(connection);
+	// 					if (!FetchAndDisplayFromDB.showMyCart(connection)) {
+	// 						noItemStatement();
+	// 					}
+	// 				} else if (action == 'B' || action == 'b') {
+	// 					UserInterface.userInterface(connection, null, sc, action);
+	// 				}
+	// 			}
+	// 		}
+	// 	} catch (Exception e) {
+	// 		System.out.println(e.toString());
+	// 	}
+	// }
 
 	public static void displayWatches(List<WatchDAO> list) {
 		Iterator<WatchDAO> itr = list.iterator();

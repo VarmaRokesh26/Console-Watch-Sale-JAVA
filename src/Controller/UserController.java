@@ -5,14 +5,8 @@ import java.sql.SQLException;
 import java.util.*;
 
 import DAO.*;
-import Model.AdminDAOImpl;
-import Model.DealerDAOImpl;
-import Model.UIDGenerator;
-import Model.UserDAOImpl;
-import Model.WatchDAOImpl;
-import View.AdminView;
-import View.DealerView;
-import View.UserView;
+import Model.*;
+import View.*;
 
 public class UserController {
     
@@ -54,6 +48,14 @@ public class UserController {
 
     public static boolean checkWatchId(Connection connection, WatchDAO watch) throws SQLException {
         return WatchDAOImpl.checkWatchId(connection, watch);
+    }
+
+    public static String generateCartID(Connection connection) throws SQLException {
+        return UIDGenerator.IdGenerator(connection, "cart");
+    }
+
+    public static boolean addToCart(Connection connection, CartDAO cart) throws SQLException {
+        return CartDAOImpl.insertInCart(connection, cart);
     }
 
 }

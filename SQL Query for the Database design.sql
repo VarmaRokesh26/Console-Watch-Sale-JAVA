@@ -91,4 +91,4 @@
 
 -- SELECT adminId FROM admin ORDER BY adminId DESC LIMIT 1;
 
-SELECT * FROM admin;
+SELECT * FROM cart;
