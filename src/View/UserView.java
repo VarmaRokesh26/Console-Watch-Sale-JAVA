@@ -239,7 +239,7 @@ public class UserView {
 
 				System.out.print("Enter the quantity required         : ");
 				quantity = sc.nextInt();
-				System.out.print("Payment Method Cash On Deliviry Or Online Payment : ");
+				System.out.print("Payment Method Cash On Delivery Or Online Payment : ");
 				payment = sc.next();
 
 				if (UserController.placeOrder(connection, orderRequirements(connection,
