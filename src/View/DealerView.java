@@ -8,6 +8,7 @@ import Controller.DealerController;
 import DAO.DealerDAO;
 import DAO.OrderDAO;
 import DAO.UserDAO;
+import DAO.WatchDAO;
 import Main.Main;
 import Model.Validation;
 
@@ -104,6 +105,7 @@ public class DealerView {
 				case 'W':
 				case 'w': {
 					dealer = DealerController.getDealerId(connection);
+					displayWatches(DealerController.displayWatches(connection, null, dealer));
 					break;
 				}
 				
@@ -379,5 +381,21 @@ public class DealerView {
 		}
 
 		return new DealerDAO(dealerName, dealerLocation, contactNumber, dealerMailId);
+	}
+
+	public static void displayWatches(List<WatchDAO> list) {
+		Iterator<WatchDAO> itr = list.iterator();
+		while (itr.hasNext()) {
+			WatchDAO watch = itr.next();
+			System.out.println("-------------------------------------------------------------------");
+			System.out.println(
+					"--ID                             : " + watch.getWatchId()
+							+ "\n--Name                           : " + watch.getName()
+							+ "\n--Brand                          : " + watch.getBrand()
+							+ "\n--Price                          : " + watch.getPrice()
+							+ "\n--Description                    : " + watch.getDescription()
+							+ "\n--Number of Stocks available     : " + watch.getNumberOfStocks()
+							+ "\n--Dealer Id                      : " + watch.getDealerId());
+		}
 	}
 }

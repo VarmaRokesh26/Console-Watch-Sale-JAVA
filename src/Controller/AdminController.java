@@ -22,7 +22,7 @@ public class AdminController {
     }
 
     public static List<WatchDAO> displayWatches(Connection connection, WatchDAO watch) throws SQLException{
-        return WatchDAOImpl.displayWatches(connection, watch, 0);
+        return WatchDAOImpl.displayWatches(connection, watch, null, 0);
     }
 
     public static List<AdminDAO> displayAdmin(Connection connection) throws SQLException {

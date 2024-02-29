@@ -11,6 +11,7 @@ import DAO.WatchDAO;
 import Model.AdminDAOImpl;
 import Model.DealerDAOImpl;
 import Model.OrderDAOImpl;
+import Model.WatchDAOImpl;
 public class DealerController {
     
     public static List<DealerDAO> displayDealer(Connection conenction) throws SQLException {
@@ -54,8 +55,8 @@ public class DealerController {
         return OrderDAOImpl.updateOrderStatus(connection, order);
     }
 
-    public static List<WatchDAO> displayWatch(Connection connection, DealerDAO dealer) throws SQLException {
-        return null;
+    public static List<WatchDAO> displayWatches(Connection connection, WatchDAO watch, DealerDAO dealer) throws SQLException {
+        return WatchDAOImpl.displayWatches(connection, null, dealer, 3);
     } 
 
 }

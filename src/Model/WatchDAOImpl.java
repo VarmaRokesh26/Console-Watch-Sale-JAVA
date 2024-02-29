@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import DAO.DealerDAO;
 import DAO.OrderDAO;
 import DAO.WatchDAO;
 
@@ -75,21 +76,25 @@ public class WatchDAOImpl {
     }
 
     // display Watches From DB
-    public static List<WatchDAO> displayWatches(Connection connection, WatchDAO watch, int entry) throws SQLException {
+    public static List<WatchDAO> displayWatches(Connection connection, WatchDAO watch, DealerDAO dealer, int entry) throws SQLException {
         String query;
         if (entry == 0) {
             query = "SELECT * FROM watches";
         } else if (entry == 1) {
             query = "SELECT * FROM watches WHERE numberOfStocks > 0";
-        } else {
+        } else if(entry == 3) {
+            query = "SELECT * FROM watches WHERE dealerId = ?";
+        }else {
             query = "SELECT * FROM watches WHERE watchId = ?";
         }
 
         List<WatchDAO> list = new ArrayList<>();
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        if (entry != 1 && entry != 0)
+        if (entry != 1 && entry != 0 && entry != 3)
             preparedStatement.setString(1, watch.getWatchId());
+        else if(entry == 3)
+            preparedStatement.setString(1, dealer.getDealerId());
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
