@@ -99,4 +99,8 @@ public class UserController {
 		UserDAOImpl.clearProfile();
 	}
 
+    public static boolean itemIsAlreadyIncart(Connection connection, WatchDAO watch) throws SQLException {
+        return true;
+    }
+
 }
